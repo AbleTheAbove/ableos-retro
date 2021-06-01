@@ -1,5 +1,7 @@
 use crate::{print, serial_print, vga};
 use lliw::Fg;
+
+use crate::util::{term_reset, term_set};
 /// Denote log levels
 pub enum LogLevel {
     /// The Error log level to be used with errors
@@ -26,34 +28,22 @@ pub fn log(level: LogLevel) {
 }
 
 fn error_log() {
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::Red, vga::Color::Black);
+    term_set(vga::Color::Red);
     print!("Error");
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::White, vga::Color::Black);
+    term_reset();
 }
 fn success_log() {
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::Green, vga::Color::Black);
+    term_set(vga::Color::Green);
     print!("Success");
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::White, vga::Color::Black);
+    term_reset();
 }
 fn info_log() {
     print!("Info");
 }
 fn debug_log() {
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::Yellow, vga::Color::Black);
+    term_set(vga::Color::Yellow);
     print!("Debug");
-    vga::WRITER
-        .lock()
-        .set_color(vga::Color::White, vga::Color::Black);
+    term_reset();
 }
 
 /// print a log prefix to the serial port
