@@ -2,7 +2,7 @@
 use crate::{println, vga};
 
 /// ASCII art banner
-const BANNER: &str = include_str!("root/banner.txt");
+const BANNER: &str = include_str!("../root/banner.txt");
 /// Prints the ascii banner
 pub fn banner() {
     term_set(vga::Color::LightBlue);
