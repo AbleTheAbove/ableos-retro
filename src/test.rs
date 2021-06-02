@@ -4,11 +4,6 @@ use crate::{
     serial_println,
 };
 
-#[test_case]
-fn trivial_assertion() {
-    assert_eq!(1, 1);
-}
-
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
     serial_println!("Running {} tests", tests.len());
