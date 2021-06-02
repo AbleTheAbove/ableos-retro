@@ -15,6 +15,25 @@ test-timeout = 300          # (in seconds)
 version = "1.0"
 features = ["spin_no_std"]
 
+[dependencies.linked_list_allocator]
+# Used as a fallback allocator
+version = "0.9.0"
+
+
+[dependencies.conquer-once]
+version = "0.2.0"
+default-features = false
+
+[dependencies.futures-util]
+version = "0.3.4"
+default-features = false
+features = ["alloc"]
+
+[dependencies.crossbeam-queue]
+version = "0.2.1"
+default-features = false
+features = ["alloc"]
+
 [dependencies]
 bootloader = { version = "0.9.8", features = ["map_physical_memory"]}
 volatile = "0.2.6"
@@ -24,4 +43,3 @@ uart_16550 = "0.2.0"
 lliw = "0"
 pic8259 = "0.10.1"
 pc-keyboard = "0.5.0"
-linked_list_allocator = "0.9.0"

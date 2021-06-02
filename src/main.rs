@@ -7,6 +7,7 @@
 #![test_runner(crate::test::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 #![feature(alloc_error_handler)] // at the top of the file
+#![feature(const_mut_refs)]
 
 extern crate alloc;
 
@@ -27,6 +28,7 @@ mod serial;
 pub mod util;
 mod vga;
 
+pub mod task;
 use logger::{log, LogLevel};
 
 /// The holder of tests
@@ -42,22 +44,21 @@ entry_point!(kernel_main);
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     // this function is the entry point, since the linker looks for a function
     // named `_start` by default
-    init_alloc(boot_info);
     util::banner();
+    init_alloc(boot_info);
     init();
-
-    use alloc::vec::Vec;
-
-    let mut vec = Vec::new();
-    for i in 0..500 {
-        vec.push(i);
-    }
-    println!("vec at {:p}", vec.as_slice());
 
     #[cfg(test)]
     test_main();
 
-    hlt_loop();
+    use task::{executor::Executor, keyboard, Task};
+
+    let mut executor = Executor::new();
+
+    executor.spawn(Task::new(example_task()));
+    executor.spawn(Task::new(keyboard::print_keypresses()));
+    executor.spawn(Task::new(test_1()));
+    executor.run();
 }
 /// Initialize
 pub fn init() {
@@ -67,8 +68,6 @@ pub fn init() {
     unsafe { interrupts::pic::PICS.lock().initialize() }; // new
     x86_64::instructions::interrupts::enable(); // new
 
-    log(LogLevel::Success);
-    println!("VGA buffer loaded");
     sri::init();
 }
 /// Loop forever
@@ -89,4 +88,26 @@ fn init_alloc(boot_info: &'static BootInfo) {
     let mut mapper = unsafe { memory::init(phys_mem_offset) };
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
+
+    log(LogLevel::Success);
+    println!("Allocator loaded");
+}
+
+async fn async_number() -> u32 {
+    42
+}
+
+async fn example_task() {
+    let number = async_number().await;
+    println!("async number: {}", number);
+}
+
+async fn test_1() {
+    use alloc::vec::Vec;
+
+    let mut vec = Vec::new();
+    for i in 0..500 {
+        vec.push(i);
+    }
+    println!("vec at {:p}", vec.as_slice());
 }
