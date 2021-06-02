@@ -1,6 +1,3 @@
-#[cfg(not(test))]
-// use crate::println;
-
 #[cfg(test)]
 use crate::{
     serial_println,
