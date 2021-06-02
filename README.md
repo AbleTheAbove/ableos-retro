@@ -9,12 +9,9 @@
 
 ## Roadmap
 - [ ] File System implementation
-  - [ ] Install time file system selection
-- [ ] Modularity
 - [ ] SRI Based user land syscall system
-- [ ] Cryptographically secure random syscall
-  - [ ] Able to randomly provide all/most types
-
+- [ ] AES Based encryption
+ 
 ## Research && Resources
 
 ### File Systems
