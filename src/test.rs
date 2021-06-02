@@ -1,10 +1,8 @@
 /// The tests
-use crate::{logger::LogLevel::Success, serial_println, slog};
-
-#[test_case]
-fn trivial_assertion() {
-    assert_eq!(1, 1);
-}
+use crate::{
+    logger::{slog, LogLevel::Success},
+    serial_println,
+};
 
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
@@ -28,8 +26,8 @@ pub enum QemuExitCode {
 pub fn exit_qemu(exit_code: QemuExitCode) {
     use x86_64::instructions::port::Port;
 
+    let mut port = Port::new(0xf4);
     unsafe {
-        let mut port = Port::new(0xf4);
         port.write(exit_code as u32);
     }
 }
@@ -47,7 +45,7 @@ where
     /// Run the test
     fn run(&self) {
         slog(Success);
-        serial_println!("{}...\t", core::any::type_name::<T>());
+        serial_println!("{}\t", core::any::type_name::<T>());
         self();
     }
 }

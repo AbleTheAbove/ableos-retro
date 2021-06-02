@@ -1,11 +1,18 @@
+# ableOS
+## Set up
+`rustup component add rust-src`
+
+`rustup component add llvm-tools-preview`
+
+`cargo install bootimage`
+
+
 ## Roadmap
 - [ ] File System implementation
-  - [ ] Install time file system selection
-- [ ] Modularity
-- [ ] URI Based user land syscall system
-- [ ] Cryptographically secure random syscall
-  - [ ] Able to randomly provide all/most types
-
+- [ ] SRI Based user land syscall system
+- [ ] AES Based encryption
+- [ ] Advanced, feature-full multiseat implementation
+ 
 ## Research && Resources
 
 ### File Systems

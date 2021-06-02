@@ -1,4 +1,5 @@
-/// A simple utility module to reduce repeated code
+//! A simple utility module to reduce repeated code
+
 use crate::{println, vga};
 
 /// ASCII art banner
@@ -8,8 +9,11 @@ pub fn banner() {
     term_set(vga::Color::LightBlue);
     println!("{}", BANNER);
     term_reset();
+    println!("ableOS version: {}", crate::KERNEL_VERSION);
     println!("================================================================================");
 }
+
+// TODO: move term_* functions to a submodule when there is enough of a "Terminal" to justify it
 
 /// Reset the terminal styles
 pub fn term_reset() {
