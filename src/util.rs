@@ -9,6 +9,7 @@ pub fn banner() {
     term_set(vga::Color::LightBlue);
     println!("{}", BANNER);
     term_reset();
+    println!("ableOS version: {}", crate::KERNEL_VERSION);
     println!("================================================================================");
 }
 

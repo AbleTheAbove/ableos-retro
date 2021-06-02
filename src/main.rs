@@ -10,10 +10,12 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 
+pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
+
 extern crate alloc;
 
 pub mod allocator;
-
+mod encrypt;
 /// Global Descriptor Table
 pub mod gdt;
 /// Interrupt module
@@ -31,7 +33,7 @@ mod vga;
 
 pub mod task;
 use logger::{log, LogLevel};
-mod asm_help;
+
 /// The holder of tests
 #[cfg(test)]
 pub mod test;
@@ -48,17 +50,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     util::banner();
     init_alloc(boot_info);
     init();
-    {
-        if core_detect::is_x86_feature_detected!("aes") {
-            log(LogLevel::Success);
-            println!("AES is available");
-        } else {
-            log(LogLevel::Debug);
-            println!("AES is not available");
-        }
-    }
 
-    println!("{}", asm_help::pain());
     #[cfg(test)]
     test_main();
 
@@ -78,6 +70,10 @@ pub fn init() {
 
     unsafe { interrupts::pic::PICS.lock().initialize() }; // new
     x86_64::instructions::interrupts::enable(); // new
+    if encrypt::aes_detect() {
+        log(LogLevel::Success);
+        println!("Encryption driver loaded");
+    }
 
     sri::init();
 }
