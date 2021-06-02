@@ -34,6 +34,7 @@ pub mod util;
 mod vga;
 
 pub mod task;
+use cpuio::outb;
 use logger::{log, LogLevel};
 
 /// The holder of tests
@@ -54,9 +55,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     util::banner();
     init_alloc(boot_info);
     init();
+    unsafe {
+        outb(0x0A, 0x3D4);
+        outb(0x20, 0x3D5);
+    }
 
-    
-    
     #[cfg(test)]
     test_main();
 

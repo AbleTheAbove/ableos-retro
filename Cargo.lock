@@ -77,8 +77,7 @@ checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
 [[package]]
 name = "cpuio"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d531514efb06912141fa65967447de805691b685a7565c87d1765afe34a98aa7"
+source = "git+https://github.com/anyusernameworks/cpuio.git#3908ecab79df80670ee1c5121870fc131f07627b"
 
 [[package]]
 name = "crossbeam-queue"
