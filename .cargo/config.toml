@@ -5,7 +5,5 @@ build-std-features = ["compiler-builtins-mem"]
 [build]
 target = "json_targets/x86_64-ableos.json"
 
-
-
 [target.'cfg(target_os = "none")']
 runner = "bootimage runner"

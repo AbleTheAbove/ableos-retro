@@ -1,8 +1,16 @@
+# ableOS
+## Set up
+`rustup component add rust-src`
+`cargo install bootimage`
+
+
+
+
 ## Roadmap
 - [ ] File System implementation
   - [ ] Install time file system selection
 - [ ] Modularity
-- [ ] URI Based user land syscall system
+- [ ] SRI Based user land syscall system
 - [ ] Cryptographically secure random syscall
   - [ ] Able to randomly provide all/most types
 

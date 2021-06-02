@@ -1,4 +1,4 @@
-//! My amazing kernel
+//! My amazing(?) kernel
 
 #![no_std] // Makes sure the STD library is not included as we can not use it
 #![no_main] // disable all Rust-level entry points
@@ -15,13 +15,13 @@ mod serial;
 pub mod util;
 mod vga;
 
-use logger::{log, slog, LogLevel};
+use logger::{log, LogLevel};
 
-///hi
+/// The holder of tests
 #[cfg(test)]
 pub mod test;
 
-mod uri;
+mod sri;
 
 /// The "Start" point of ableOS
 #[no_mangle] // don't mangle the name of this function
@@ -33,7 +33,7 @@ pub extern "C" fn _start() -> ! {
     log(LogLevel::Success);
     println!("VGA buffer loaded");
 
-    uri::init();
+    sri::init();
     #[cfg(test)]
     test_main();
 

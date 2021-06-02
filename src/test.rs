@@ -1,5 +1,8 @@
 /// The tests
-use crate::{logger::LogLevel::Success, serial_println, slog};
+use crate::{
+    logger::{slog, LogLevel::Success},
+    serial_println,
+};
 
 #[test_case]
 fn trivial_assertion() {
@@ -47,7 +50,7 @@ where
     /// Run the test
     fn run(&self) {
         slog(Success);
-        serial_println!("{}...\t", core::any::type_name::<T>());
+        serial_println!("{}\t", core::any::type_name::<T>());
         self();
     }
 }
