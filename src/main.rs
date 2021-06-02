@@ -55,8 +55,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
     init();
 
+<<<<<<< HEAD
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
+=======
+    
+    
+>>>>>>> 6cf39986c7cb86de42cf50949a2a7b9c3b6e8889
     #[cfg(test)]
     test_main();
 
