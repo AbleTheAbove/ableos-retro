@@ -36,11 +36,19 @@ pub extern "C" fn _start() -> ! {
     util::banner();
     init();
 
+    use x86_64::registers::control::Cr3;
+
+    let (level_4_page_table, _) = Cr3::read();
+    log(LogLevel::Success);
+    println!(
+        "Level 4 page table at: {:?}",
+        level_4_page_table.start_address()
+    );
+
     #[cfg(test)]
     test_main();
-    loop {
-        x86_64::instructions::hlt();
-    }
+
+    hlt_loop();
 }
 /// Initialize
 pub fn init() {
@@ -54,7 +62,12 @@ pub fn init() {
     println!("VGA buffer loaded");
     sri::init();
 }
-
+/// Loop forever
+pub fn hlt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
+}
 #[test_case]
 fn trivial_assertion() {
     assert_eq!(1, 1);
