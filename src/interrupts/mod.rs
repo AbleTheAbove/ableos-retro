@@ -1,4 +1,4 @@
-use crate::{gdt, print, println, util, vga::Color::Red};
+use crate::{gdt, print, println, util, vga_buffer::Color::Red};
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 

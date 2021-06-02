@@ -7,7 +7,7 @@ name = "ableos"
 version = "0.1.0"
 dependencies = [
  "bootloader",
- "conquer-once",
+ "conquer-once 0.2.1",
  "core_detect",
  "cpuio",
  "crossbeam-queue",
@@ -21,7 +21,7 @@ dependencies = [
  "uart_16550",
  "vga",
  "volatile 0.2.7",
- "x86_64 0.14.3",
+ "x86_64",
 ]
 
 [[package]]
@@ -60,7 +60,16 @@ version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96eb12fb69466716fbae9009d389e6a30830ae8975e170eff2d2cff579f9efa3"
 dependencies = [
- "conquer-util",
+ "conquer-util 0.2.0",
+]
+
+[[package]]
+name = "conquer-once"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7c6d3a9775a69f6d1fe2cc888999b67ed30257d3da4d2af91984e722f2ec918a"
+dependencies = [
+ "conquer-util 0.3.0",
 ]
 
 [[package]]
@@ -68,6 +77,12 @@ name = "conquer-util"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "654fb2472cc369d311c547103a1fa81d467bef370ae7a0680f65939895b1182a"
+
+[[package]]
+name = "conquer-util"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e763eef8846b13b380f37dfecda401770b0ca4e56e95170237bd7c25c7db3582"
 
 [[package]]
 name = "core_detect"
@@ -103,9 +118,9 @@ dependencies = [
 
 [[package]]
 name = "font8x8"
-version = "0.2.7"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e63201c624b8c8883921b1a1accc8916c4fa9dbfb15d122b26e4dde945b86bbf"
+checksum = "875488b8711a968268c7cf5d139578713097ca4635a76044e8fe8eedf831d07e"
 
 [[package]]
 name = "futures-core"
@@ -192,7 +207,7 @@ version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08cc920d83ee33c0f9b73aa441e75468bf2d10c959a3eb6260cf720b05ac91a1"
 dependencies = [
- "x86_64 0.14.3",
+ "x86_64",
 ]
 
 [[package]]
@@ -235,21 +250,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "503a6c0e6d82daa87985e662d120c0176b09587c92a68db22781b28ae95405dd"
 dependencies = [
  "bitflags",
- "x86_64 0.14.3",
+ "x86_64",
 ]
 
 [[package]]
 name = "vga"
 version = "0.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "791f00e665a5caf3feff53c7ef5b0b2e038db111c1ddd7f5251461f9a3ce1682"
+source = "git+https://github.com/abletheabove/vga#e3e68ac6f37c8d98998ec28128e432d532d2b502"
 dependencies = [
  "bitflags",
- "conquer-once",
+ "conquer-once 0.3.2",
  "font8x8",
  "num-traits",
  "spinning_top",
- "x86_64 0.13.6",
+ "x86_64",
 ]
 
 [[package]]
@@ -263,16 +277,6 @@ name = "volatile"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4c2dbd44eb8b53973357e6e207e370f0c1059990df850aca1eca8947cf464f0"
-
-[[package]]
-name = "x86_64"
-version = "0.13.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "021b49a4cb0a0d9490265cc169ca816014cbf61d3f3b75424815912977b81871"
-dependencies = [
- "bit_field",
- "bitflags",
-]
 
 [[package]]
 name = "x86_64"

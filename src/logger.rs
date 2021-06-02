@@ -1,4 +1,4 @@
-use crate::{print, serial_print, vga};
+use crate::{print, serial_print, vga_buffer};
 use lliw::Fg;
 
 use crate::util::{term_reset, term_set};
@@ -28,12 +28,12 @@ pub fn log(level: LogLevel) {
 }
 
 fn error_log() {
-    term_set(vga::Color::Red);
+    term_set(vga_buffer::Color::Red);
     print!("Error");
     term_reset();
 }
 fn success_log() {
-    term_set(vga::Color::Green);
+    term_set(vga_buffer::Color::Green);
     print!("Success");
     term_reset();
 }
@@ -41,7 +41,7 @@ fn info_log() {
     print!("Info");
 }
 fn debug_log() {
-    term_set(vga::Color::Yellow);
+    term_set(vga_buffer::Color::Yellow);
     print!("Debug");
     term_reset();
 }
