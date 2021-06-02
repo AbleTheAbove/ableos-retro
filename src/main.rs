@@ -9,11 +9,13 @@
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
+// #![deny(missing_docs)]
 
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 extern crate alloc;
 
+/// The public allocator module
 pub mod allocator;
 mod encrypt;
 /// Global Descriptor Table
@@ -41,6 +43,8 @@ pub mod test;
 mod sri;
 
 use bootloader::{entry_point, BootInfo};
+
+/// Undocumnetable
 entry_point!(kernel_main);
 
 /// The "Start" point of ableOS
