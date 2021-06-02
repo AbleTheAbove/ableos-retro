@@ -55,17 +55,14 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     util::banner();
     init_alloc(boot_info);
     init();
-    unsafe {
-        outb(0x0A, 0x3D4);
-        outb(0x20, 0x3D5);
-    }
+    
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
     #[cfg(test)]
     test_main();
-    if true {
+    if false {
         use vga::colors::Color16;
         use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
