@@ -44,5 +44,4 @@ lliw = "0"
 pic8259 = "0.10.1"
 pc-keyboard = "0.5.0"
 core_detect = "*"
-cpuio = "0.3.0"
-vga = "0.2.6"
+vga = { git = "https://github.com/abletheabove/vga" }

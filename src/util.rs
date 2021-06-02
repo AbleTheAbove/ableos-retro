@@ -1,12 +1,12 @@
 //! A simple utility module to reduce repeated code
 
-use crate::{println, vga};
+use crate::{println, vga_buffer};
 
 /// ASCII art banner
 const BANNER: &str = include_str!("../root/banner.txt");
 /// Prints the ascii banner
 pub fn banner() {
-    term_set(vga::Color::LightBlue);
+    term_set(vga_buffer::Color::LightBlue);
     println!("{}", BANNER);
     term_reset();
     println!("ableOS version: {}", crate::KERNEL_VERSION);
@@ -17,11 +17,13 @@ pub fn banner() {
 
 /// Reset the terminal styles
 pub fn term_reset() {
-    vga::WRITER
+    vga_buffer::WRITER
         .lock()
-        .set_color(vga::Color::White, vga::Color::Black);
+        .set_color(vga_buffer::Color::White, vga_buffer::Color::Black);
 }
 /// set the forground color
-pub fn term_set(color: vga::Color) {
-    vga::WRITER.lock().set_color(color, vga::Color::Black);
+pub fn term_set(color: vga_buffer::Color) {
+    vga_buffer::WRITER
+        .lock()
+        .set_color(color, vga_buffer::Color::Black);
 }
