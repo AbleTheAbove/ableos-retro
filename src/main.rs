@@ -51,6 +51,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
     init();
 
+    
+    
     #[cfg(test)]
     test_main();
 

@@ -9,6 +9,7 @@ dependencies = [
  "bootloader",
  "conquer-once",
  "core_detect",
+ "cpuio",
  "crossbeam-queue",
  "futures-util",
  "lazy_static",
@@ -72,6 +73,12 @@ name = "core_detect"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
+
+[[package]]
+name = "cpuio"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d531514efb06912141fa65967447de805691b685a7565c87d1765afe34a98aa7"
 
 [[package]]
 name = "crossbeam-queue"
