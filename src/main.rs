@@ -55,15 +55,16 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     util::banner();
     init_alloc(boot_info);
     init();
-    
-    //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
-
+    unsafe {
+        outb(0x0A, 0x3D4);
+        outb(0x20, 0x3D5);
+    }
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
     #[cfg(test)]
     test_main();
+    use vga::colors::Color16;
     if false {
-        use vga::colors::Color16;
         use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
         let mode = Graphics640x480x16::new();
@@ -76,6 +77,20 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         mode.draw_line((80, 90), (540, 90), Color16::White);
         for (offset, character) in "AbleOS Window Example".chars().enumerate() {
             mode.draw_character(270 + offset * 8, 72, character, Color16::White)
+        }
+    } else {
+        use vga::colors::TextModeColor;
+        use vga::writers::{ScreenCharacter, Text80x25, TextWriter};
+
+        let text_mode = Text80x25::new();
+        let color = TextModeColor::new(Color16::Yellow, Color16::Black);
+
+        text_mode.set_mode();
+        text_mode.clear_screen();
+
+        for (offset, character) in "Hello ableOS!".chars().enumerate() {
+            let screen_character = ScreenCharacter::new(character as u8, color);
+            text_mode.write_character(offset, 0, screen_character);
         }
     }
 
