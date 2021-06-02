@@ -55,6 +55,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
     init();
 
+    unsafe {
+        // Don't leave this in
+
+        outb(0x3D4, 0x0A);
+        outb(0x3D5, 0x20);
+    }
+
     #[cfg(test)]
     test_main();
 
