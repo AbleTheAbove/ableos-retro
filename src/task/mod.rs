@@ -5,15 +5,19 @@ use core::{
     task::{Context, Poll},
 };
 
+/// The implementation module of ableOS async executor
+pub mod executor;
+/// Async keyboard interrupt module
 pub mod keyboard;
 
-pub mod executor;
+/// Helper struct for tasks
 pub struct Task {
     id: TaskId,
     future: Pin<Box<dyn Future<Output = ()>>>,
 }
 
 impl Task {
+    /// New task
     pub fn new(future: impl Future<Output = ()> + 'static) -> Task {
         Task {
             id: TaskId::new(),
