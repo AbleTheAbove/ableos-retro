@@ -1,7 +1,11 @@
-use crate::{print, serial_print, vga_buffer};
+use crate::{
+    // print,
+    serial_print,
+    vga_buffer,
+};
 use lliw::Fg;
 
-use crate::util::{term_reset, term_set};
+// use crate::util::{term_reset, term_set};
 /// Denote log levels
 pub enum LogLevel {
     /// The Error log level to be used with errors
@@ -15,7 +19,7 @@ pub enum LogLevel {
 }
 /// print a log prefix to the framebuffer
 pub fn log(level: LogLevel) {
-    print!("[");
+    // print!("[");
 
     match level {
         LogLevel::Error => error_log(),
@@ -24,26 +28,26 @@ pub fn log(level: LogLevel) {
         LogLevel::Success => success_log(),
     }
 
-    print!("] ");
+    // print!("] ");
 }
 
 fn error_log() {
-    term_set(vga_buffer::Color::Red);
-    print!("Error");
-    term_reset();
+    // term_set(vga_buffer::Color::Red);
+    // print!("Error");
+    // term_reset();
 }
 fn success_log() {
-    term_set(vga_buffer::Color::Green);
-    print!("Success");
-    term_reset();
+    // term_set(vga_buffer::Color::Green);
+    // print!("Success");
+    // term_reset();
 }
 fn info_log() {
-    print!("Info");
+    // print!("Info");
 }
 fn debug_log() {
-    term_set(vga_buffer::Color::Yellow);
-    print!("Debug");
-    term_reset();
+    // term_set(vga_buffer::Color::Yellow);
+    // print!("Debug");
+    // term_reset();
 }
 
 /// print a log prefix to the serial port
@@ -66,7 +70,7 @@ fn success_slog() {
     serial_print!("{}Success{}", Fg::Green, Fg::Reset);
 }
 fn info_slog() {
-    print!("Info");
+    // print!("Info");
 }
 fn debug_slog() {
     serial_print!("{}Debug{}", Fg::Yellow, Fg::Reset);

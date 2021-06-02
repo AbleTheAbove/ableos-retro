@@ -1,11 +1,12 @@
 #[cfg(not(test))]
-use crate::println;
+// use crate::println;
 
 #[cfg(test)]
 use crate::{
     serial_println,
     test::{exit_qemu, QemuExitCode},
 };
+
 use core::panic::PanicInfo;
 #[cfg(test)]
 use lliw::Fg;
@@ -13,7 +14,7 @@ use lliw::Fg;
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
+    // println!("{}", info);
     loop {}
 }
 

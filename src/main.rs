@@ -65,7 +65,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     #[cfg(test)]
     test_main();
-    if false {
+    if true {
         use vga::colors::Color16;
         use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
@@ -100,7 +100,7 @@ pub fn init() {
     x86_64::instructions::interrupts::enable(); // new
     if encrypt::aes_detect() {
         log(LogLevel::Success);
-        println!("Encryption driver loaded");
+        // println!("Encryption driver loaded");
     }
 
     sri::init();
@@ -125,7 +125,7 @@ fn init_alloc(boot_info: &'static BootInfo) {
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
     log(LogLevel::Success);
-    println!("Allocator loaded");
+    // println!("Allocator loaded");
 }
 
 async fn async_number() -> u32 {
@@ -134,7 +134,7 @@ async fn async_number() -> u32 {
 
 async fn example_task() {
     let number = async_number().await;
-    println!("async number: {}", number);
+    // println!("async number: {}", number);
 }
 
 async fn test_1() {
@@ -144,5 +144,5 @@ async fn test_1() {
     for i in 0..500 {
         vec.push(i);
     }
-    println!("vec at {:p}", vec.as_slice());
+    // println!("vec at {:p}", vec.as_slice());
 }

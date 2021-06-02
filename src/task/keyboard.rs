@@ -1,4 +1,4 @@
-use crate::{print, println};
+// use crate::{print, println};
 use conquer_once::spin::OnceCell;
 use core::{
     pin::Pin,
@@ -20,12 +20,12 @@ static WAKER: AtomicWaker = AtomicWaker::new();
 pub(crate) fn add_scancode(scancode: u8) {
     if let Ok(queue) = SCANCODE_QUEUE.try_get() {
         if let Err(_) = queue.push(scancode) {
-            println!("WARNING: scancode queue full; dropping keyboard input");
+            // println!("WARNING: scancode queue full; dropping keyboard input");
         } else {
             WAKER.wake(); // new
         }
     } else {
-        println!("WARNING: scancode queue uninitialized");
+        // println!("WARNING: scancode queue uninitialized");
     }
 }
 
@@ -73,10 +73,10 @@ pub async fn print_keypresses() {
     while let Some(scancode) = scancodes.next().await {
         if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
             if let Some(key) = keyboard.process_keyevent(key_event) {
-                match key {
-                    DecodedKey::Unicode(character) => print!("{}", character),
-                    DecodedKey::RawKey(key) => print!("{:?}", key),
-                }
+                // match key {
+                //     DecodedKey::Unicode(character) => print!("{}", character),
+                //     DecodedKey::RawKey(key) => print!("{:?}", key),
+                // }
             }
         }
     }

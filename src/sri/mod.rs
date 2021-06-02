@@ -1,6 +1,6 @@
 use crate::{
     logger::{log, LogLevel},
-    println,
+    // println,
 };
 use core::fmt;
 
@@ -28,16 +28,16 @@ impl<'a> fmt::Display for SRI<'a> {
 
 pub fn init() {
     log(LogLevel::Info);
-    println!("SRI interface loading");
+    // println!("SRI interface loading");
 
     let url = SRI {
         protocol: Protocol::File,
         path: "banner.txt",
         query: "read",
     };
-    println!("> {}", url);
+    // println!("> {}", url);
     log(LogLevel::Success);
-    println!("SRI interface loaded");
+    // println!("SRI interface loaded");
 }
 
 #[test_case]
@@ -47,5 +47,5 @@ fn sri_test() {
         path: "test",
         query: "read",
     };
-    println!("{}", url);
+    // println!("{}", url);
 }

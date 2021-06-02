@@ -1,4 +1,9 @@
-use crate::{gdt, print, println, util, vga_buffer::Color::Red};
+use crate::{
+    gdt,
+    // print, println,
+    util,
+    // vga_buffer::Color::Red,
+};
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
@@ -54,16 +59,16 @@ extern "x86-interrupt" fn page_fault_handler(
 ) {
     use x86_64::registers::control::Cr2;
     exception();
-    println!(": PAGE FAULT");
-    println!("Accessed Address: {:?}", Cr2::read());
-    println!("Error Code: {:?}", error_code);
-    println!("{:#?}", stack_frame);
+    // println!(": PAGE FAULT");
+    // println!("Accessed Address: {:?}", Cr2::read());
+    // println!("Error Code: {:?}", error_code);
+    // println!("{:#?}", stack_frame);
     hlt_loop();
 }
 
 extern "x86-interrupt" fn breakpoint_handler(stack_frame: InterruptStackFrame) {
     exception();
-    println!(": BREAKPOINT\n{:#?}", stack_frame);
+    // println!(": BREAKPOINT\n{:#?}", stack_frame);
 }
 
 extern "x86-interrupt" fn double_fault_handler(
@@ -75,9 +80,9 @@ extern "x86-interrupt" fn double_fault_handler(
 }
 
 fn exception() {
-    util::term_set(Red);
-    print!("EXCEPTION ");
-    util::term_reset();
+    // util::term_set(Red);
+    // print!("EXCEPTION ");
+    // util::term_reset();
 }
 
 #[test_case]
