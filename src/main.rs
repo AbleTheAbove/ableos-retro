@@ -59,7 +59,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         outb(0x0A, 0x3D4);
         outb(0x20, 0x3D5);
     }
-
+    //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
     #[cfg(test)]
     test_main();
 
