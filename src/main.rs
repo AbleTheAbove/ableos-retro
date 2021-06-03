@@ -62,15 +62,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
-    let mut seven = 0;
-    let mut nine = 0;
-
-    for x in 1..10 {
-        window::windows(x, seven, nine);
-        seven += 40;
-        nine += 40;
-    }
-
     #[cfg(test)]
     test_main();
     use task::{executor::Executor, keyboard, Task};
@@ -78,6 +69,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     executor.spawn(Task::new(example_task()));
     executor.spawn(Task::new(keyboard::print_keypresses()));
     executor.spawn(Task::new(test_1()));
+    executor.spawn(Task::new(windows_draw()));
     executor.run();
 }
 /// Initialize
@@ -134,4 +126,30 @@ async fn test_1() {
         vec.push(i);
     }
     // println!("vec at {:p}", vec.as_slice());
+}
+
+async fn windows_draw() {
+    use alloc::format;
+    let window = window::Window {
+        title: "AbleOS Terminal",
+        offset: (0, 0),
+        size: (639, 479),
+    };
+
+    window::windows("AbleOS Terminal", (0, 0), (639, 479));
+
+    let mut seven = 40;
+    let mut nine = 40;
+    let mut id = 1;
+
+    for x in 0..10 {
+        window::windows(
+            &format!("AbleOS Window Example {}", x),
+            (seven, nine),
+            (100, 80),
+        );
+        seven += 40;
+        nine += 25;
+        id += 1;
+    }
 }

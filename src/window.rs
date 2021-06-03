@@ -1,6 +1,8 @@
 use vga::colors::Color16;
 use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
+use alloc::{format, vec::Vec};
+
 use lazy_static::lazy_static;
 
 lazy_static! {
@@ -11,7 +13,6 @@ lazy_static! {
         mode
     };
 }
-
 pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
@@ -23,19 +24,21 @@ pub struct Size {
 
 impl core::ops::Add for Size {}
 */
+type WindowHolder<'a> = Vec<Window<'a>>;
+#[derive(Copy, Clone)]
 pub struct Window<'a> {
     pub title: &'a str,
     pub offset: (isize, isize),
     pub size: (usize, usize),
 }
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
-pub fn windows(id: u8, offset_x: isize, offset_y: isize) {
-    use alloc::format;
-    let win_title = format!("AbleOS Window Example {}", id);
+pub fn windows(title: &str, offset: (isize, isize), size: (usize, usize)) {
+    //let mut book_reviews = HashMap::new();
+
     let window = Window {
-        title: &win_title,
-        offset: (offset_x, offset_y),
-        size: (200, 100),
+        title: "title",
+        offset: offset,
+        size: size,
     };
 
     for y in 0..window.size.1 {
