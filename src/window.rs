@@ -11,7 +11,7 @@ pub fn windows() {
     let window = Window {
         title: "AbleOS Window Example",
         offset: (0, 0),
-        size: (400, 200),
+        size: (400, 80),
     };
 
     let mode = Graphics640x480x16::new();
@@ -20,39 +20,57 @@ pub fn windows() {
     // Left line
     mode.draw_line(
         (0 + window.offset.0, 0 + window.offset.1),
-        (0 + window.offset.0, 360 + window.offset.1),
+        (
+            0 + window.offset.0,
+            window.size.1 as isize + window.offset.1,
+        ),
         Color16::White,
     );
     // Uppermost line
     mode.draw_line(
         (0 + window.offset.0, 0 + window.offset.1),
-        (540 + window.offset.0, 0 + window.offset.1),
+        (
+            window.size.0 as isize + window.offset.0,
+            0 + window.offset.1,
+        ),
         Color16::White,
     );
     // Lowest line
     mode.draw_line(
-        (0 + window.offset.0, 360 + window.offset.1),
-        (540 + window.offset.0, 360 + window.offset.1),
+        (
+            0 + window.offset.0,
+            window.size.1 as isize + window.offset.1,
+        ),
+        (
+            window.size.0 as isize + window.offset.0,
+            window.size.1 as isize + window.offset.1,
+        ),
         Color16::White,
     );
 
     //right most line
     mode.draw_line(
-        (540 + window.offset.0, 360 + window.offset.1),
-        (540 + window.offset.0, window.offset.1),
+        (
+            window.size.0 as isize + window.offset.0,
+            window.size.1 as isize + window.offset.1,
+        ),
+        (window.size.0 as isize + window.offset.0, window.offset.1),
         Color16::White,
     );
     // Second top line
     mode.draw_line(
         (0 + window.offset.0, 30 + window.offset.1),
-        (540 + window.offset.0, 30 + window.offset.1),
+        (
+            window.size.0 as isize + window.offset.0,
+            30 + window.offset.1,
+        ),
         Color16::White,
     );
 
     {
         // A simple colored window display that I think should be fully implemented
         for y in 1..30 {
-            for x in 1..540 {
+            for x in 1..window.size.0 {
                 mode.set_pixel(
                     x + window.offset.0 as usize,
                     y + window.offset.1 as usize,
@@ -66,7 +84,7 @@ pub fn windows() {
     for (offset, character) in window.title.chars().enumerate() {
         mode.draw_character(
             // TODO: Get length of character size and then do math
-            (window.offset.0 as usize + ((540 - title_width) / 2)) as usize + offset * 8,
+            (window.offset.0 as usize + ((window.size.0 - title_width) / 2)) as usize + offset * 8,
             (12 + window.offset.1) as usize,
             character,
             Color16::White,
