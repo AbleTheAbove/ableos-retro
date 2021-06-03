@@ -20,7 +20,7 @@ pub fn windows() {
     // Left line
     mode.draw_line(
         (0 + window.offset.0, 0 + window.offset.1),
-        (0 + window.offset.0, 420 - 60 + window.offset.1),
+        (0 + window.offset.0, 360 + window.offset.1),
         Color16::White,
     );
     // Uppermost line
@@ -31,14 +31,14 @@ pub fn windows() {
     );
     // Lowest line
     mode.draw_line(
-        (0 + window.offset.0, 420 - 60 + window.offset.1),
-        (540 + window.offset.0, 420 - 60 + window.offset.1),
+        (0 + window.offset.0, 360 + window.offset.1),
+        (540 + window.offset.0, 360 + window.offset.1),
         Color16::White,
     );
 
     //right most line
     mode.draw_line(
-        (540 + window.offset.0, 420 - 60 + window.offset.1),
+        (540 + window.offset.0, 360 + window.offset.1),
         (540 + window.offset.0, window.offset.1),
         Color16::White,
     );
@@ -48,6 +48,20 @@ pub fn windows() {
         (540 + window.offset.0, 30 + window.offset.1),
         Color16::White,
     );
+
+    {
+        // A simple colored window display that I think should be fully implemented
+        for y in 1..30 {
+            for x in 1..540 {
+                mode.set_pixel(
+                    x + window.offset.0 as usize,
+                    y + window.offset.1 as usize,
+                    Color16::Green,
+                );
+            }
+        }
+    }
+
     let title_width = window.title.len() * 8;
     for (offset, character) in window.title.chars().enumerate() {
         mode.draw_character(
