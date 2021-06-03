@@ -12,6 +12,7 @@
 - [ ] SRI Based user land syscall system
 - [ ] AES Based encryption
 - [ ] Advanced, feature-full multiseat implementation
+- [ ] Make promise to provide full Unicode support
  
 ## Research && Resources
 

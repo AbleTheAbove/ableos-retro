@@ -64,34 +64,31 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     #[cfg(test)]
     test_main();
     use vga::colors::Color16;
-    if false {
-        use vga::writers::{Graphics640x480x16, GraphicsWriter};
+    use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
-        let mode = Graphics640x480x16::new();
-        mode.set_mode();
-        mode.clear_screen(Color16::Black);
-        mode.draw_line((80, 60), (80, 420), Color16::White);
-        mode.draw_line((80, 60), (540, 60), Color16::White);
-        mode.draw_line((80, 420), (540, 420), Color16::White);
-        mode.draw_line((540, 420), (540, 60), Color16::White);
-        mode.draw_line((80, 90), (540, 90), Color16::White);
-        for (offset, character) in "AbleOS Window Example".chars().enumerate() {
-            mode.draw_character(270 + offset * 8, 72, character, Color16::White)
-        }
-    } else {
-        use vga::colors::TextModeColor;
-        use vga::writers::{ScreenCharacter, Text80x25, TextWriter};
+    let mode = Graphics640x480x16::new();
+    mode.set_mode();
+    mode.clear_screen(Color16::Black);
+    mode.draw_line((80, 60), (80, 420), Color16::White);
+    mode.draw_line((80, 60), (540, 60), Color16::White);
+    mode.draw_line((80, 420), (540, 420), Color16::White);
+    mode.draw_line((540, 420), (540, 60), Color16::White);
+    mode.draw_line((80, 90), (540, 90), Color16::White);
+    for (offset, character) in "AbleOS Window Example".chars().enumerate() {
+        mode.draw_character(270 + offset * 8, 72, character, Color16::White)
+    }
+    use vga::colors::TextModeColor;
+    use vga::writers::{ScreenCharacter, Text80x25, TextWriter};
 
-        let text_mode = Text80x25::new();
-        let color = TextModeColor::new(Color16::Yellow, Color16::Black);
+    let text_mode = Text80x25::new();
+    let color = TextModeColor::new(Color16::Yellow, Color16::Black);
 
-        text_mode.set_mode();
-        text_mode.clear_screen();
+    text_mode.set_mode();
+    text_mode.clear_screen();
 
-        for (offset, character) in "Hello ableOS!".chars().enumerate() {
-            let screen_character = ScreenCharacter::new(character as u8, color);
-            text_mode.write_character(offset, 0, screen_character);
-        }
+    for (offset, character) in "Hello ableOS!".chars().enumerate() {
+        let screen_character = ScreenCharacter::new(character as u8, color);
+        text_mode.write_character(offset, 0, screen_character);
     }
 
     use task::{executor::Executor, keyboard, Task};
