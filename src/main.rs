@@ -42,6 +42,7 @@ use logger::{log, LogLevel};
 pub mod test;
 
 mod sri;
+mod window;
 
 use bootloader::{entry_point, BootInfo};
 
@@ -61,33 +62,12 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
+    window::windows();
+
     #[cfg(test)]
     test_main();
-    use vga::colors::Color16;
-    if true {
-        use vga::writers::{Graphics640x480x16, GraphicsWriter};
-
-        let mode = Graphics640x480x16::new();
-        mode.set_mode();
-        mode.clear_screen(Color16::Black);
-        mode.draw_line((80, 60), (80, 420), Color16::White);
-        mode.draw_line((80, 60), (540, 60), Color16::White);
-        mode.draw_line((80, 420), (540, 420), Color16::White);
-        mode.draw_line((540, 420), (540, 60), Color16::White);
-        mode.draw_line((80, 90), (540, 90), Color16::White);
-        for (offset, character) in "AbleOS Window Example".chars().enumerate() {
-            mode.draw_character(270 + offset * 8, 72, character, Color16::White)
-        }
-        // Turn this into a print macro
-        for (offset, character) in "hello AbleOS".chars().enumerate() {
-            mode.draw_character(offset * 8, 72, character, Color16::White)
-        }
-    }
-
     use task::{executor::Executor, keyboard, Task};
-
     let mut executor = Executor::new();
-
     executor.spawn(Task::new(example_task()));
     executor.spawn(Task::new(keyboard::print_keypresses()));
     executor.spawn(Task::new(test_1()));

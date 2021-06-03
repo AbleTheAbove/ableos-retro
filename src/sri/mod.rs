@@ -1,7 +1,4 @@
-use crate::{
-    logger::{log, LogLevel},
-    // println,
-};
+use crate::logger::{log, LogLevel};
 use core::fmt;
 
 #[allow(dead_code)]
@@ -19,7 +16,6 @@ struct SRI<'a> {
     path: &'a str,
     query: &'a str,
 }
-
 impl<'a> fmt::Display for SRI<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{:?}://{}?{}", self.protocol, self.path, self.query)

@@ -1,0 +1,71 @@
+use vga::colors::Color16;
+use vga::writers::{Graphics640x480x16, GraphicsWriter};
+
+pub struct Window<'a> {
+    title: &'a str,
+    offset: (isize, isize),
+    size: (usize, usize),
+}
+
+pub fn windows() {
+    let window = Window {
+        title: "AbleOS Window Example",
+        offset: (0, 0),
+        size: (400, 200),
+    };
+
+    let mode = Graphics640x480x16::new();
+    mode.set_mode();
+    mode.clear_screen(Color16::Black);
+    // Left line
+    mode.draw_line(
+        (0 + window.offset.0, 0 + window.offset.1),
+        (0 + window.offset.0, 420 - 60 + window.offset.1),
+        Color16::White,
+    );
+    // Uppermost line
+    mode.draw_line(
+        (0 + window.offset.0, 0 + window.offset.1),
+        (540 + window.offset.0, 0 + window.offset.1),
+        Color16::White,
+    );
+    // Lowest line
+    mode.draw_line(
+        (0 + window.offset.0, 420 - 60 + window.offset.1),
+        (540 + window.offset.0, 420 - 60 + window.offset.1),
+        Color16::White,
+    );
+
+    //right most line
+    mode.draw_line(
+        (540 + window.offset.0, 420 - 60 + window.offset.1),
+        (540 + window.offset.0, window.offset.1),
+        Color16::White,
+    );
+    // Second top line
+    mode.draw_line(
+        (0 + window.offset.0, 30 + window.offset.1),
+        (540 + window.offset.0, 30 + window.offset.1),
+        Color16::White,
+    );
+    let title_width = window.title.len() * 8;
+    for (offset, character) in window.title.chars().enumerate() {
+        mode.draw_character(
+            // TODO: Get length of character size and then do math
+            (window.offset.0 as usize + ((540 - title_width) / 2)) as usize + offset * 8,
+            (12 + window.offset.1) as usize,
+            character,
+            Color16::White,
+        )
+    }
+}
+
+/*
+fn print(){
+
+    // Turn this into a print macro
+    for (offset, character) in "hello AbleOS;".chars().enumerate() {
+        mode.draw_character(offset * 8, 0, character, Color16::White)
+    }
+}
+*/
