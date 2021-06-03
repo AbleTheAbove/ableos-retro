@@ -2,6 +2,7 @@ use vga::colors::Color16;
 use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
 use crate::alloc::string::ToString;
+use alloc::vec::Vec;
 use lazy_static::lazy_static;
 
 lazy_static! {
@@ -13,20 +14,20 @@ lazy_static! {
     };
 }
 
+lazy_static! {
+    static ref WINDOWS: WindowHolder<'a> = { vec!() };
+}
+
 pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
-/*
-pub struct Size {
-    x: usize,
-    y: usize,
-}
 
-impl core::ops::Add for Size {}
-*/
+pub struct WindowHolder<'a>(Vec<Window<'a>>);
 pub struct Window<'a> {
     pub title: &'a str,
+    // TODO: Turn this into a type
     pub offset: (isize, isize),
+    // TODO: Turn this into a type
     pub size: (usize, usize),
 }
 
@@ -195,3 +196,25 @@ fn print(){
     }
 }
 */
+
+pub fn draw_terminal(terminal_offset: (isize, isize)) {
+    let mut line = 0;
+    let mut offset = 0;
+    for (_offset, character) in "hello AbleOS\nHello ableOS 2".chars().enumerate() {
+        match character {
+            '\n' => {
+                line += 1;
+                offset = 0;
+            }
+            _ => {
+                GRAPHICS.draw_character(
+                    terminal_offset.0 as usize + offset * 8,
+                    terminal_offset.1 as usize + line * 8,
+                    character,
+                    Color16::Red,
+                );
+                offset += 1;
+            }
+        }
+    }
+}

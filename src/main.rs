@@ -136,4 +136,5 @@ fn init_graphics() {
         seven += 40;
         nine += 40;
     }
+    window::draw_terminal((10, 460));
 }
