@@ -145,7 +145,6 @@ pub fn logo(offset: (isize, isize)) {
 
     let mut fd = 8;
     GRAPHICS.draw_line((0, 10), (10, 10), Color16::Red);
-
 }
 /*
 fn print(){
