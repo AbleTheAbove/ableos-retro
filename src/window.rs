@@ -1,6 +1,7 @@
 use vga::colors::Color16;
 use vga::writers::{Graphics640x480x16, GraphicsWriter};
 
+use crate::alloc::string::ToString;
 use lazy_static::lazy_static;
 
 lazy_static! {
@@ -29,12 +30,21 @@ pub struct Window<'a> {
     pub size: (usize, usize),
 }
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
-pub fn windows(id: u8, offset_x: isize, offset_y: isize) {
+pub fn windows(id: u8, offset: (isize, isize)) {
     use alloc::format;
-    let win_title = format!("AbleOS Window Example {}", id);
+    use alloc::string::String;
+    let mut win_title: String;
+    match id {
+        0 => {
+            win_title = "AbleOS Terminal".to_string();
+        }
+        _ => {
+            win_title = format!("AbleOS Window [ID: {}]", id);
+        }
+    }
     let window = Window {
         title: &win_title,
-        offset: (offset_x, offset_y),
+        offset: (offset.0, offset.1),
         size: (200, 100),
     };
 
@@ -106,11 +116,36 @@ pub fn windows(id: u8, offset_x: isize, offset_y: isize) {
             WINDOW_DECORATOR_TEXT_COLOR,
         )
     }
-    //logo();
+    logo((200, 10));
 }
 
-pub fn logo() {
-    GRAPHICS.draw_character(0, 0, 'T', Color16::Red);
+pub fn logo(offset: (isize, isize)) {
+    // Left side of the A
+    GRAPHICS.draw_line(
+        (offset.0 + 20, offset.1 + 0),
+        (offset.0 + 0, offset.1 + 40),
+        Color16::White,
+    );
+
+    // Right side of the A
+    GRAPHICS.draw_line(
+        (offset.0 + 20, offset.1 + 0),
+        (offset.0 + 40, offset.1 + 40),
+        Color16::White,
+    );
+
+    // Center connector for the A
+    GRAPHICS.draw_line(
+        (offset.0 + 10, offset.1 + 20),
+        (offset.0 + 30, offset.1 + 20),
+        Color16::White,
+    );
+
+    //    GRAPHICS.draw_line((0, 0), (100, 100), Color16::Red);
+
+    let mut fd = 8;
+    GRAPHICS.draw_line((0, 10), (10, 10), Color16::Red);
+
 }
 /*
 fn print(){

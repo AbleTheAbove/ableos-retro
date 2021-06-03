@@ -60,16 +60,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         outb(0x0A, 0x3D4);
         outb(0x20, 0x3D5);
     }
-    //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
-
-    let mut seven = 0;
-    let mut nine = 0;
-
-    for x in 1..10 {
-        window::windows(x, seven, nine);
-        seven += 40;
-        nine += 40;
-    }
+    init_graphics();
 
     #[cfg(test)]
     test_main();
@@ -133,5 +124,15 @@ async fn test_1() {
     for i in 0..500 {
         vec.push(i);
     }
-    // println!("vec at {:p}", vec.as_slice());
+}
+
+fn init_graphics() {
+    let mut seven = 0;
+    let mut nine = 0;
+
+    for x in 0..10 {
+        window::windows(x, (seven, nine));
+        seven += 40;
+        nine += 40;
+    }
 }
