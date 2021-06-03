@@ -6,6 +6,8 @@ use lazy_static::lazy_static;
 lazy_static! {
     static ref GRAPHICS: Graphics640x480x16 = {
         let mode = Graphics640x480x16::new();
+        mode.set_mode();
+        mode.clear_screen(Color16::Black);
         mode
     };
 }
@@ -22,20 +24,34 @@ pub struct Size {
 impl core::ops::Add for Size {}
 */
 pub struct Window<'a> {
-    title: &'a str,
-    offset: (isize, isize),
-    size: (usize, usize),
+    pub title: &'a str,
+    pub offset: (isize, isize),
+    pub size: (usize, usize),
 }
-
-pub fn windows() {
+// BUG: drawing bigger than the screen size causes the buffer to wrap around
+pub fn windows(id: u8, offset_x: isize, offset_y: isize) {
+    use alloc::format;
+    let win_title = format!("AbleOS Window Example {}", id);
     let window = Window {
-        title: "AbleOS Window Example",
-        offset: (0, 0),
-        size: (400, 60),
+        title: &win_title,
+        offset: (offset_x, offset_y),
+        size: (200, 100),
     };
 
-    GRAPHICS.set_mode();
-    GRAPHICS.clear_screen(Color16::Black);
+    for y in 0..window.size.1 {
+        GRAPHICS.draw_line(
+            (
+                0 + window.offset.0,
+                window.size.1 as isize + window.offset.1 - y as isize,
+            ),
+            (
+                window.size.0 as isize + window.offset.0,
+                window.size.1 as isize + window.offset.1 - y as isize,
+            ),
+            Color16::Black,
+        );
+    }
+
     // Left line
     GRAPHICS.draw_line(
         (0 + window.offset.0, 0 + window.offset.1),
@@ -90,8 +106,12 @@ pub fn windows() {
             WINDOW_DECORATOR_TEXT_COLOR,
         )
     }
+    //logo();
 }
 
+pub fn logo() {
+    GRAPHICS.draw_character(0, 0, 'T', Color16::Red);
+}
 /*
 fn print(){
 

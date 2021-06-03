@@ -62,7 +62,14 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
     //    println!("{:?}", x86_64::instructions::random::RdRand(()).get_u64());
 
-    window::windows();
+    let mut seven = 0;
+    let mut nine = 0;
+
+    for x in 1..10 {
+        window::windows(x, seven, nine);
+        seven += 40;
+        nine += 40;
+    }
 
     #[cfg(test)]
     test_main();
