@@ -29,23 +29,27 @@ pub struct Window<'a> {
     pub offset: (isize, isize),
     pub size: (usize, usize),
 }
+
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 pub fn windows(id: u8, offset: (isize, isize)) {
     use alloc::format;
     use alloc::string::String;
-    let mut win_title: String;
+    let mut win_title: String = "Fallback Window Name".to_string();
+    let mut size = (0, 0);
     match id {
         0 => {
             win_title = "AbleOS Terminal".to_string();
+            size = (639, 479);
         }
         _ => {
             win_title = format!("AbleOS Window [ID: {}]", id);
+            size = (200, 100);
         }
     }
     let window = Window {
         title: &win_title,
         offset: (offset.0, offset.1),
-        size: (200, 100),
+        size: size,
     };
 
     for y in 0..window.size.1 {
@@ -116,42 +120,78 @@ pub fn windows(id: u8, offset: (isize, isize)) {
             WINDOW_DECORATOR_TEXT_COLOR,
         )
     }
-    logo((200, 10));
 }
 
 pub fn logo(offset: (isize, isize)) {
-    // Left side of the A
+    {
+        let a_color = Color16::Pink;
+        // Left side of the A
+        GRAPHICS.draw_line(
+            (offset.0 + 20, offset.1 + 0),
+            (offset.0 + 10, offset.1 + 20),
+            a_color,
+        );
+
+        // Right side of the A
+        GRAPHICS.draw_line(
+            (offset.0 + 20, offset.1 + 0),
+            (offset.0 + 30, offset.1 + 20),
+            a_color,
+        );
+
+        // Center connector for the A
+        GRAPHICS.draw_line(
+            (offset.0 + 10, offset.1 + 10),
+            (offset.0 + 30, offset.1 + 10),
+            a_color,
+        );
+    }
+
+    let offset_c = (offset.0 + 5, offset.1 - 15);
+    let crown_color = Color16::Yellow;
     GRAPHICS.draw_line(
-        (offset.0 + 20, offset.1 + 0),
-        (offset.0 + 0, offset.1 + 40),
-        Color16::White,
+        (offset_c.0 + 0 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
+        crown_color,
     );
 
-    // Right side of the A
     GRAPHICS.draw_line(
-        (offset.0 + 20, offset.1 + 0),
-        (offset.0 + 40, offset.1 + 40),
-        Color16::White,
+        (offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
+        (offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
+        crown_color,
     );
-
-    // Center connector for the A
     GRAPHICS.draw_line(
-        (offset.0 + 10, offset.1 + 20),
-        (offset.0 + 30, offset.1 + 20),
-        Color16::White,
+        (offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
+        (offset_c.0 + 60 / 2, offset_c.1 + 0 / 2),
+        crown_color,
     );
-
-    //    GRAPHICS.draw_line((0, 0), (100, 100), Color16::Red);
-
-    let mut fd = 8;
-    GRAPHICS.draw_line((0, 10), (10, 10), Color16::Red);
+    GRAPHICS.draw_line(
+        (offset_c.0 + 60 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
+        crown_color,
+    );
+    GRAPHICS.draw_line(
+        (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
+        (offset_c.0 + 30 / 2, offset_c.1 + 0 / 2),
+        crown_color,
+    );
+    GRAPHICS.draw_line(
+        (offset_c.0 + 30 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
+        crown_color,
+    );
+    GRAPHICS.draw_line(
+        (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
+        (offset_c.0 + 0 / 2, offset_c.1 + 0 / 2),
+        crown_color,
+    );
 }
 /*
 fn print(){
 
     // Turn this into a print macro
     for (offset, character) in "hello AbleOS;".chars().enumerate() {
-        mode.draw_character(offset * 8, 0, character, Color16::White)
+        mode.draw_character(offset * 8, 0, character, crown_color)
     }
 }
 */

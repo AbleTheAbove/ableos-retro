@@ -61,7 +61,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         outb(0x20, 0x3D5);
     }
     init_graphics();
-
+    window::logo((440, 420));
     #[cfg(test)]
     test_main();
     use task::{executor::Executor, keyboard, Task};
@@ -69,7 +69,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     executor.spawn(Task::new(example_task()));
     executor.spawn(Task::new(keyboard::print_keypresses()));
     executor.spawn(Task::new(test_1()));
-    executor.spawn(Task::new(windows_draw()));
     executor.run();
 }
 /// Initialize
@@ -135,31 +134,5 @@ fn init_graphics() {
         window::windows(x, (seven, nine));
         seven += 40;
         nine += 40;
-    }
-}
-
-async fn windows_draw() {
-    use alloc::format;
-    let window = window::Window {
-        title: "AbleOS Terminal",
-        offset: (0, 0),
-        size: (639, 479),
-    };
-
-    window::windows("AbleOS Terminal", (0, 0), (639, 479));
-
-    let mut seven = 40;
-    let mut nine = 40;
-    let mut id = 1;
-
-    for x in 0..10 {
-        window::windows(
-            &format!("AbleOS Window Example {}", x),
-            (seven, nine),
-            (100, 80),
-        );
-        seven += 40;
-        nine += 25;
-        id += 1;
     }
 }
