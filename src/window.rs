@@ -15,7 +15,7 @@ lazy_static! {
 }
 
 lazy_static! {
-    static ref WINDOWS: WindowHolder<'a> = { vec!() };
+    static ref WINDOWS: WindowHolder<'static> = WindowHolder(Vec::new());
 }
 
 pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
