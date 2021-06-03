@@ -9,6 +9,7 @@
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
+#![warn(missing_docs)]
 // #![deny(missing_docs)]
 
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
