@@ -4,7 +4,7 @@ use vga::writers::{Graphics640x480x16, GraphicsWriter};
 use crate::alloc::string::ToString;
 use alloc::vec::Vec;
 use lazy_static::lazy_static;
-
+use spin::Mutex;
 lazy_static! {
     static ref GRAPHICS: Graphics640x480x16 = {
         let mode = Graphics640x480x16::new();
@@ -15,14 +15,15 @@ lazy_static! {
 }
 
 lazy_static! {
-    static ref WINDOWS: WindowHolder<'static> = WindowHolder(Vec::new());
+    pub static ref WINDOWS: WindowHolder<'static> = WindowHolder(Mutex::new(Vec::new()));
 }
 
 pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
 pub static WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
 
-pub struct WindowHolder<'a>(Vec<Window<'a>>);
+pub struct WindowHolder<'a>(pub Mutex<Vec<&'a Window<'a>>>);
+
 pub struct Window<'a> {
     pub title: &'a str,
     // TODO: Turn this into a type
@@ -52,7 +53,6 @@ pub fn windows(id: u8, offset: (isize, isize)) {
         offset: (offset.0, offset.1),
         size: size,
     };
-
     for y in 0..window.size.1 {
         GRAPHICS.draw_line(
             (
@@ -197,24 +197,26 @@ fn print(){
 }
 */
 
-pub fn draw_terminal(terminal_offset: (isize, isize)) {
-    let mut line = 0;
+pub fn draw_terminal() {
+    //X
+
+    type character = (char, Color16);
+    type line = [char; 80];
+    type buff = [line; 60];
+
+    let mut text_line = [('b', Color16::Red); 80];
+    let mut text_buffer = [text_line; 60];
+    text_buffer[0][1].0 = 'a';
+    text_buffer[0][1].1 = Color16::White;
+
+    let mut line2 = 0;
     let mut offset = 0;
-    for (_offset, character) in "hello AbleOS\nHello ableOS 2".chars().enumerate() {
-        match character {
-            '\n' => {
-                line += 1;
-                offset = 0;
-            }
-            _ => {
-                GRAPHICS.draw_character(
-                    terminal_offset.0 as usize + offset * 8,
-                    terminal_offset.1 as usize + line * 8,
-                    character,
-                    Color16::Red,
-                );
-                offset += 1;
-            }
+
+    for line in text_buffer.iter() {
+        for character in line.iter() {
+            GRAPHICS.draw_character(offset * 8, line2 * 8, character.0, character.1);
+            offset += 1;
         }
+        line2 += 1;
     }
 }

@@ -62,7 +62,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         outb(0x20, 0x3D5);
     }
     init_graphics();
-    window::logo((440, 420));
+
+    window::draw_terminal();
+
     #[cfg(test)]
     test_main();
     use task::{executor::Executor, keyboard, Task};
@@ -136,5 +138,7 @@ fn init_graphics() {
         seven += 40;
         nine += 40;
     }
-    window::draw_terminal((10, 460));
+    window::logo((440, 420));
+
+    //    window::WINDOWS.0.lock().push(&window);
 }
