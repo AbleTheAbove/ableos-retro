@@ -31,7 +31,6 @@ pub mod logger;
 pub mod memory;
 mod panic;
 mod serial;
-/// A simple utility module to reduce repeated code
 pub mod util;
 mod vga_buffer;
 
@@ -62,7 +61,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use vga::colors::Color16;
     use vga::writers::GraphicsWriter;
     use window_manager::GRAPHICS;
-    GRAPHICS.draw_character(0, 0, 'b', Color16::Red);
+    GRAPHICS.draw_character(0, 0, time::get_rtc_register(0x00) as char, Color16::Red);
 
     #[cfg(test)]
     test_main();

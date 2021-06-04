@@ -25,6 +25,8 @@ fn get_update_in_progress_flag() -> u8 {
     }
     return x;
 }
+
+// TODO: Understand the lower todo
 // TODO
 pub fn get_rtc_register(reg: u16) -> u8 {
     let x;
@@ -37,13 +39,13 @@ pub fn get_rtc_register(reg: u16) -> u8 {
 
 pub struct DateTime {
     second: u8,             /* seconds,  range 0 to 59          */
-    minute: u32,            /* minutes, range 0 to 59           */
-    hour: u32,              /* hours, range 0 to 23             */
-    mday: u32,              /* day of the month, range 1 to 31  */
-    mon: u32,               /* month, range 0 to 11             */
-    year: u32,              /* The number of years since 1900   */
-    wday: u32,              /* day of the week, range 0 to 6    */
-    yday: u32,              /* day in the year, range 0 to 365  */
+    minute: u8,             /* minutes, range 0 to 59           */
+    hour: u8,               /* hours, range 0 to 23             */
+    mday: u8,               /* day of the month, range 1 to 31  */
+    mon: u8,                /* month, range 0 to 11             */
+    year: u8,               /* The number of years since 1900   */
+    wday: u8,               /* day of the week, range 0 to 6    */
+    yday: u8,               /* day in the year, range 0 to 365  */
     daylight_savings: bool, /* daylight saving time             */
 }
 impl DateTime {

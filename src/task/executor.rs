@@ -3,12 +3,14 @@ use alloc::{collections::BTreeMap, sync::Arc, task::Wake};
 use core::task::{Context, Poll, Waker};
 use crossbeam_queue::ArrayQueue;
 
+/// Asyncronous function executor
 pub struct Executor {
     tasks: BTreeMap<TaskId, Task>,
     task_queue: Arc<ArrayQueue<TaskId>>,
     waker_cache: BTreeMap<TaskId, Waker>,
 }
 impl Executor {
+    /// Create a new executor
     pub fn new() -> Self {
         Executor {
             tasks: BTreeMap::new(),
@@ -16,13 +18,13 @@ impl Executor {
             waker_cache: BTreeMap::new(),
         }
     }
+    /// Run the current tasks
     pub fn run(&mut self) -> ! {
         loop {
             self.run_ready_tasks();
             self.sleep_if_idle(); // new
         }
     }
-
     fn sleep_if_idle(&self) {
         if self.task_queue.is_empty() {
             use x86_64::instructions::interrupts::{self, enable_and_hlt};
@@ -37,6 +39,7 @@ impl Executor {
             x86_64::instructions::hlt();
         }
     }
+    /// Spawn a new task
     pub fn spawn(&mut self, task: Task) {
         let task_id = task.id;
         if self.tasks.insert(task.id, task).is_some() {
@@ -44,7 +47,6 @@ impl Executor {
         }
         self.task_queue.push(task_id).expect("queue full");
     }
-
     fn run_ready_tasks(&mut self) {
         // destructure `self` to avoid borrow checker errors
         let Self {

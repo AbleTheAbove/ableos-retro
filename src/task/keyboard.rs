@@ -66,6 +66,8 @@ impl Stream for ScancodeStream {
     }
 }
 
+// TODO: This should be refactored to add scancodes to the current windows key buffer
+/// add scancodes to the current user window key buffer
 pub async fn print_keypresses() {
     let mut scancodes = ScancodeStream::new();
     let mut keyboard = Keyboard::new(layouts::Us104Key, ScancodeSet1, HandleControl::Ignore);

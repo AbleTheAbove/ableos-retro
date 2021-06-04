@@ -6,7 +6,7 @@ edition = "2018"
 [package.metadata.bootimage]
 run-args=[
     # Add a network for the future
-    "-net", "nic,model=pcnet"
+    # "-net", "nic,model=pcnet"
 ]
 test-args = [
     "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04",
