@@ -46,15 +46,23 @@ mod sri;
 mod time;
 mod window_manager;
 
-/// Undocumentatable
-entry_point!(kernel_main);
+/// Defines the entry point function.
+///
+/// The function must have the signature `fn(&'static BootInfo) -> !`.
+///
+/// This creates a function named `_start`, which the linker will use as the entry
+/// point.
+#[export_name = "_start"]
+pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
+    let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
+
+    f(boot_info)
+}
 
 const BANNER: &str = include_str!("../root/banner.txt");
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
-    // this function is the entry point, since the linker looks for a function
-    // named `_start` by default
     util::banner();
     init_alloc(boot_info);
     init();
