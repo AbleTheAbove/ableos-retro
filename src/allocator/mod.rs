@@ -1,23 +1,18 @@
 /// All the allocators available to ableOS
 pub mod fixed_size_block;
 
-/// DEPRECATE: this isn't used and should be fazed out of the kernel
-pub mod linked_list;
+// DEPRECATE: this isn't used and should be fazed out of the kernel
+// pub mod linked_list;
 
-/// TODO: owo what is this?
+/// The startting location of the heap
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 /// TODO: owo what is this?
-pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
+pub const HEAP_SIZE: usize = 200 * 1024; // 100 KiB
 
 use fixed_size_block::FixedSizeBlockAllocator;
 #[global_allocator]
 static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
 
-/*
-use linked_list::LinkedListAllocator;
-#[global_allocator]
-static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
-*/
 /*
 use linked_list_allocator::LockedHeap;
 #[global_allocator]
@@ -62,15 +57,6 @@ fn alloc_error_handler(layout: alloc::alloc::Layout) -> ! {
     panic!("allocation error: {:?}", layout)
 }
 
-fn align_up(addr: usize, align: usize) -> usize {
-    let remainder = addr % align;
-    if remainder == 0 {
-        addr // addr already aligned
-    } else {
-        addr - remainder + align
-    }
-}
-
 /// (Able) No clue what this does
 pub struct Locked<A> {
     inner: spin::Mutex<A>,
@@ -98,4 +84,14 @@ fn allocate_test() {
         vec.push(i);
     }
     // println!("vec at {:p}", vec.as_slice());
+}
+
+// DEPRECATE: Not used
+fn _align_up(addr: usize, align: usize) -> usize {
+    let remainder = addr % align;
+    if remainder == 0 {
+        addr // addr already aligned
+    } else {
+        addr - remainder + align
+    }
 }

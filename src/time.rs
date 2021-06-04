@@ -26,7 +26,7 @@ extern crate cpuio;
 //     return x;
 // }
 
-// TODO: Understand the lower todo
+// TODO: Understand the lower TODO
 // TODO
 // pub fn get_rtc_register(reg: u16) -> u8 {
 //     let x;

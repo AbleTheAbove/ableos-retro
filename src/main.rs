@@ -14,6 +14,12 @@
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
+const BANNER: &str = include_str!("../root/banner.txt");
+
+#[cfg(debug_assertions)]
+pub const RELEASE_TYPE: &str = "debug";
+#[cfg(not(debug_assertions))]
+pub const RELEASE_TYPE: &str = "release";
 
 extern crate alloc;
 use bootloader::BootInfo;
@@ -60,7 +66,10 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
     f(boot_info)
 }
 
-const BANNER: &str = include_str!("../root/banner.txt");
+pub struct KernelState<'a> {
+    /// The first value is the release state and the second is the version string
+    version: (bool, &'a str),
+}
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
@@ -73,20 +82,45 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use vga::{colors::Color16, writers::GraphicsWriter};
     use window_manager::GRAPHICS;
 
-    let mut offset = 0;
-    let mut offset_y = 0;
-    for x in BANNER.chars() {
-        match x {
-            '\n' => {
-                offset = 0;
-                offset_y += 1;
+    fn is_release() -> bool {
+        match RELEASE_TYPE {
+            "release" => {
+                return true;
             }
             _ => {
-                GRAPHICS.draw_character(offset * 8, offset_y * 8, x, Color16::White);
-                offset += 1;
+                return false;
             }
         }
     }
+    fn println(yes: &str, coordinates: (usize, usize)) {
+        let mut offset = 0;
+        let mut offset_y = 0;
+
+        for x in yes.chars() {
+            match x {
+                '\n' => {
+                    offset = 0;
+                    offset_y += 1;
+                }
+                _ => {
+                    GRAPHICS.draw_character(
+                        offset * 8 + coordinates.0,
+                        offset_y * 8,
+                        x,
+                        Color16::White,
+                    );
+                    offset += 1;
+                }
+            }
+        }
+    }
+    let state = KernelState {
+        version: (is_release(), KERNEL_VERSION),
+    };
+    use alloc::format;
+
+    let v_str = format!("version {} {}", KERNEL_VERSION, RELEASE_TYPE);
+    println(&v_str, (0, 0));
 
     #[cfg(test)]
     test_main();

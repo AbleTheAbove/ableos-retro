@@ -12,6 +12,7 @@ Install [Qemu](https://www.qemu.org/)
 `cargo install bootimage`
 
 ## Roadmap
+- [ ] Continuous integration
 - [ ] File System implementation
 - [ ] SRI Based user land syscall system
 - [ ] AES Based encryption

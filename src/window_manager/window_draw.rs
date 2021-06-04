@@ -4,18 +4,14 @@ use super::GRAPHICS;
 use super::{WINDOW_BORDER_COLOR, WINDOW_DECORATOR_COLOR, WINDOW_DECORATOR_TEXT_COLOR};
 use alloc::string::ToString;
 
-
-use vga::{
-    colors::Color16,
-    writers::GraphicsWriter,
-};
+use vga::{colors::Color16, writers::GraphicsWriter};
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 pub fn windows(id: u8, offset: (isize, isize)) {
     use alloc::format;
     use alloc::string::String;
     let win_title: String;
-    let size : (usize, usize);
+    let size: (usize, usize);
     match id {
         0 => {
             win_title = "AbleOS Terminal".to_string();
@@ -48,7 +44,7 @@ pub fn windows(id: u8, offset: (isize, isize)) {
 
     match id {
         0 => {
-            terminal::draw_terminal(offset);
+            //terminal::draw_terminal(offset);
         }
         _ => {}
     }
