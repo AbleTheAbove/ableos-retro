@@ -15,6 +15,7 @@
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 extern crate alloc;
+use bootloader::{entry_point, BootInfo};
 
 /// The public allocator module
 pub mod allocator;
@@ -35,7 +36,6 @@ pub mod util;
 mod vga_buffer;
 
 pub mod task;
-use cpuio::outb;
 use logger::{log, LogLevel};
 
 /// The holder of tests
@@ -43,9 +43,8 @@ use logger::{log, LogLevel};
 pub mod test;
 
 mod sri;
+mod time;
 mod window_manager;
-
-use bootloader::{entry_point, BootInfo};
 
 /// Undocumnetable
 entry_point!(kernel_main);
@@ -57,11 +56,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     util::banner();
     init_alloc(boot_info);
     init();
-    unsafe {
-        outb(0x0A, 0x3D4);
-        outb(0x20, 0x3D5);
-    }
+
     init_graphics();
+
+    use vga::colors::Color16;
+    use vga::writers::GraphicsWriter;
+    use window_manager::GRAPHICS;
+    GRAPHICS.draw_character(0, 0, 'b', Color16::Red);
 
     #[cfg(test)]
     test_main();
@@ -132,11 +133,11 @@ fn init_graphics() {
     let mut nine = 0;
 
     for x in 0..10 {
-        window_manager::windows(x, (seven, nine));
+        window_manager::window_draw::windows(x, (seven, nine));
         seven += 40;
         nine += 40;
     }
-    window_manager::logo((440, 420));
+    window_manager::window_draw::logo((440, 420));
 
     //    window::WINDOWS.0.lock().push(&window);
 }

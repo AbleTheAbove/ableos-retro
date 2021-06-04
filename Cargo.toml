@@ -4,9 +4,15 @@ version = "0.1.0"
 edition = "2018"
 
 [package.metadata.bootimage]
+run-args=[
+    # Add a network for the future
+    "-net", "nic,model=pcnet"
+]
 test-args = [
-    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio",
+    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04",
+     "-serial", "stdio",
     "-display", "none"
+
 ]
 test-success-exit-code = 33
 test-timeout = 300          # (in seconds)

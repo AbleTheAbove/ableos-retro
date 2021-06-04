@@ -1,8 +1,9 @@
-// TODO: benchmark all the allocators
-
 // All the allocators avalible to ableOS
-pub mod fixed_size_block; // NOTE: Probably this allocator because of assumptions about ram and such
+pub mod fixed_size_block;
+
+// DEPRECATE: this isn't used and should be fazed out of the kernel
 pub mod linked_list;
+
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
 
