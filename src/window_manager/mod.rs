@@ -41,6 +41,7 @@ pub fn windows(id: u8, offset: (isize, isize)) {
     match id {
         0 => {
             win_title = "AbleOS Terminal".to_string();
+            //size = (639, 479);
             size = (639, 479);
         }
         _ => {
@@ -67,6 +68,12 @@ pub fn windows(id: u8, offset: (isize, isize)) {
         );
     }
 
+    match id {
+        0 => {
+            draw_terminal(offset);
+        }
+        _ => {}
+    }
     // Left line
     GRAPHICS.draw_line(
         (0 + window.offset.0, 0 + window.offset.1),
@@ -197,7 +204,7 @@ fn print(){
 }
 */
 
-pub fn draw_terminal() {
+pub fn draw_terminal(terminal_offset: (isize, isize)) {
     //X
 
     type character = (char, Color16);
@@ -205,7 +212,7 @@ pub fn draw_terminal() {
     type buff = [line; 60];
 
     let mut text_line = [('b', Color16::Red); 80];
-    let mut text_buffer = [text_line; 60];
+    let mut text_buffer = [text_line; 50];
     text_buffer[0][1].0 = 'a';
     text_buffer[0][1].1 = Color16::White;
 
@@ -214,7 +221,12 @@ pub fn draw_terminal() {
 
     for line in text_buffer.iter() {
         for character in line.iter() {
-            GRAPHICS.draw_character(offset * 8, line2 * 8, character.0, character.1);
+            GRAPHICS.draw_character(
+                (terminal_offset.0 + (offset * 8)) as usize,
+                ((terminal_offset.1 + 20) + line2 * 8) as usize,
+                character.0,
+                character.1,
+            );
             offset += 1;
         }
         line2 += 1;

@@ -43,7 +43,7 @@ use logger::{log, LogLevel};
 pub mod test;
 
 mod sri;
-mod window;
+mod window_manager;
 
 use bootloader::{entry_point, BootInfo};
 
@@ -62,8 +62,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         outb(0x20, 0x3D5);
     }
     init_graphics();
-
-    window::draw_terminal();
 
     #[cfg(test)]
     test_main();
@@ -134,11 +132,11 @@ fn init_graphics() {
     let mut nine = 0;
 
     for x in 0..10 {
-        window::windows(x, (seven, nine));
+        window_manager::windows(x, (seven, nine));
         seven += 40;
         nine += 40;
     }
-    window::logo((440, 420));
+    window_manager::logo((440, 420));
 
     //    window::WINDOWS.0.lock().push(&window);
 }
