@@ -1,5 +1,10 @@
 # ableOS
 ## Set up
+
+Install [Qemu](https://www.qemu.org/)
+
+> On Windows be sure to add `C:\Program Files\qemu` to your `PATH` variable
+
 `rustup component add rust-src`
 
 `rustup component add llvm-tools-preview`
