@@ -1,7 +1,5 @@
 //! A simple utility module to reduce repeated code
 
-use crate::vga_buffer;
-
 /// ASCII art banner
 const BANNER: &str = include_str!("../root/banner.txt");
 /// Prints the ascii banner

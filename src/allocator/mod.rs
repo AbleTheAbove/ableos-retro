@@ -68,17 +68,19 @@ fn align_up(addr: usize, align: usize) -> usize {
     }
 }
 
+/// (Able) No clue what this does
 pub struct Locked<A> {
     inner: spin::Mutex<A>,
 }
 
 impl<A> Locked<A> {
+    /// Creates a new Locked spin mutex
     pub const fn new(inner: A) -> Self {
         Locked {
             inner: spin::Mutex::new(inner),
         }
     }
-
+    /// Locks the spin mutex
     pub fn lock(&self) -> spin::MutexGuard<A> {
         self.inner.lock()
     }

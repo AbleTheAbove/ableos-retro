@@ -17,14 +17,14 @@ pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 extern crate alloc;
 use bootloader::{entry_point, BootInfo};
 
-/// The public allocator module
+/// The global allocator impl
 pub mod allocator;
 mod encrypt;
 /// Global Descriptor Table
 pub mod gdt;
 /// Interrupt module
 pub mod interrupts;
-
+//hi stream :3
 /// A logging assistance crate
 pub mod logger;
 /// Memory management
@@ -34,6 +34,7 @@ mod serial;
 pub mod util;
 mod vga_buffer;
 
+/// Asyncronous module
 pub mod task;
 use logger::{log, LogLevel};
 
@@ -45,8 +46,10 @@ mod sri;
 mod time;
 mod window_manager;
 
-/// Undocumnetable
+/// Undocumentatable
 entry_point!(kernel_main);
+
+const BANNER: &str = include_str!("../root/banner.txt");
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
@@ -58,10 +61,23 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     init_graphics();
 
-    use vga::colors::Color16;
-    use vga::writers::GraphicsWriter;
+    use vga::{colors::Color16, writers::GraphicsWriter};
     use window_manager::GRAPHICS;
-    GRAPHICS.draw_character(0, 0, time::get_rtc_register(0x00) as char, Color16::Red);
+
+    let mut offset = 0;
+    let mut offset_y = 0;
+    for x in BANNER.chars() {
+        match x {
+            '\n' => {
+                offset = 0;
+                offset_y += 1;
+            }
+            _ => {
+                GRAPHICS.draw_character(offset * 8, offset_y * 8, x, Color16::White);
+                offset += 1;
+            }
+        }
+    }
 
     #[cfg(test)]
     test_main();
