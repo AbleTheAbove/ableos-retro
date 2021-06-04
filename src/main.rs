@@ -12,10 +12,11 @@
 #![warn(missing_docs)]
 // #![deny(missing_docs)]
 
+/// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 extern crate alloc;
-use bootloader::{entry_point, BootInfo};
+use bootloader::BootInfo;
 
 /// The global allocator impl
 pub mod allocator;
@@ -133,12 +134,12 @@ fn init_alloc(boot_info: &'static BootInfo) {
     // println!("Allocator loaded");
 }
 
-async fn async_number() -> u32 {
-    42
-}
+// async fn async_number() -> u32 {
+//     42
+// }
 
 async fn example_task() {
-    let number = async_number().await;
+    // let number = async_number().await;
     // println!("async number: {}", number);
 }
 

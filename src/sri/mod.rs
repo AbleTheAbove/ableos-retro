@@ -26,11 +26,11 @@ pub fn init() {
     log(LogLevel::Info);
     // println!("SRI interface loading");
 
-    let url = SRI {
-        protocol: Protocol::File,
-        path: "banner.txt",
-        query: "read",
-    };
+    // let url = SRI {
+    //     protocol: Protocol::File,
+    //     path: "banner.txt",
+    //     query: "read",
+    // };
     // println!("> {}", url);
     log(LogLevel::Success);
     // println!("SRI interface loaded");
@@ -38,7 +38,7 @@ pub fn init() {
 
 #[test_case]
 fn sri_test() {
-    let url = SRI {
+    let _url = SRI {
         protocol: Protocol::File,
         path: "test",
         query: "read",

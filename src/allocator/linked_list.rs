@@ -20,6 +20,7 @@ impl ListNode {
     }
 }
 
+/// todo: oWo what is this?
 pub struct LinkedListAllocator {
     head: ListNode,
 }

@@ -1,4 +1,4 @@
-use alloc::{string::ToString, vec::Vec};
+use alloc::vec::Vec;
 use lazy_static::lazy_static;
 use spin::Mutex;
 use vga::{
@@ -7,10 +7,10 @@ use vga::{
 };
 pub mod window_draw;
 /// Holds references to all windows
-pub struct WindowManager {
-    vga_buff: Graphics640x480x16,
-}
-impl WindowManager {}
+// pub struct WindowManager {
+//     vga_buff: Graphics640x480x16,
+// }
+// impl WindowManager {}
 
 mod terminal;
 

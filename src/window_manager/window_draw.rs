@@ -2,20 +2,20 @@ use super::terminal;
 use super::Window;
 use super::GRAPHICS;
 use super::{WINDOW_BORDER_COLOR, WINDOW_DECORATOR_COLOR, WINDOW_DECORATOR_TEXT_COLOR};
-use alloc::{string::ToString, vec::Vec};
-use lazy_static::lazy_static;
-use spin::Mutex;
+use alloc::string::ToString;
+
+
 use vga::{
     colors::Color16,
-    writers::{Graphics640x480x16, GraphicsWriter},
+    writers::GraphicsWriter,
 };
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 pub fn windows(id: u8, offset: (isize, isize)) {
     use alloc::format;
     use alloc::string::String;
-    let mut win_title: String = "Fallback Window Name".to_string();
-    let mut size = (0, 0);
+    let win_title: String;
+    let size : (usize, usize);
     match id {
         0 => {
             win_title = "AbleOS Terminal".to_string();

@@ -1,7 +1,7 @@
 use crate::{
     // print,
     serial_print,
-    vga_buffer,
+    // vga_buffer,
 };
 use lliw::Fg;
 

@@ -1,12 +1,12 @@
 use super::GRAPHICS;
 use vga::{colors::Color16, writers::GraphicsWriter};
 
-type character = (char, Color16);
-type line = [char; 80];
-type buff = [line; 60];
+// type Character = (char, Color16);
+// type Line = [char; 80];
+// type Buff = [Line; 60];
 
 pub fn draw_terminal(terminal_offset: (isize, isize)) {
-    let mut text_line = [('b', Color16::Red); 80];
+    let text_line = [('b', Color16::Red); 80];
     let mut text_buffer = [text_line; 50];
     text_buffer[0][1].0 = 'a';
     text_buffer[0][1].1 = Color16::White;

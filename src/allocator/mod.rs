@@ -1,10 +1,12 @@
-// All the allocators avalible to ableOS
+/// All the allocators available to ableOS
 pub mod fixed_size_block;
 
-// DEPRECATE: this isn't used and should be fazed out of the kernel
+/// DEPRECATE: this isn't used and should be fazed out of the kernel
 pub mod linked_list;
 
+/// TODO: owo what is this?
 pub const HEAP_START: usize = 0x_4444_4444_0000;
+/// TODO: owo what is this?
 pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
 
 use fixed_size_block::FixedSizeBlockAllocator;
@@ -29,6 +31,7 @@ use x86_64::{
     VirtAddr,
 };
 
+/// TODO: owo?
 pub fn init_heap(
     mapper: &mut impl Mapper<Size4KiB>,
     frame_allocator: &mut impl FrameAllocator<Size4KiB>,
