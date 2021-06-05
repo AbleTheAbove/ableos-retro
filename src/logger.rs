@@ -2,12 +2,10 @@ use crate::serial;
 use crate::{
     // print,
     serial_print,
-    serial_println
-    // vga_buffer,
+    serial_println, // vga_buffer,
 };
-use lliw::Fg;
 use core::fmt::Arguments;
-
+use lliw::Fg;
 
 /// print an error message to serial, this will append a newline to the end
 
@@ -20,7 +18,6 @@ macro_rules! error {
     )
 }
 
-
 /// print a debug message to serial, this will append a newline to the end
 #[macro_export]
 macro_rules! debug {
@@ -28,7 +25,6 @@ macro_rules! debug {
         $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+))
     )
 }
-
 
 /// print a success message to serial, this will append a newline to the end
 
@@ -48,8 +44,6 @@ macro_rules! info {
     )
 }
 
-
-
 // use crate::util::{term_reset, term_set};
 /// Denote log levels
 pub enum LogLevel {
@@ -62,7 +56,6 @@ pub enum LogLevel {
     /// Used for successful things
     Success,
 }
-
 
 /// print a log prefix to the framebuffer
 pub fn log(level: LogLevel) {
@@ -97,8 +90,6 @@ fn debug_log() {
     // term_reset();
 }
 
-
-
 /// print a log message to the serial port, a newline will be appended.
 /// This should not be used, use the macros named by log levels instead.
 pub fn slog(level: LogLevel, message_args: Arguments) {
@@ -113,7 +104,6 @@ pub fn slog(level: LogLevel, message_args: Arguments) {
     serial_print!("] ");
     serial::_print(message_args);
     serial_println!();
-
 }
 fn error_slog() {
     serial_print!("{}Error{}", Fg::Red, Fg::Reset);

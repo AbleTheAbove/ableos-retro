@@ -15,10 +15,11 @@
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 const BANNER: &str = include_str!("../root/banner.txt");
 
-/// todo: owo
 #[cfg(debug_assertions)]
+/// A constant to check if the kernel is in debug mode
 pub const RELEASE_TYPE: &str = "debug";
 #[cfg(not(debug_assertions))]
+/// A constant to check if the kernel is in release mode
 pub const RELEASE_TYPE: &str = "release";
 
 extern crate alloc;
@@ -38,7 +39,6 @@ pub mod logger;
 pub mod memory;
 mod panic;
 mod serial;
-pub mod util;
 mod vga_buffer;
 
 /// Asyncronous module
@@ -48,9 +48,14 @@ pub mod task;
 #[cfg(test)]
 pub mod test;
 
+mod kernel_state;
 mod sri;
 mod time;
 mod window_manager;
+
+use kernel_state::{KernelState, KernelVersion};
+use vga::{colors::Color16, writers::GraphicsWriter};
+use window_manager::GRAPHICS;
 
 /// Defines the entry point function.
 ///
@@ -61,36 +66,23 @@ mod window_manager;
 #[export_name = "_start"]
 pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
     let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
-
     f(boot_info)
-}
-/// todo: owo
-pub struct KernelState<'a> {
-    /// The first value is the release state and the second is the version string
-    version: (bool, &'a str),
 }
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
-    util::banner();
     init_alloc(boot_info);
     init();
-
     init_graphics();
 
-    use vga::{colors::Color16, writers::GraphicsWriter};
-    use window_manager::GRAPHICS;
+    use alloc::string::ToString;
+    let state = KernelState {
+        version: KernelVersion {
+            version_str: KERNEL_VERSION.to_string(),
+            release_type: RELEASE_TYPE.to_string(),
+        },
+    };
 
-    fn is_release() -> bool {
-        match RELEASE_TYPE {
-            "release" => {
-                return true;
-            }
-            _ => {
-                return false;
-            }
-        }
-    }
     fn println(yes: &str, coordinates: (usize, usize)) {
         let mut offset = 0;
         let mut offset_y = 0;
@@ -113,17 +105,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
             }
         }
     }
-    let state = KernelState {
-        version: (is_release(), KERNEL_VERSION),
-    };
-    use alloc::format;
 
-    let v_str = format!("version {} {}", KERNEL_VERSION, RELEASE_TYPE);
+    use alloc::format;
+    let v_str = format!("{}", state.version);
     println(&v_str, (0, 0));
 
-
     #[cfg(test)]
-        test_main();
+    test_main();
     use task::{executor::Executor, keyboard, Task};
     let mut executor = Executor::new();
     executor.spawn(Task::new(example_task()));
