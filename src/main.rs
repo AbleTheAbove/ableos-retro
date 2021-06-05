@@ -13,7 +13,8 @@
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
-const BANNER: &str = include_str!("../root/banner.txt");
+// const BANNER: &str = include_str!("../root/banner.txt");
+// const ROOT: &[u8] = include_bytes!("../root");
 
 #[cfg(debug_assertions)]
 /// A constant to check if the kernel is in debug mode

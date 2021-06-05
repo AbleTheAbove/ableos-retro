@@ -3,18 +3,8 @@ use alloc::string::{String, ToString};
 
 use core::fmt;
 
-#[allow(dead_code)]
-#[derive(Debug)]
-pub enum Protocol {
-    /// References a folder/file on a `device://harddrive`
-    File,
-    /// System call
-    Syscall,
-    /// References a device connected to the computer
-    Device,
-}
 struct SRI {
-    protocol: Protocol,
+    protocol: String,
     path: String,
     query: String,
 }
@@ -28,7 +18,7 @@ pub fn init() {
     info!("SRI interface loading");
 
     let url = SRI {
-        protocol: Protocol::File,
+        protocol: "File".to_string(),
         path: "banner.txt".to_string(),
         query: "read".to_string(),
     };
