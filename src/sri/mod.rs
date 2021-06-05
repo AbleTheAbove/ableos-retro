@@ -36,9 +36,9 @@ pub fn init() {
 #[test_case]
 fn sri_test() {
     let _url = SRI {
-        protocol: Protocol::File,
-        path: "test",
-        query: "read",
+        protocol: "test".to_string(),
+        path: "test".to_string(),
+        query: "read".to_string(),
     };
     // println!("{}", url);
 }
