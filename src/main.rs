@@ -153,13 +153,13 @@ fn init_alloc(boot_info: &'static BootInfo) {
     success!("Allocator loaded");
 }
 
-// async fn async_number() -> u32 {
-//     42
-// }
+async fn async_number() -> u32 {
+    42
+}
 
 async fn example_task() {
-    // let number = async_number().await;
-    // println!("async number: {}", number);
+    let number = async_number().await;
+    info!("async number: {}", number);
 }
 
 async fn test_1() {

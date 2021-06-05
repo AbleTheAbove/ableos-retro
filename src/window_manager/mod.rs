@@ -5,14 +5,13 @@ use vga::{
     colors::Color16,
     writers::{Graphics640x480x16, GraphicsWriter},
 };
-pub mod window_draw;
 /// Holds references to all windows
 // pub struct WindowManager {
 //     vga_buff: Graphics640x480x16,
 // }
 // impl WindowManager {}
-
 mod terminal;
+pub mod window_draw;
 
 lazy_static! {
     pub static ref GRAPHICS: Graphics640x480x16 = {
