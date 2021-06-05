@@ -19,7 +19,7 @@ lazy_static! {
                 version_str: KERNEL_VERSION.to_string(),
                 release_type: RELEASE_TYPE.to_string(),
             },
-            serial_log: false,
+            serial_log: true,
         };
         state
     };

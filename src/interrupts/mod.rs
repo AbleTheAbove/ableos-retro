@@ -1,14 +1,11 @@
-use crate::{
-    gdt,
-    // print, println,
-    // util,
-    // vga_buffer::Color::Red,
-};
+use crate::{gdt, info};
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 /// Module for PIC
 pub mod pic;
+/// Module for APIC
+pub mod apic;
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
 #[repr(u8)]
@@ -17,8 +14,6 @@ pub enum InterruptIndex {
     Timer = pic::PIC_1_OFFSET,
     /// Keyboard offset
     Keyboard,
-    /// Unknown
-    RandomInterruptNumber,
 }
 
 impl InterruptIndex {
