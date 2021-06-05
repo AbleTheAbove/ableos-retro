@@ -12,9 +12,9 @@ run-args=[
     # Add a network for the future
     # "-net", "nic,model=pcnet"
 
-
-
-    "-drive", "file=raw_images/first.img,format=raw",
+    #QEMU drive options:  https://www.heiko-sieger.info/qemu-system-x86_64-drive-options/
+    
+    "-drive", "file=raw_images/first.img,format=raw,id=main",
 
 
 

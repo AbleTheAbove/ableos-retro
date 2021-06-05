@@ -10,7 +10,7 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![deny(missing_docs)]
-
+#![feature(once_cell)]
 // const BANNER: &str = include_str!("../root/banner.txt");
 // const ROOT: &[u8] = include_bytes!("../root");
 

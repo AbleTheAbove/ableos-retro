@@ -6,6 +6,7 @@ use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 pub mod apic;
 /// Module for PIC
 pub mod pic;
+
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
 #[repr(u8)]
@@ -14,6 +15,8 @@ pub enum InterruptIndex {
     Timer = pic::PIC_1_OFFSET,
     /// Keyboard offset
     Keyboard,
+    /// Mouse offset
+    Mouse = 0x60,
 }
 
 impl InterruptIndex {
@@ -37,6 +40,7 @@ lazy_static! {
         }
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        idt[InterruptIndex::Mouse.as_usize()].set_handler_fn(mouse_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
