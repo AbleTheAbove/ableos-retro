@@ -40,5 +40,4 @@ fn sri_test() {
         path: "test".to_string(),
         query: "read".to_string(),
     };
-    // println!("{}", url);
 }
