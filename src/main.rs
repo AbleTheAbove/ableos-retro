@@ -11,17 +11,8 @@
 #![feature(asm)]
 #![deny(missing_docs)]
 
-/// TODO: owo what is this?
-pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 // const BANNER: &str = include_str!("../root/banner.txt");
 // const ROOT: &[u8] = include_bytes!("../root");
-
-#[cfg(debug_assertions)]
-/// A constant to check if the kernel is in debug mode
-pub const RELEASE_TYPE: &str = "debug";
-#[cfg(not(debug_assertions))]
-/// A constant to check if the kernel is in release mode
-pub const RELEASE_TYPE: &str = "release";
 
 extern crate alloc;
 use bootloader::BootInfo;
@@ -33,7 +24,7 @@ mod encrypt;
 pub mod gdt;
 /// Interrupt module
 pub mod interrupts;
-//hi stream :3
+
 /// A logging assistance crate
 pub mod logger;
 /// Memory management
@@ -54,7 +45,7 @@ mod sri;
 mod time;
 mod window_manager;
 
-use kernel_state::{KernelState, KernelVersion};
+pub use kernel_state::{KernelState, KernelVersion};
 use vga::{colors::Color16, writers::GraphicsWriter};
 use window_manager::GRAPHICS;
 
@@ -75,14 +66,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
     init();
     init_graphics();
-
-    use alloc::string::ToString;
-    let state = KernelState {
-        version: KernelVersion {
-            version_str: KERNEL_VERSION.to_string(),
-            release_type: RELEASE_TYPE.to_string(),
-        },
-    };
 
     fn println(yes: &str, coordinates: (usize, usize)) {
         let mut offset = 0;
@@ -108,7 +91,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
 
     use alloc::format;
-    let v_str = format!("{}", state.version);
+    let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
     println(&v_str, (0, 0));
 
     #[cfg(test)]

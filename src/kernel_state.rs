@@ -1,13 +1,43 @@
-use alloc::string::String;
+use alloc::string::{String, ToString};
+
 use core::fmt;
+use lazy_static::lazy_static;
+
+/// TODO: owo what is this?
+pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
+#[cfg(debug_assertions)]
+/// A constant to check if the kernel is in debug mode
+pub const RELEASE_TYPE: &str = "debug";
+#[cfg(not(debug_assertions))]
+/// A constant to check if the kernel is in release mode
+pub const RELEASE_TYPE: &str = "release";
+
+lazy_static! {
+    pub static ref KERNEL_STATE: KernelState = {
+        let state = KernelState {
+            version: KernelVersion {
+                version_str: KERNEL_VERSION.to_string(),
+                release_type: RELEASE_TYPE.to_string(),
+            },
+            serial_log: true,
+        };
+
+        state
+    };
+}
+
 /// todo: owo
 pub struct KernelState {
     /// The first value is the release state and the second is the version string
     pub version: KernelVersion,
+    /// This declares whether debug should be logged
+    pub serial_log: bool,
 }
-
+/// ahhhhh
 pub struct KernelVersion {
+    /// Ahhh
     pub version_str: String,
+    /// The release type of the kernel "release" or "debug"
     pub release_type: String,
 }
 impl fmt::Display for KernelVersion {

@@ -21,8 +21,11 @@ macro_rules! error {
 /// print a debug message to serial, this will append a newline to the end
 #[macro_export]
 macro_rules! debug {
+
     ($($arg:tt)+) => (
+    if $crate::kernel_state::KERNEL_STATE.version.release_type == "debug" {
         $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+))
+        }
     )
 }
 

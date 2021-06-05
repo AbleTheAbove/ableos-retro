@@ -6,11 +6,16 @@ use core::fmt;
 struct SRI {
     protocol: String,
     path: String,
+    fragment: String,
     query: String,
 }
 impl fmt::Display for SRI {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}://{}?{}", self.protocol, self.path, self.query)
+        write!(
+            f,
+            "{}://{}#{}?{}",
+            self.protocol, self.path, self.fragment, self.query
+        )
     }
 }
 
@@ -20,9 +25,11 @@ pub fn init() {
     let url = SRI {
         protocol: "File".to_string(),
         path: "banner.txt".to_string(),
+        fragment: "l1c2".to_string(),
         query: "read".to_string(),
     };
     debug!("{}", url);
+
     success!("SRI interface loaded")
 }
 

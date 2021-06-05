@@ -7,7 +7,7 @@ edition = "2018"
 run-args=[
     # Add a network for the future
     # "-net", "nic,model=pcnet"
-    
+
     # this allows log messages to be printed outside qemu
     "-serial", "stdio"
 ]
