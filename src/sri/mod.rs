@@ -1,4 +1,4 @@
-use crate::logger::{log, LogLevel};
+use crate::{info, success};
 use core::fmt;
 
 #[allow(dead_code)]
@@ -23,8 +23,7 @@ impl<'a> fmt::Display for SRI<'a> {
 }
 
 pub fn init() {
-    log(LogLevel::Info);
-    // println!("SRI interface loading");
+    info!("SRI interface loading");
 
     // let url = SRI {
     //     protocol: Protocol::File,
@@ -32,8 +31,7 @@ pub fn init() {
     //     query: "read",
     // };
     // println!("> {}", url);
-    log(LogLevel::Success);
-    // println!("SRI interface loaded");
+    success!("SRI interface loaded")
 }
 
 #[test_case]

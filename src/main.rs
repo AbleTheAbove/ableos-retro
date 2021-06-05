@@ -9,13 +9,13 @@
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
-#![warn(missing_docs)]
-// #![deny(missing_docs)]
+#![deny(missing_docs)]
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 const BANNER: &str = include_str!("../root/banner.txt");
 
+/// todo: owo
 #[cfg(debug_assertions)]
 pub const RELEASE_TYPE: &str = "debug";
 #[cfg(not(debug_assertions))]
@@ -43,7 +43,6 @@ mod vga_buffer;
 
 /// Asyncronous module
 pub mod task;
-use logger::{log, LogLevel};
 
 /// The holder of tests
 #[cfg(test)]
@@ -65,7 +64,7 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
 
     f(boot_info)
 }
-
+/// todo: owo
 pub struct KernelState<'a> {
     /// The first value is the release state and the second is the version string
     version: (bool, &'a str),
@@ -122,8 +121,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let v_str = format!("version {} {}", KERNEL_VERSION, RELEASE_TYPE);
     println(&v_str, (0, 0));
 
+
     #[cfg(test)]
-    test_main();
+        test_main();
     use task::{executor::Executor, keyboard, Task};
     let mut executor = Executor::new();
     executor.spawn(Task::new(example_task()));
@@ -135,12 +135,10 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
-
     unsafe { interrupts::pic::PICS.lock().initialize() }; // new
     x86_64::instructions::interrupts::enable(); // new
     if encrypt::aes_detect() {
-        log(LogLevel::Success);
-        // println!("Encryption driver loaded");
+        success!("Encryption driver loaded")
     }
 
     sri::init();
@@ -164,8 +162,7 @@ fn init_alloc(boot_info: &'static BootInfo) {
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
-    log(LogLevel::Success);
-    // println!("Allocator loaded");
+    success!("Allocator loaded");
 }
 
 // async fn async_number() -> u32 {
