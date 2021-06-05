@@ -12,6 +12,12 @@ run-args=[
     # Add a network for the future
     # "-net", "nic,model=pcnet"
 
+
+
+    "-drive", "file=raw_images/first.img,format=raw",
+
+
+
     # this allows log messages to be printed outside qemu
     "-serial", "stdio",
     "-vga", "vmware"
