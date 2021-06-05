@@ -55,3 +55,6 @@ pc-keyboard = "0.5.0"
 core_detect = "*"
 cpuio = {git = "https://github.com/anyusernameworks/cpuio.git"}
 vga = { git = "https://github.com/abletheabove/vga" }
+
+# Used as a temporary kernel configuration crate
+serde-json-core = "0.4.0"

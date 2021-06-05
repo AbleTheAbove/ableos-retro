@@ -21,12 +21,8 @@ macro_rules! error {
 /// print a debug message to serial, this will append a newline to the end
 #[macro_export]
 macro_rules! debug {
-
     ($($arg:tt)+) => (
-    if $crate::kernel_state::KERNEL_STATE.version.release_type == "debug" {
-        $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+))
-        }
-    )
+    $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+)))
 }
 
 /// print a success message to serial, this will append a newline to the end
@@ -96,17 +92,19 @@ fn debug_log() {
 /// print a log message to the serial port, a newline will be appended.
 /// This should not be used, use the macros named by log levels instead.
 pub fn slog(level: LogLevel, message_args: Arguments) {
-    serial_print!("[");
+    if crate::kernel_state::KERNEL_STATE.serial_log {
+        serial_print!("[");
 
-    match level {
-        LogLevel::Error => error_slog(),
-        LogLevel::Debug => debug_slog(),
-        LogLevel::Info => info_slog(),
-        LogLevel::Success => success_slog(),
+        match level {
+            LogLevel::Error => error_slog(),
+            LogLevel::Debug => debug_slog(),
+            LogLevel::Info => info_slog(),
+            LogLevel::Success => success_slog(),
+        }
+        serial_print!("] ");
+        serial::_print(message_args);
+        serial_println!();
     }
-    serial_print!("] ");
-    serial::_print(message_args);
-    serial_println!();
 }
 fn error_slog() {
     serial_print!("{}Error{}", Fg::Red, Fg::Reset);

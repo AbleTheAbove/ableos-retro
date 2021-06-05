@@ -19,9 +19,8 @@ lazy_static! {
                 version_str: KERNEL_VERSION.to_string(),
                 release_type: RELEASE_TYPE.to_string(),
             },
-            serial_log: true,
+            serial_log: false,
         };
-
         state
     };
 }
