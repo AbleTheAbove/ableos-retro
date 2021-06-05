@@ -1,10 +1,8 @@
 use super::GRAPHICS;
 use vga::{colors::Color16, writers::GraphicsWriter};
 
-// type Character = (char, Color16);
-// type Line = [char; 80];
-// type Buff = [Line; 60];
-
+// TODO: Rework this
+#[allow(dead_code)]
 pub fn draw_terminal(terminal_offset: (isize, isize)) {
     let text_line = [('b', Color16::Red); 80];
     let mut text_buffer = [text_line; 50];

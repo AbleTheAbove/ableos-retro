@@ -1,39 +1,36 @@
-use crate::logger::{log, LogLevel};
+use crate::{debug, info, success};
+use alloc::string::{String, ToString};
+
 use core::fmt;
 
-#[allow(dead_code)]
-#[derive(Debug)]
-pub enum Protocol {
-    /// References a folder/file on a `device://harddrive`
-    File,
-    /// System call
-    Syscall,
-    /// References a device connected to the computer
-    Device,
+struct SRI {
+    protocol: String,
+    path: String,
+    fragment: String,
+    query: String,
 }
-struct SRI<'a> {
-    protocol: Protocol,
-    path: &'a str,
-    query: &'a str,
-}
-impl<'a> fmt::Display for SRI<'a> {
+impl fmt::Display for SRI {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}://{}?{}", self.protocol, self.path, self.query)
+        write!(
+            f,
+            "{}://{}#{}?{}",
+            self.protocol, self.path, self.fragment, self.query
+        )
     }
 }
 
 pub fn init() {
-    log(LogLevel::Info);
-    // println!("SRI interface loading");
+    info!("SRI interface loading");
 
-    // let url = SRI {
-    //     protocol: Protocol::File,
-    //     path: "banner.txt",
-    //     query: "read",
-    // };
-    // println!("> {}", url);
-    log(LogLevel::Success);
-    // println!("SRI interface loaded");
+    let url = SRI {
+        protocol: "File".to_string(),
+        path: "banner.txt".to_string(),
+        fragment: "l1c2".to_string(),
+        query: "read".to_string(),
+    };
+    debug!("{}", url);
+
+    success!("SRI interface loaded")
 }
 
 #[test_case]

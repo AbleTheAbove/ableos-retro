@@ -1,9 +1,47 @@
+use crate::serial;
 use crate::{
     // print,
     serial_print,
-    // vga_buffer,
+    serial_println, // vga_buffer,
 };
+use core::fmt::Arguments;
 use lliw::Fg;
+
+/// print an error message to serial, this will append a newline to the end
+
+// Reason; this will definitely get used in the future
+#[allow(unused_macros)]
+#[macro_export]
+macro_rules! error {
+    ($($arg:tt)+) => (
+        $crate::logger::slog($crate::logger::LogLevel::Error, format_args!($($arg)+))
+    )
+}
+
+/// print a debug message to serial, this will append a newline to the end
+#[macro_export]
+macro_rules! debug {
+    ($($arg:tt)+) => (
+    $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+)))
+}
+
+/// print a success message to serial, this will append a newline to the end
+
+#[macro_export]
+macro_rules! success {
+    ($($arg:tt)+) => (
+        $crate::logger::slog($crate::logger::LogLevel::Success, format_args!($($arg)+))
+    )
+}
+
+/// print a info message to serial, this will append a newline to the end
+
+#[macro_export]
+macro_rules! info {
+    ($($arg:tt)+) => (
+        $crate::logger::slog($crate::logger::LogLevel::Info, format_args!($($arg)+))
+    )
+}
 
 // use crate::util::{term_reset, term_set};
 /// Denote log levels
@@ -17,6 +55,7 @@ pub enum LogLevel {
     /// Used for successful things
     Success,
 }
+
 /// print a log prefix to the framebuffer
 pub fn log(level: LogLevel) {
     // print!("[");
@@ -50,18 +89,22 @@ fn debug_log() {
     // term_reset();
 }
 
-/// print a log prefix to the serial port
-pub fn slog(level: LogLevel) {
-    serial_print!("[");
+/// print a log message to the serial port, a newline will be appended.
+/// This should not be used, use the macros named by log levels instead.
+pub fn slog(level: LogLevel, message_args: Arguments) {
+    if crate::kernel_state::KERNEL_STATE.serial_log {
+        serial_print!("[");
 
-    match level {
-        LogLevel::Error => error_slog(),
-        LogLevel::Debug => debug_slog(),
-        LogLevel::Info => info_slog(),
-        LogLevel::Success => success_slog(),
+        match level {
+            LogLevel::Error => error_slog(),
+            LogLevel::Debug => debug_slog(),
+            LogLevel::Info => info_slog(),
+            LogLevel::Success => success_slog(),
+        }
+        serial_print!("] ");
+        serial::_print(message_args);
+        serial_println!();
     }
-
-    serial_print!("] ");
 }
 fn error_slog() {
     serial_print!("{}Error{}", Fg::Red, Fg::Reset);
@@ -70,7 +113,7 @@ fn success_slog() {
     serial_print!("{}Success{}", Fg::Green, Fg::Reset);
 }
 fn info_slog() {
-    // print!("Info");
+    serial_print!("Info");
 }
 fn debug_slog() {
     serial_print!("{}Debug{}", Fg::Yellow, Fg::Reset);

@@ -10,18 +10,9 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![deny(missing_docs)]
-// #![deny(missing_docs)]
 
-/// TODO: owo what is this?
-pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
-const BANNER: &str = include_str!("../root/banner.txt");
-
-
-/// todo: owo
-#[cfg(debug_assertions)]
-pub const RELEASE_TYPE: &str = "debug";
-#[cfg(not(debug_assertions))]
-pub const RELEASE_TYPE: &str = "release";
+// const BANNER: &str = include_str!("../root/banner.txt");
+// const ROOT: &[u8] = include_bytes!("../root");
 
 extern crate alloc;
 use bootloader::BootInfo;
@@ -33,27 +24,30 @@ mod encrypt;
 pub mod gdt;
 /// Interrupt module
 pub mod interrupts;
-//hi stream :3
+
 /// A logging assistance crate
 pub mod logger;
 /// Memory management
 pub mod memory;
 mod panic;
 mod serial;
-pub mod util;
 mod vga_buffer;
 
 /// Asyncronous module
 pub mod task;
-use logger::{log, LogLevel};
 
 /// The holder of tests
 #[cfg(test)]
 pub mod test;
 
+mod kernel_state;
 mod sri;
 mod time;
 mod window_manager;
+
+pub use kernel_state::{KernelState, KernelVersion};
+use vga::{colors::Color16, writers::GraphicsWriter};
+use window_manager::GRAPHICS;
 
 /// Defines the entry point function.
 ///
@@ -64,37 +58,15 @@ mod window_manager;
 #[export_name = "_start"]
 pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
     let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
-
     f(boot_info)
-}
-
-/// todo: owo
-pub struct KernelState<'a> {
-    /// The first value is the release state and the second is the version string
-    version: (bool, &'a str),
 }
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
-    util::banner();
     init_alloc(boot_info);
     init();
-
     init_graphics();
 
-    use vga::{colors::Color16, writers::GraphicsWriter};
-    use window_manager::GRAPHICS;
-
-    fn is_release() -> bool {
-        match RELEASE_TYPE {
-            "release" => {
-                return true;
-            }
-            _ => {
-                return false;
-            }
-        }
-    }
     fn println(yes: &str, coordinates: (usize, usize)) {
         let mut offset = 0;
         let mut offset_y = 0;
@@ -117,12 +89,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
             }
         }
     }
-    let state = KernelState {
-        version: (is_release(), KERNEL_VERSION),
-    };
-    use alloc::format;
 
-    let v_str = format!("version {} {}", KERNEL_VERSION, RELEASE_TYPE);
+    use alloc::format;
+    let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
     println(&v_str, (0, 0));
 
     #[cfg(test)]
@@ -138,12 +107,10 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
-
     unsafe { interrupts::pic::PICS.lock().initialize() }; // new
     x86_64::instructions::interrupts::enable(); // new
     if encrypt::aes_detect() {
-        log(LogLevel::Success);
-        // println!("Encryption driver loaded");
+        success!("Encryption driver loaded")
     }
 
     sri::init();
@@ -167,17 +134,16 @@ fn init_alloc(boot_info: &'static BootInfo) {
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
-    log(LogLevel::Success);
-    // println!("Allocator loaded");
+    success!("Allocator loaded");
 }
 
-// async fn async_number() -> u32 {
-//     42
-// }
+async fn async_number() -> u32 {
+    42
+}
 
 async fn example_task() {
-    // let number = async_number().await;
-    // println!("async number: {}", number);
+    let number = async_number().await;
+    info!("async number: {}", number);
 }
 
 async fn test_1() {

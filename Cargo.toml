@@ -7,6 +7,9 @@ edition = "2018"
 run-args=[
     # Add a network for the future
     # "-net", "nic,model=pcnet"
+
+    # this allows log messages to be printed outside qemu
+    "-serial", "stdio"
 ]
 test-args = [
     "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04",
@@ -52,4 +55,6 @@ pc-keyboard = "0.5.0"
 core_detect = "*"
 cpuio = {git = "https://github.com/anyusernameworks/cpuio.git"}
 vga = { git = "https://github.com/abletheabove/vga" }
-ansi_rgb = {version = "0.2.0"}
+
+# Used as a temporary kernel configuration crate
+serde-json-core = "0.4.0"

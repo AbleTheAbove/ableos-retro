@@ -1,7 +1,12 @@
-use super::terminal;
-use super::Window;
-use super::GRAPHICS;
-use super::{WINDOW_BORDER_COLOR, WINDOW_DECORATOR_COLOR, WINDOW_DECORATOR_TEXT_COLOR};
+use super::{
+    // Comented out because unused but will be used in the future
+    //terminal,
+    Window,
+    GRAPHICS,
+    WINDOW_BORDER_COLOR,
+    WINDOW_DECORATOR_COLOR,
+    WINDOW_DECORATOR_TEXT_COLOR,
+};
 use alloc::string::ToString;
 
 use vga::{colors::Color16, writers::GraphicsWriter};
