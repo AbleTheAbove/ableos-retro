@@ -6,6 +6,7 @@ version = 3
 name = "ableos"
 version = "0.1.0"
 dependencies = [
+ "ansi_rgb",
  "bootloader",
  "conquer-once 0.2.1",
  "core_detect",
@@ -22,6 +23,15 @@ dependencies = [
  "vga",
  "volatile 0.2.7",
  "x86_64",
+]
+
+[[package]]
+name = "ansi_rgb"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a730095eb14ee842a0f1e68504b85c8d4a19b1ef2ac2a9b4debf0ed982f9b08a"
+dependencies = [
+ "rgb",
 ]
 
 [[package]]
@@ -47,6 +57,12 @@ name = "bootloader"
 version = "0.9.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a3c1ceed1cd9e61c7998100cc18c13d413aa40d018992b871ab8e7435ce6372"
+
+[[package]]
+name = "bytemuck"
+version = "1.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bed57e2090563b83ba8f83366628ce535a7584c9afa4c9fc0612a03925c6df58"
 
 [[package]]
 name = "cfg-if"
@@ -221,6 +237,15 @@ name = "pin-utils"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
+name = "rgb"
+version = "0.8.27"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8fddb3b23626145d1776addfc307e1a1851f60ef6ca64f376bcb889697144cf0"
+dependencies = [
+ "bytemuck",
+]
 
 [[package]]
 name = "scopeguard"

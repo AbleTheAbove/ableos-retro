@@ -11,6 +11,8 @@ use futures_util::{
 };
 use pc_keyboard::{layouts, HandleControl, Keyboard, ScancodeSet1};
 
+use crate::serial_println;
+
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -74,11 +76,9 @@ pub async fn print_keypresses() {
 
     while let Some(scancode) = scancodes.next().await {
         if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
-            if let Some(_key) = keyboard.process_keyevent(key_event) {
-                // match key {
-                //     DecodedKey::Unicode(character) => print!("{}", character),
-                //     DecodedKey::RawKey(key) => print!("{:?}", key),
-                // }
+            if let Some(key) = keyboard.process_keyevent(key_event) {
+                // let esc = String::from(27 as char);
+                serial_println!["\x1b[31m{:?}", key];
             }
         }
     }

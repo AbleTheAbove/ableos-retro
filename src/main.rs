@@ -9,13 +9,15 @@
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
-#![warn(missing_docs)]
+#![deny(missing_docs)]
 // #![deny(missing_docs)]
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 const BANNER: &str = include_str!("../root/banner.txt");
 
+
+/// todo: owo
 #[cfg(debug_assertions)]
 pub const RELEASE_TYPE: &str = "debug";
 #[cfg(not(debug_assertions))]
@@ -66,6 +68,7 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
     f(boot_info)
 }
 
+/// todo: owo
 pub struct KernelState<'a> {
     /// The first value is the release state and the second is the version string
     version: (bool, &'a str),
