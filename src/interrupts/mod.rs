@@ -1,9 +1,4 @@
-use crate::{
-    gdt,
-    // print, println,
-    // util,
-    // vga_buffer::Color::Red,
-};
+use crate::gdt;
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
@@ -78,7 +73,7 @@ extern "x86-interrupt" fn double_fault_handler(
     exception();
     panic!("DOUBLE FAULT\n{:#?}", stack_frame);
 }
-
+// DEPRECATE: unused, likely to not be used
 fn exception() {
     // util::term_set(Red);
     // print!("EXCEPTION ");

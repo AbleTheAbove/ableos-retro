@@ -3,6 +3,10 @@ name = "ableos"
 version = "0.1.0"
 edition = "2018"
 
+[profile.release]
+lto=true
+
+
 [package.metadata.bootimage]
 run-args=[
     # Add a network for the future
