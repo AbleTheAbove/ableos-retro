@@ -2,10 +2,10 @@ use crate::{gdt, info};
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
-/// Module for PIC
-pub mod pic;
 /// Module for APIC
 pub mod apic;
+/// Module for PIC
+pub mod pic;
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
 #[repr(u8)]
@@ -75,7 +75,7 @@ extern "x86-interrupt" fn double_fault_handler(
     exception();
     panic!("DOUBLE FAULT\n{:#?}", stack_frame);
 }
-
+// DEPRECATE: unused, likely to not be used
 fn exception() {
     // util::term_set(Red);
     // print!("EXCEPTION ");
