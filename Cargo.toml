@@ -13,7 +13,8 @@ run-args=[
     # "-net", "nic,model=pcnet"
 
     # this allows log messages to be printed outside qemu
-    "-serial", "stdio"
+    "-serial", "stdio",
+    "-vga", "vmware"
 ]
 test-args = [
     "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04",

@@ -1,7 +1,9 @@
-use crate::gdt;
+use crate::{gdt, info};
 use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
+/// Module for APIC
+pub mod apic;
 /// Module for PIC
 pub mod pic;
 /// Note what all the interrupts are
