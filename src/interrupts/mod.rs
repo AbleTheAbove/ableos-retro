@@ -17,6 +17,8 @@ pub enum InterruptIndex {
     Timer = pic::PIC_1_OFFSET,
     /// Keyboard offset
     Keyboard,
+    /// Unknown
+    RandomInterruptNumber,
 }
 
 impl InterruptIndex {

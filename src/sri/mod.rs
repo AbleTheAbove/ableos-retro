@@ -37,8 +37,9 @@ pub fn init() {
 fn sri_test() {
     let _url = SRI {
         protocol: Protocol::File,
-        path: "test",
-        query: "read",
+        path: "test".into(),
+        query: "read".into(),
+        fragment: String::new(),
     };
     // println!("{}", url);
 }
