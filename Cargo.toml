@@ -62,7 +62,7 @@ spin = "0.5.2"
 uart_16550 = "0.2.0"
 vga = {git = "https://github.com/abletheabove/vga"}
 volatile = "0.2.6"
-x86_64 = "0.14.2"
+x86_64 = {package = "x86_64", version = "0.14.2"}
 # Initialize hardware device descriptor table
 array-init = "2.0.0"
 gen_fn = {path = "./gen_fn"}
