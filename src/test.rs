@@ -1,8 +1,5 @@
 /// The tests
-use crate::{
-    logger::{slog, LogLevel::Success},
-    serial_println,
-};
+use crate::{serial_println, success};
 
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
@@ -44,8 +41,7 @@ where
 {
     /// Run the test
     fn run(&self) {
-        slog(Success);
-        serial_println!("{}\t", core::any::type_name::<T>());
+        success!("{}\t", core::any::type_name::<T>());
         self();
     }
 }

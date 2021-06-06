@@ -4,7 +4,7 @@ use alloc::string::{String, ToString};
 use core::fmt;
 
 mod fs;
-
+//pub mod ustar;
 struct SRI {
     protocol: String,
     path: String,
@@ -40,6 +40,7 @@ fn sri_test() {
     let _url = SRI {
         protocol: "test".to_string(),
         path: "test".to_string(),
+        fragment: "l1c2".to_string(),
         query: "read".to_string(),
     };
 }
