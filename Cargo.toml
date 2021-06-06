@@ -68,7 +68,9 @@ cpuio = {git = "https://github.com/anyusernameworks/cpuio.git"}
 vga = { git = "https://github.com/abletheabove/vga" }
 # Initialize hardware device descriptor table
 array-init = "2.0.0"
-
+ps2-mouse = "0.1.4"
+spinning_top = "0.2.4"
 
 # Used as a temporary kernel configuration crate
 serde-json-core = "0.4.0"
+bitflags = "1.2.1"

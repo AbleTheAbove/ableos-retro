@@ -6,11 +6,11 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test::test_runner)]
 #![reexport_test_harness_main = "test_main"]
-#![feature(alloc_error_handler)] // at the top of the file
+#![feature(alloc_error_handler)]    // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
+#![feature(const_fn_fn_ptr_basics)]
 #![deny(missing_docs)]
-#![feature(once_cell)]
 // const BANNER: &str = include_str!("../root/banner.txt");
 // const ROOT: &[u8] = include_bytes!("../root");
 
@@ -45,6 +45,8 @@ mod sri;
 mod time;
 mod window_manager;
 mod devices;
+mod drivers;
+mod ps2_mouse;
 
 pub use kernel_state::{KernelState, KernelVersion};
 use vga::{colors::Color16, writers::GraphicsWriter};
@@ -96,6 +98,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
     println(&v_str, (0, 0));
 
+    // drivers::mouse::init_mouse();
     #[cfg(test)]
     test_main();
     use cpuio::outw;
@@ -154,6 +157,8 @@ async fn example_task() {
 }
 
 async fn test_1() {
+
+    info!("performing async task: vec allocation");
     use alloc::vec::Vec;
 
     let mut vec = Vec::new();

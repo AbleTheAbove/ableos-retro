@@ -19,13 +19,15 @@ pub enum InterruptIndex {
     Mouse = 0x60,
 }
 
-impl InterruptIndex {
-    fn as_u8(self) -> u8 {
+
+impl Into<u8> for InterruptIndex{
+    fn into(self) -> u8 {
         self as u8
     }
-
-    fn as_usize(self) -> usize {
-        usize::from(self.as_u8())
+}
+impl Into<usize> for InterruptIndex{
+    fn into(self) -> usize {
+        self as usize
     }
 }
 
@@ -38,8 +40,8 @@ lazy_static! {
                 .set_handler_fn(double_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
-        idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
-        idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        idt[InterruptIndex::Timer.into()].set_handler_fn(timer_interrupt_handler);
+        idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
@@ -96,7 +98,7 @@ extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFr
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
+            .notify_end_of_interrupt(InterruptIndex::Timer.into());
     }
 }
 
@@ -112,6 +114,6 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
+            .notify_end_of_interrupt(InterruptIndex::Keyboard.into());
     }
 }

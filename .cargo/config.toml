@@ -6,4 +6,5 @@ build-std-features = ["compiler-builtins-mem"]
 target = "json_targets/x86_64-ableos.json"
 
 [target.'cfg(target_os = "none")']
+# --quite suppresses warning messages from the bootimage crate
 runner = "bootimage runner --quiet"
