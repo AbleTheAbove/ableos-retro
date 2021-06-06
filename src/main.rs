@@ -10,7 +10,7 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![feature(const_fn_fn_ptr_basics)]
-#![deny(missing_docs)]
+#![warn(missing_docs)]
 // const BANNER: &str = include_str!("../root/banner.txt");
 // const ROOT: &[u8] = include_bytes!("../root");
 
@@ -43,9 +43,9 @@ pub mod test;
 mod kernel_state;
 mod sri;
 mod time;
-mod window_manager;
+pub mod window_manager;
 mod devices;
-mod drivers;
+pub mod drivers;
 mod ps2_mouse;
 
 pub use kernel_state::{KernelState, KernelVersion};
@@ -70,6 +70,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
     init();
     init_graphics();
+
+    // reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
+    x86_64::instructions::interrupts::without_interrupts(|| {
+        drivers::mouse::init_mouse();
+    });
+
+
 
     fn println(yes: &str, coordinates: (usize, usize)) {
         let mut offset = 0;
@@ -98,7 +105,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
     println(&v_str, (0, 0));
 
-    // drivers::mouse::init_mouse();
+
     #[cfg(test)]
     test_main();
     use cpuio::outw;

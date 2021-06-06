@@ -16,7 +16,7 @@ pub enum InterruptIndex {
     /// Keyboard offset
     Keyboard,
     /// Mouse offset
-    Mouse = 0x60,
+    Mouse = 44,
 }
 
 
@@ -42,6 +42,7 @@ lazy_static! {
         }
         idt[InterruptIndex::Timer.into()].set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
+        idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
@@ -94,7 +95,7 @@ fn test_breakpoint_exception() {
 }
 // TODO: Move to pic
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
-    // print!(".");
+
     unsafe {
         pic::PICS
             .lock()

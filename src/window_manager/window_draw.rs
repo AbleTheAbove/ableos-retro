@@ -1,3 +1,5 @@
+//! this module draws windows
+
 use super::{
     // Comented out because unused but will be used in the future
     //terminal,
@@ -12,6 +14,7 @@ use alloc::string::ToString;
 use vga::{colors::Color16, writers::GraphicsWriter};
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
+/// todo: pwees write docs
 pub fn windows(id: u8, offset: (isize, isize)) {
     use alloc::format;
     use alloc::string::String;
@@ -109,6 +112,7 @@ pub fn windows(id: u8, offset: (isize, isize)) {
     }
 }
 
+/// todo: pwees write docs
 pub fn logo(offset: (isize, isize)) {
     {
         let a_color = Color16::Pink;

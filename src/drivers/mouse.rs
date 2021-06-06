@@ -7,14 +7,64 @@ use x86_64::structures::idt::InterruptStackFrame;
 use crate::interrupts::pic::PICS;
 use crate::interrupts::InterruptIndex;
 use lazy_static::lazy_static;
+use crate::window_manager::GRAPHICS;
+use vga::vga::FrameBuffer::GraphicsMode;
+use vga::writers::GraphicsWriter;
+use vga::colors::Color16;
+
+
+const CURSOR_COLOR: Color16 = Color16::Cyan;
+
 
 lazy_static!{
-    pub static ref MOUSE: Mutex<Mouse> = Mutex::new(Mouse::new());
+    pub static ref _MOUSE: Mutex<Mouse> = Mutex::new(Mouse::new());
+    pub static ref MOUSE: Mutex<OnScreenMouse> = Mutex::new(OnScreenMouse::default());
 }
+
+
+#[derive(Default)]
+pub struct OnScreenMouse{
+    // absolute position on screen
+    x: u16,
+    // absolute position on screen
+    y: u16
+}
+
+
+impl OnScreenMouse{
+    pub fn get_x(&self) -> u16 {
+        return self.x;
+    }
+
+    pub fn get_y(&self) -> u16 {
+        return self.y;
+    }
+
+    pub fn change_x(&mut self, delta_x: i16){
+        if delta_x.is_negative(){
+            self.x = self.x.saturating_sub((- delta_x) as u16)
+        }else{
+            self.x = self.x.saturating_add(delta_x as u16)
+        }
+    }
+
+    pub fn change_y(&mut self, delta_y: i16){
+        if delta_y.is_negative(){
+            self.y = self.y.saturating_add((- delta_y) as u16)
+        }else{
+            self.y = self.y.saturating_sub(delta_y as u16)
+        }
+    }
+
+}
+
+
+
+
 
 // Initialize the mouse and set the on complete event.
 pub(crate) fn init_mouse() {
-    let mut mouse =MOUSE.lock();
+    let mut mouse =_MOUSE.lock();
     info!("Trying to initialize mouse");
     mouse.init().unwrap();
     mouse.set_on_complete(on_complete);
@@ -23,16 +73,43 @@ pub(crate) fn init_mouse() {
 
 // This will be fired when a packet is finished being processed.
 fn on_complete(mouse_state: MouseState) {
-    info!("{:?}", mouse_state);
+
+    // how much the cursor has moved
+    let delta_x = mouse_state.get_x();
+    let delta_y = mouse_state.get_y();
+
+
+    let mut mouse = MOUSE.lock();
+
+    // only move the cursor when delta_x is in some range
+    // i.e. if the cursor moves too fast, ignore it.
+    // if the mouse moves too fast the delta will overflow
+    match delta_x{
+        -10..=10 => {
+            mouse.change_x(delta_x)
+        },
+        _ => {}
+    }
+
+    match delta_y{
+        -10..=10 => {
+            mouse.change_y(delta_y)
+        },
+        _ => {}
+    }
+
+    GRAPHICS.draw_character(mouse.get_x() as usize, mouse.get_y() as usize, 'A', CURSOR_COLOR);
+
 }
 
 // An example interrupt based on https://os.phil-opp.com/hardware-interrupts/.
 // The ps2 mouse is configured to fire
 // interrupts at PIC offset 12.
-extern "x86-interrupt" fn mouse_interrupt_handler(_stack_frame: &mut InterruptStackFrame) {
+pub extern "x86-interrupt" fn mouse_interrupt_handler(_stack_frame: InterruptStackFrame) {
+
     let mut port = PortReadOnly::new(0x60);
     let packet = unsafe { port.read() };
-    MOUSE.lock().process_packet(packet);
+    _MOUSE.lock().process_packet(packet);
 
     unsafe {
         PICS.lock()

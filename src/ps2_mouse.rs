@@ -9,6 +9,12 @@ const DATA_PORT_ADDRESS: u16 = 0x60;
 const GET_STATUS_BYTE: u8 = 0x20;
 const SET_STATUS_BYTE: u8 = 0x60;
 
+const DISABLE_FIRST: u8 = 0xAD;
+const DISABLE_SECOND: u8 = 0xA7;
+const ENABLE_FIRST:u8 =  0xAE;
+const ENABLE_SECOND:u8 =  0xA8;
+
+
 bitflags! {
     /// Represents the flags currently set for the mouse.
     #[derive(Default)]
@@ -144,26 +150,43 @@ impl Mouse {
         self.completed_state
     }
 
+    // super helpful resource, albeit in C
+    // https://github.com/29jm/SnowflakeOS/blob/master/kernel/src/devices/ps2.c#L18
     /// Attempts to initialize a `Mouse`. If successful, interrupts will be generated
     /// as `PIC offset + 12`.
     pub fn init(&mut self) -> Result<(), &'static str> {
-        self.write_command_port(0xa8)?;
 
-        if self.read_data_port()? != 0xFA {
-            return Err("mouse did not respond to the command");
-        }
+        // Disable both PS/2 device ports
+        // Even if only one is present, disabling the second is harmless
+        self.write_command_port(DISABLE_FIRST)?;
+        self.write_command_port(DISABLE_SECOND)?;
+
+        // Flush output buffer: if the controller had anything to say, ignore it
+        unsafe { self.data_port.read(); }
 
         debug!("mouse driver: writing GET_STATUS to port...");
         self.write_command_port(GET_STATUS_BYTE)?;
         debug!("mouse driver: reading status from port...");
         let status = self.read_data_port()? | 0x02;
-        debug!("mouse driver: writing SET_STATUS to port...");
+
+        debug!("Got status {}", status);
+
+        // self.write_command_port(0xa8)?;
+
         self.write_command_port(SET_STATUS_BYTE)?;
-        debug!("mouse driver: writing status...");
+
         self.write_data_port(status & 0xDF)?;
-        debug!("mouse driver: sending commands...");
+
         self.send_command(Command::SetDefaults)?;
         self.send_command(Command::EnablePacketStreaming)?;
+
+
+        self.write_command_port(ENABLE_FIRST)?;
+        self.write_command_port(ENABLE_SECOND)?;
+
+        // Some keyboards actually send a reply, flush it
+        unsafe { self.data_port.read(); }
+
         Ok(())
     }
 
@@ -256,7 +279,7 @@ impl Mouse {
 
     fn wait_for_read(&mut self) -> Result<(), &'static str> {
         let timeout = 100_000;
-        for _ in 0..timeout {
+        for x in 0..timeout {
             let value = unsafe { self.command_port.read() };
             if (value & 0x1) == 0x1 {
                 return Ok(());
