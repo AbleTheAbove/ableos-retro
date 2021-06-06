@@ -4,6 +4,7 @@ use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 /// Module for APIC
 pub mod apic;
+pub use apic::*;
 /// Module for PIC
 pub mod pic;
 

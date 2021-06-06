@@ -93,9 +93,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     x86_64::instructions::interrupts::without_interrupts(|| {
         drivers::mouse::init_mouse();
     });
+    
+    if interrupts::check_apic() {
+        serial_println!["We have APIC!"];
+    }
 
 
-
+    
 
 
     fn println(yes: &str, coordinates: (usize, usize)) {
