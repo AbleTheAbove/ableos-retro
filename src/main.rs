@@ -78,13 +78,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
 	info!("{:#?}", boot_info);
 
-	use alloc::format;
 	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
 	println(&v_str, (0, 0));
 
 	#[cfg(test)]
 	test_main();
-	use cpuio::outw;
 	unsafe {
 		outw(0x604, 0x2000);
 	}
