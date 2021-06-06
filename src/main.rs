@@ -122,9 +122,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
 
 
-    let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
-    println(&v_str, (0, 0));
-
 
 
     use task::{executor::Executor, keyboard, Task};
@@ -184,7 +181,6 @@ async fn test_1() {
 	use alloc::vec::Vec;
 
     info!("performing async task: vec allocation");
-    use alloc::vec::Vec;
 
 	let mut vec = Vec::new();
 	for i in 0..500 {

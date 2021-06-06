@@ -21,25 +21,18 @@ pub enum InterruptIndex {
     Mouse = 44,
 }
 
-impl InterruptIndex {
-    fn as_u8(self) -> u8 {
-        self as u8
-    }
-
-    fn as_usize(self) -> usize {
-        usize::from(self.as_u8())
-    }
-
-impl Into<u8> for InterruptIndex{
+impl Into<u8> for InterruptIndex {
     fn into(self) -> u8 {
         self as u8
     }
 }
-impl Into<usize> for InterruptIndex{
+
+impl Into<usize> for InterruptIndex {
     fn into(self) -> usize {
         self as usize
     }
 }
+
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
@@ -54,7 +47,9 @@ lazy_static! {
         idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
         idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
-        gen_name!{34, 256, handler}
+        // todo: dear elf: can you ples exclude 44? cuz mouse has to be 44
+        // gen_name!{34, 256, handler}
+
 		// for x in InterruptIndex::Keyboard.as_usize()..0x100 {
 		// 	idt[x].set_handler_fn(|stack_frame| {
 		// 		info!["here"];
@@ -68,6 +63,7 @@ lazy_static! {
         idt
     };
 }
+
 
 /// Initialize the IDT table
 pub fn init_idt() {
@@ -123,7 +119,7 @@ extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFr
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
+            .notify_end_of_interrupt(InterruptIndex::Timer.into());
     }
 }
 
@@ -139,7 +135,7 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
+            .notify_end_of_interrupt(InterruptIndex::Keyboard.into());
     }
 }
 
