@@ -13,39 +13,39 @@ pub const RELEASE_TYPE: &str = "debug";
 pub const RELEASE_TYPE: &str = "release";
 
 lazy_static! {
-    pub static ref KERNEL_STATE: spin::Mutex<KernelState> = {
-        let state = KernelState {
-            version: KernelVersion {
-                version_str: KERNEL_VERSION.to_string(),
-                release_type: RELEASE_TYPE.to_string(),
-            },
-            serial_log: true,
-        };
-        spin::Mutex::new(state)
-    };
+	pub static ref KERNEL_STATE: spin::Mutex<KernelState> = {
+		let state = KernelState {
+			version: KernelVersion {
+				version_str: KERNEL_VERSION.to_string(),
+				release_type: RELEASE_TYPE.to_string(),
+			},
+			serial_log: true,
+		};
+		spin::Mutex::new(state)
+	};
 }
 
 /// todo: owo
 pub struct KernelState {
-    /// The first value is the release state and the second is the version string
-    pub version: KernelVersion,
-    /// This declares whether debug should be logged
-    pub serial_log: bool,
+	/// The first value is the release state and the second is the version string
+	pub version: KernelVersion,
+	/// This declares whether debug should be logged
+	pub serial_log: bool,
 }
 /// ahhhhh
 pub struct KernelVersion {
-    /// Ahhh
-    pub version_str: String,
-    /// The release type of the kernel "release" or "debug"
-    pub release_type: String,
+	/// Ahhh
+	pub version_str: String,
+	/// The release type of the kernel "release" or "debug"
+	pub release_type: String,
 }
 impl fmt::Display for KernelVersion {
-    // This trait requires `fmt` with this exact signature.
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // Write strictly the first element into the supplied output
-        // stream: `f`. Returns `fmt::Result` which indicates whether the
-        // operation succeeded or failed. Note that `write!` uses syntax which
-        // is very similar to `println!`.
-        write!(f, "{} {}", self.version_str, self.release_type)
-    }
+	// This trait requires `fmt` with this exact signature.
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		// Write strictly the first element into the supplied output
+		// stream: `f`. Returns `fmt::Result` which indicates whether the
+		// operation succeeded or failed. Note that `write!` uses syntax which
+		// is very similar to `println!`.
+		write!(f, "{} {}", self.version_str, self.release_type)
+	}
 }

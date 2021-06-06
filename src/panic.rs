@@ -1,7 +1,7 @@
 #[cfg(test)]
 use crate::{
-    serial_println,
-    test::{exit_qemu, QemuExitCode},
+	serial_println,
+	test::{exit_qemu, QemuExitCode},
 };
 
 use core::panic::PanicInfo;
@@ -11,20 +11,20 @@ use lliw::Fg;
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
-    // println!("{}", info);
-    loop {}
+	// println!("{}", info);
+	loop {}
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    test_panic_handler(info)
+	test_panic_handler(info)
 }
 
 /// Handles panics durring tests
 #[cfg(test)]
 pub fn test_panic_handler(info: &PanicInfo) -> ! {
-    serial_println!("{}[Failed]{}{}", Fg::Red, Fg::Reset, info);
-    exit_qemu(QemuExitCode::Failed);
-    loop {}
+	serial_println!("{}[Failed]{}{}", Fg::Red, Fg::Reset, info);
+	exit_qemu(QemuExitCode::Failed);
+	loop {}
 }
