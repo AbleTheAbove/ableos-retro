@@ -92,7 +92,8 @@ fn test_breakpoint_exception() {
 }
 // TODO: Move to pic
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
-    // print!(".");
+    // info!(".");
+
     unsafe {
         pic::PICS
             .lock()

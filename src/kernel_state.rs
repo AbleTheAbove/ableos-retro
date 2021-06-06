@@ -13,7 +13,7 @@ pub const RELEASE_TYPE: &str = "debug";
 pub const RELEASE_TYPE: &str = "release";
 
 lazy_static! {
-    pub static ref KERNEL_STATE: KernelState = {
+    pub static ref KERNEL_STATE: spin::Mutex<KernelState> = {
         let state = KernelState {
             version: KernelVersion {
                 version_str: KERNEL_VERSION.to_string(),
@@ -21,7 +21,7 @@ lazy_static! {
             },
             serial_log: true,
         };
-        state
+        spin::Mutex::new(state)
     };
 }
 

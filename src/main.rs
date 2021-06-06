@@ -40,11 +40,11 @@ pub mod task;
 #[cfg(test)]
 pub mod test;
 
+mod devices;
 mod kernel_state;
 mod sri;
 mod time;
 mod window_manager;
-mod devices;
 
 pub use kernel_state::{KernelState, KernelVersion};
 use vga::{colors::Color16, writers::GraphicsWriter};
@@ -62,10 +62,12 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
     f(boot_info)
 }
 
-
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init_alloc(boot_info);
+
+    info!("{:#?}", boot_info);
+
     init();
     init_graphics();
 
@@ -93,7 +95,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     }
 
     use alloc::format;
-    let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
+    let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
     println(&v_str, (0, 0));
 
     #[cfg(test)]
@@ -165,13 +167,10 @@ async fn test_1() {
 fn init_graphics() {
     let mut seven = 0;
     let mut nine = 0;
-
     for x in 0..10 {
         window_manager::window_draw::windows(x, (seven, nine));
         seven += 40;
         nine += 40;
     }
     window_manager::window_draw::logo((440, 420));
-
-    //    window::WINDOWS.0.lock().push(&window);
 }
