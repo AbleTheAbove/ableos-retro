@@ -94,7 +94,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 		drivers::mouse::init_mouse();
 	});
 
-	if interrupts::check_apic() {
+	if interrupts::has_apic() {
 		serial_println!["We have APIC!"];
 	}
 

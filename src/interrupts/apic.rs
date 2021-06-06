@@ -37,6 +37,8 @@ enum EDXFeatureBitMasks {
 	HasPendingBreakEnable = 0x80000000,
 }
 
+/// Takes a u32 and two references to u32s.
+/// Sets eax_ and edx_ to the respective registers.
 fn cpuid(set: u32, eax_: &mut u32, edx_: &mut u32) {
 	unsafe {
 		asm![
@@ -53,7 +55,7 @@ fn cpuid(set: u32, eax_: &mut u32, edx_: &mut u32) {
 
 /// Returns whether or not apic is available on this processor.
 /// Sets register eax to 1, then queries cpuid
-pub fn check_apic() -> bool {
+pub fn has_apic() -> bool {
 	// Note: this is not where it sets eax to 1.
 	let mut eax: u32 = 0;
 	let mut edx: u32 = 0;
