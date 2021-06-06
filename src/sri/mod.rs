@@ -3,6 +3,8 @@ use alloc::string::{String, ToString};
 
 use core::fmt;
 
+mod fs;
+
 struct SRI {
     protocol: String,
     path: String,

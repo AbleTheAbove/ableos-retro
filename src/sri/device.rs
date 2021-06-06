@@ -10,3 +10,4 @@ struct Device {
     name: Option<str>,
     query: str,
 }
+

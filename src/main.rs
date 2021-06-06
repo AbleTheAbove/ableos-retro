@@ -44,6 +44,7 @@ mod kernel_state;
 mod sri;
 mod time;
 mod window_manager;
+mod devices;
 
 pub use kernel_state::{KernelState, KernelVersion};
 use vga::{colors::Color16, writers::GraphicsWriter};
@@ -60,6 +61,7 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
     let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
     f(boot_info)
 }
+
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
