@@ -44,11 +44,12 @@ lazy_static! {
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
         idt[InterruptIndex::Timer.into()].set_handler_fn(timer_interrupt_handler);
-        idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
+        idt[InterruptIndex::Keyboard.into()].set_handler_fn(_handler33);
         idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
         // todo: dear elf: can you ples exclude 44? cuz mouse has to be 44
-        // gen_name!{34, 256, handler}
+        gen_name!{34, 44, handler}
+        gen_name!{45, 256, handler}
 
 		// for x in InterruptIndex::Keyboard.as_usize()..0x100 {
 		// 	idt[x].set_handler_fn(|stack_frame| {
@@ -139,4 +140,4 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     }
 }
 
-gen_fn! {34, 256, handler}
+gen_fn! {32, 256, handler}
