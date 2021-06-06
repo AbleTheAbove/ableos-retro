@@ -119,22 +119,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 		}
 	}
 
-	use alloc::format;
-	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
-	println(&v_str, (0, 0));
-
-	#[cfg(test)]
-	test_main();
-	use cpuio::outw;
-	unsafe {
-		outw(0x604, 0x2000);
-	}
-
-	// reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
-	x86_64::instructions::interrupts::without_interrupts(|| {
-		drivers::mouse::init_mouse();
-	});
-
 	use task::{executor::Executor, keyboard, Task};
 	let mut executor = Executor::new();
 	executor.spawn(Task::new(example_task()));

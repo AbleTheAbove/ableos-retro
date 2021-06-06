@@ -1,5 +1,6 @@
 /// Feature bit masks for EDX register.
 /// Call cpuid with set: 1 to
+#[allow(dead_code)]
 #[repr(u32)]
 enum EDXFeatureBitMasks {
 	HasFPU = 0x00000001,
@@ -58,5 +59,5 @@ pub fn check_apic() -> bool {
 	let mut edx: u32 = 0;
 	// This is.
 	cpuid(1, &mut eax, &mut edx);
-	(edx | EDXFeatureBitMasks::HasAPIC as u32) > 0
+	(edx & EDXFeatureBitMasks::HasAPIC as u32) > 0
 }
