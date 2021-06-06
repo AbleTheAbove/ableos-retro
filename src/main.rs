@@ -15,7 +15,12 @@
 // const ROOT: &[u8] = include_bytes!("../root");
 
 extern crate alloc;
+
 use bootloader::BootInfo;
+use vga::{colors::Color16, writers::GraphicsWriter};
+
+pub use kernel_state::{KernelState, KernelVersion};
+use window_manager::GRAPHICS;
 
 /// The global allocator impl
 pub mod allocator;
@@ -48,10 +53,6 @@ mod devices;
 pub mod drivers;
 mod ps2_mouse;
 
-pub use kernel_state::{KernelState, KernelVersion};
-use vga::{colors::Color16, writers::GraphicsWriter};
-use window_manager::GRAPHICS;
-
 /// Defines the entry point function.
 ///
 /// The function must have the signature `fn(&'static BootInfo) -> !`.
@@ -60,21 +61,40 @@ use window_manager::GRAPHICS;
 /// point.
 #[export_name = "_start"]
 pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
-    let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
-    f(boot_info)
+	let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
+	f(boot_info)
 }
 
+/// Checks if APIC is available
+fn check_apic() -> bool {
+	true
+}
 
 /// The "Start" point of ableOS
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
-    init_alloc(boot_info);
-    init();
-    init_graphics();
+	init_alloc(boot_info);
+	init();
+	init_graphics();
+
+    info!("{:#?}", boot_info);
+
+    use alloc::format;
+    let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
+    println(&v_str, (0, 0));
+
+    #[cfg(test)]
+        test_main();
+    use cpuio::outw;
+    unsafe {
+        outw(0x604, 0x2000);
+    }
 
     // reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
     x86_64::instructions::interrupts::without_interrupts(|| {
         drivers::mouse::init_mouse();
     });
+
+
 
 
 
@@ -101,17 +121,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         }
     }
 
-    use alloc::format;
+
     let v_str = format!("{}", kernel_state::KERNEL_STATE.version);
     println(&v_str, (0, 0));
 
 
-    #[cfg(test)]
-    test_main();
-    use cpuio::outw;
-    unsafe {
-        outw(0x604, 0x2000);
-    }
 
     use task::{executor::Executor, keyboard, Task};
     let mut executor = Executor::new();
@@ -120,6 +134,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     executor.spawn(Task::new(test_1()));
     executor.run();
 }
+
 /// Initialize
 pub fn init() {
     gdt::init();
@@ -130,60 +145,60 @@ pub fn init() {
         success!("Encryption driver loaded")
     }
 
-    sri::init();
+	sri::init();
 }
+
 /// Loop forever
 pub fn hlt_loop() -> ! {
-    loop {
-        x86_64::instructions::hlt();
-    }
+	loop {
+		x86_64::instructions::hlt();
+	}
 }
+
 #[test_case]
 fn trivial_assertion() {
-    assert_eq!(1, 1);
+	assert_eq!(1, 1);
 }
 
 fn init_alloc(boot_info: &'static BootInfo) {
-    use memory::BootInfoFrameAllocator;
-    use x86_64::VirtAddr;
-    let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
-    let mut mapper = unsafe { memory::init(phys_mem_offset) };
-    let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
-    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
+	use memory::BootInfoFrameAllocator;
+	use x86_64::VirtAddr;
+	let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
+	let mut mapper = unsafe { memory::init(phys_mem_offset) };
+	let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
+	allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
-    success!("Allocator loaded");
+	success!("Allocator loaded");
 }
 
 async fn async_number() -> u32 {
-    42
+	42
 }
 
 async fn example_task() {
-    let number = async_number().await;
-    info!("async number: {}", number);
+	let number = async_number().await;
+	info!("async number: {}", number);
 }
 
 async fn test_1() {
+	use alloc::vec::Vec;
 
     info!("performing async task: vec allocation");
     use alloc::vec::Vec;
 
-    let mut vec = Vec::new();
-    for i in 0..500 {
-        vec.push(i);
-    }
+	let mut vec = Vec::new();
+	for i in 0..500 {
+		vec.push(i);
+	}
 }
 
 fn init_graphics() {
-    let mut seven = 0;
-    let mut nine = 0;
-
-    for x in 0..10 {
-        window_manager::window_draw::windows(x, (seven, nine));
-        seven += 40;
-        nine += 40;
-    }
-    window_manager::window_draw::logo((440, 420));
-
-    //    window::WINDOWS.0.lock().push(&window);
+	let mut seven = 0;
+	let mut nine = 0;
+	for x in 0..10 {
+		window_manager::window_draw::windows(x, (seven, nine));
+		seven += 40;
+		nine += 40;
+	}
+	window_manager::window_draw::logo((440, 420));
 }

@@ -7,6 +7,8 @@ pub mod apic;
 /// Module for PIC
 pub mod pic;
 
+use gen_fn::*;
+
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
 #[repr(u8)]
@@ -19,6 +21,14 @@ pub enum InterruptIndex {
     Mouse = 44,
 }
 
+impl InterruptIndex {
+    fn as_u8(self) -> u8 {
+        self as u8
+    }
+
+    fn as_usize(self) -> usize {
+        usize::from(self.as_u8())
+    }
 
 impl Into<u8> for InterruptIndex{
     fn into(self) -> u8 {
@@ -44,6 +54,17 @@ lazy_static! {
         idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
         idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
+        gen_name!{34, 256, handler}
+		// for x in InterruptIndex::Keyboard.as_usize()..0x100 {
+		// 	idt[x].set_handler_fn(|stack_frame| {
+		// 		info!["here"];
+
+		// 		unsafe {
+		// 			pic::PICS.lock().notify_end_of_interrupt(x as u8);
+		// 		}
+		// 	});
+		// }
+
         idt
     };
 }
@@ -81,6 +102,7 @@ extern "x86-interrupt" fn double_fault_handler(
     exception();
     panic!("DOUBLE FAULT\n{:#?}", stack_frame);
 }
+
 // DEPRECATE: unused, likely to not be used
 fn exception() {
     // util::term_set(Red);
@@ -93,13 +115,15 @@ fn test_breakpoint_exception() {
     // invoke a breakpoint exception
     x86_64::instructions::interrupts::int3();
 }
+
 // TODO: Move to pic
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
+    // info!(".");
 
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Timer.into());
+            .notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
     }
 }
 
@@ -115,6 +139,8 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     unsafe {
         pic::PICS
             .lock()
-            .notify_end_of_interrupt(InterruptIndex::Keyboard.into());
+            .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
     }
 }
+
+gen_fn! {34, 256, handler}

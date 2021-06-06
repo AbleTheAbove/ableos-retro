@@ -1,0 +1,19 @@
+stolen from osdev discord
+
+setup some bootloader (qloader2 is good)
+boot into long mode (which qloader2 will do)
+get some basic exception handlers
+set up a physical memory allocator using the memory map
+set up a virtual memory manager
+parse acpi tables
+set up apic and some timer (like the lapic timer)
+boot other APs
+make a scheduler
+add system calls
+port a libc
+pci drivers
+drivers for some form of disk, like AHCI or NVMe
+port common programs (nasm, gcc, bash)
+USB
+network
+???
