@@ -78,13 +78,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
 	info!("{:#?}", boot_info);
 
-	use alloc::format;
 	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
 	println(&v_str, (0, 0));
 
 	#[cfg(test)]
 	test_main();
-	use cpuio::outw;
 	unsafe {
 		outw(0x604, 0x2000);
 	}
@@ -136,29 +134,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	x86_64::instructions::interrupts::without_interrupts(|| {
 		drivers::mouse::init_mouse();
 	});
-
-	fn println(yes: &str, coordinates: (usize, usize)) {
-		let mut offset = 0;
-		let mut offset_y = 0;
-
-		for x in yes.chars() {
-			match x {
-				'\n' => {
-					offset = 0;
-					offset_y += 1;
-				}
-				_ => {
-					GRAPHICS.draw_character(
-						offset * 8 + coordinates.0,
-						offset_y * 8,
-						x,
-						Color16::White,
-					);
-					offset += 1;
-				}
-			}
-		}
-	}
 
 	use task::{executor::Executor, keyboard, Task};
 	let mut executor = Executor::new();
