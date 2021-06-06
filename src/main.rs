@@ -17,10 +17,12 @@
 extern crate alloc;
 
 use bootloader::BootInfo;
+use cpuio::outw;
 use vga::{colors::Color16, writers::GraphicsWriter};
 
 pub use kernel_state::{KernelState, KernelVersion};
 use window_manager::GRAPHICS;
+use alloc::format;
 
 /// The global allocator impl
 pub mod allocator;
@@ -63,11 +65,6 @@ pub mod window_manager;
 pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
 	let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
 	f(boot_info)
-}
-
-/// Checks if APIC is available
-fn check_apic() -> bool {
-	true
 }
 
 /// The "Start" point of ableOS

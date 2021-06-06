@@ -1,10 +1,8 @@
 extern crate proc_macro;
-use std::{convert::TryInto, fmt::format};
 
-use litrs::IntegerLit;
 use proc_macro::{Literal, TokenStream, TokenTree};
 use quote::{TokenStreamExt, __private::Span, format_ident, quote};
-use syn::{parse, Ident, Token};
+use syn::Ident;
 
 #[proc_macro]
 pub fn gen_fn(args: TokenStream) -> TokenStream {
