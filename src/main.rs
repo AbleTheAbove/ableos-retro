@@ -90,7 +90,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	});
 
 	if interrupts::has_apic() {
-		serial_println!["We have APIC!"];
+		success!["We have APIC!"];
 	}
 
 	fn println(yes: &str, coordinates: (usize, usize)) {
