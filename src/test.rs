@@ -1,8 +1,12 @@
 /// The tests
+<<<<<<< HEAD
 use crate::{
 	logger::{slog, LogLevel::Success},
 	serial_println,
 };
+=======
+use crate::{serial_println, success};
+>>>>>>> 8a9091888dc077c9253bdeb9205bf14f41b03bb9
 
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
@@ -42,10 +46,18 @@ impl<T> Testable for T
 where
 	T: Fn(),
 {
+<<<<<<< HEAD
 	/// Run the test
 	fn run(&self) {
 		slog(Success);
 		serial_println!("{}\t", core::any::type_name::<T>());
 		self();
 	}
+=======
+    /// Run the test
+    fn run(&self) {
+        success!("{}\t", core::any::type_name::<T>());
+        self();
+    }
+>>>>>>> 8a9091888dc077c9253bdeb9205bf14f41b03bb9
 }
