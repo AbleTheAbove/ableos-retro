@@ -10,7 +10,7 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![deny(missing_docs)]
-
+#![feature(once_cell)]
 // const BANNER: &str = include_str!("../root/banner.txt");
 // const ROOT: &[u8] = include_bytes!("../root");
 
@@ -98,6 +98,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     #[cfg(test)]
     test_main();
+    use cpuio::outw;
+    unsafe {
+        outw(0x604, 0x2000);
+    }
+
     use task::{executor::Executor, keyboard, Task};
     let mut executor = Executor::new();
     executor.spawn(Task::new(example_task()));
