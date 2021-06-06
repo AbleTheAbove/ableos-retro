@@ -6,7 +6,7 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test::test_runner)]
 #![reexport_test_harness_main = "test_main"]
-#![feature(alloc_error_handler)]    // at the top of the file
+#![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![feature(const_fn_fn_ptr_basics)]
@@ -45,13 +45,13 @@ pub mod task;
 #[cfg(test)]
 pub mod test;
 
+mod devices;
+pub mod drivers;
 mod kernel_state;
+mod ps2_mouse;
 mod sri;
 mod time;
 pub mod window_manager;
-mod devices;
-pub mod drivers;
-mod ps2_mouse;
 
 /// Defines the entry point function.
 ///
@@ -76,71 +76,64 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	init();
 	init_graphics();
 
-    info!("{:#?}", boot_info);
+	//    info!("{:#?}", boot_info);
 
-    use alloc::format;
-    let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
-    println(&v_str, (0, 0));
+	use alloc::format;
+	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
+	println(&v_str, (0, 0));
 
-    #[cfg(test)]
-        test_main();
-    use cpuio::outw;
-    unsafe {
-        outw(0x604, 0x2000);
-    }
+	#[cfg(test)]
+	test_main();
+	use cpuio::outw;
+	unsafe {
+		outw(0x604, 0x2000);
+	}
 
-    // reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
-    x86_64::instructions::interrupts::without_interrupts(|| {
-        drivers::mouse::init_mouse();
-    });
+	// reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
+	x86_64::instructions::interrupts::without_interrupts(|| {
+		drivers::mouse::init_mouse();
+	});
 
+	fn println(yes: &str, coordinates: (usize, usize)) {
+		let mut offset = 0;
+		let mut offset_y = 0;
 
+		for x in yes.chars() {
+			match x {
+				'\n' => {
+					offset = 0;
+					offset_y += 1;
+				}
+				_ => {
+					GRAPHICS.draw_character(
+						offset * 8 + coordinates.0,
+						offset_y * 8,
+						x,
+						Color16::White,
+					);
+					offset += 1;
+				}
+			}
+		}
+	}
 
-
-
-    fn println(yes: &str, coordinates: (usize, usize)) {
-        let mut offset = 0;
-        let mut offset_y = 0;
-
-        for x in yes.chars() {
-            match x {
-                '\n' => {
-                    offset = 0;
-                    offset_y += 1;
-                }
-                _ => {
-                    GRAPHICS.draw_character(
-                        offset * 8 + coordinates.0,
-                        offset_y * 8,
-                        x,
-                        Color16::White,
-                    );
-                    offset += 1;
-                }
-            }
-        }
-    }
-
-
-
-
-    use task::{executor::Executor, keyboard, Task};
-    let mut executor = Executor::new();
-    executor.spawn(Task::new(example_task()));
-    executor.spawn(Task::new(keyboard::print_keypresses()));
-    executor.spawn(Task::new(test_1()));
-    executor.run();
+	use task::{executor::Executor, keyboard, Task};
+	let mut executor = Executor::new();
+	executor.spawn(Task::new(example_task()));
+	executor.spawn(Task::new(keyboard::print_keypresses()));
+	executor.spawn(Task::new(test_1()));
+	executor.run();
 }
 
 /// Initialize
 pub fn init() {
-    gdt::init();
-    interrupts::init_idt();
-    unsafe { interrupts::pic::PICS.lock().initialize() }; // new
-    x86_64::instructions::interrupts::enable(); // new
-    if encrypt::aes_detect() {
-        success!("Encryption driver loaded")
-    }
+	gdt::init();
+	interrupts::init_idt();
+	unsafe { interrupts::pic::PICS.lock().initialize() }; // new
+	x86_64::instructions::interrupts::enable(); // new
+	if encrypt::aes_detect() {
+		success!("Encryption driver loaded")
+	}
 
 	sri::init();
 }
@@ -180,7 +173,7 @@ async fn example_task() {
 async fn test_1() {
 	use alloc::vec::Vec;
 
-    info!("performing async task: vec allocation");
+	info!("performing async task: vec allocation");
 
 	let mut vec = Vec::new();
 	for i in 0..500 {
