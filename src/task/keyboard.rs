@@ -1,3 +1,4 @@
+use crate::debug;
 use conquer_once::spin::OnceCell;
 use core::{
     pin::Pin,
@@ -8,8 +9,7 @@ use futures_util::{
     stream::{Stream, StreamExt},
     task::AtomicWaker,
 };
-use pc_keyboard::{layouts, HandleControl, Keyboard, ScancodeSet1, DecodedKey};
-use crate::debug;
+use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -78,8 +78,6 @@ pub async fn print_keypresses() {
                     DecodedKey::Unicode(character) => debug!("{:?} is pressed", character),
                     DecodedKey::RawKey(key) => debug!("{:?} is pressed", key),
                 }
-
-
             }
         }
     }

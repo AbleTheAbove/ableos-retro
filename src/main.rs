@@ -96,6 +96,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     #[cfg(test)]
     test_main();
+    use cpuio::outw;
+    unsafe {
+        outw(0x604, 0x2000);
+    }
+
     use task::{executor::Executor, keyboard, Task};
     let mut executor = Executor::new();
     executor.spawn(Task::new(example_task()));
