@@ -42,6 +42,11 @@ pub struct File {
     // 155 Filename prefix
     filename: [u8; 155],
 }
+impl File {
+    pub fn set_permissions(&mut self) {}
+    pub fn rename(&mut self) {}
+    fn set_checksum(&mut self) {}
+}
 
 #[test_case]
 pub fn ustar_file() {

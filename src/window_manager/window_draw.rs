@@ -114,14 +114,14 @@ pub fn logo(offset: (isize, isize)) {
         let a_color = Color16::Pink;
         // Left side of the A
         GRAPHICS.draw_line(
-            (offset.0 + 20, offset.1 + 0),
+            (offset.0 + 20, offset.1),
             (offset.0 + 10, offset.1 + 20),
             a_color,
         );
 
         // Right side of the A
         GRAPHICS.draw_line(
-            (offset.0 + 20, offset.1 + 0),
+            (offset.0 + 20, offset.1),
             (offset.0 + 30, offset.1 + 20),
             a_color,
         );
@@ -137,7 +137,7 @@ pub fn logo(offset: (isize, isize)) {
     let offset_c = (offset.0 + 5, offset.1 - 15);
     let crown_color = Color16::Yellow;
     GRAPHICS.draw_line(
-        (offset_c.0 + 0 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0, offset_c.1),
         (offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
         crown_color,
     );
@@ -149,27 +149,27 @@ pub fn logo(offset: (isize, isize)) {
     );
     GRAPHICS.draw_line(
         (offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
-        (offset_c.0 + 60 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 60 / 2, offset_c.1),
         crown_color,
     );
     GRAPHICS.draw_line(
-        (offset_c.0 + 60 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 60 / 2, offset_c.1),
         (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
         crown_color,
     );
     GRAPHICS.draw_line(
         (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
-        (offset_c.0 + 30 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 30 / 2, offset_c.1),
         crown_color,
     );
     GRAPHICS.draw_line(
-        (offset_c.0 + 30 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 30 / 2, offset_c.1),
         (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
         crown_color,
     );
     GRAPHICS.draw_line(
         (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
-        (offset_c.0 + 0 / 2, offset_c.1 + 0 / 2),
+        (offset_c.0 + 0 / 2, offset_c.1),
         crown_color,
     );
 }
