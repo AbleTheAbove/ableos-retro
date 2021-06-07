@@ -23,7 +23,6 @@ dependencies = [
  "raw-cpuid",
  "serde-json-core",
  "spin",
- "spinning_top",
  "uart_16550",
  "vga",
  "volatile 0.2.7",
