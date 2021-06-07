@@ -1,0 +1,17 @@
+- [ ] Able Tar File System
+  - [ ] Read from
+  - [ ] Write to
+  - [ ] Permissions
+- [ ] Program loading
+- [ ] Rust Able Shell
+  - [ ] intractability
+  - [ ] mock tty
+- [ ] Able Graphics Library
+  - [ ] Rectangle
+  - [ ] Circle
+  - [ ] Unicode support
+- [ ] Github Things
+  - [ ] Continuous integration
+  - [ ] Github Updates
+- [ ] Network
+  - [ ] IP interface

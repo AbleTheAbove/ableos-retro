@@ -29,7 +29,7 @@ pub struct File {
 	name_len: u8,
 	/// The name of the file.
 	name: [u8; 256],
-	/// AAAAAAAAAAAAA
+	/// The File's mode
 	mode: ModeFlag,
 	/// The id of the user who owns this particular file.
 	uid: u64,
@@ -39,7 +39,9 @@ pub struct File {
 	/// this header.
 	size: u128,
 	/// Time file was last modified.
-	mtime: u128,
+	// IDEA: seeing as we will not run out of time in a u64 move to that to save bytes
+	/// Last modified time
+	mtime: u64,
 	/// Checksum for data, not including header.
 	checksum: u64,
 	///
@@ -52,17 +54,19 @@ pub struct File {
 	gname: [u8; 32],
 	devmajor: u64,
 	devminor: u64,
-	unused: [u8; 363],
+	unused: [u8; 427],
 }
 
-//    Create a file
-//    Delete a file
-//    Open a file
-//    Close a file
-//    Read data from a file
-//    Write data to a file
-//    Reposition the current file pointer in a file
-//    Append data to the end of a file
-//    Truncate a file (delete its contents)
-//    Rename a file
-//    Copy a file
+impl File {
+	//    Create a file
+	//    Delete a file
+	//    Open a file
+	//    Close a file
+	//    Read data from a file
+	//    Write data to a file
+	//    Reposition the current file pointer in a file
+	//    Append data to the end of a file
+	//    Truncate a file (delete its contents)
+	//    Rename a file
+	//    Copy a file
+}

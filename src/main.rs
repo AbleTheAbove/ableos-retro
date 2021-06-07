@@ -83,6 +83,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
 	rash::shell();
 
+	// │ ┤ ┐ └ ┴ ┬ ├ ─ ┼ ┘ ┌
+
 	#[cfg(test)]
 	test_main();
 

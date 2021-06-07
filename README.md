@@ -10,14 +10,3 @@ Install [Qemu](https://www.qemu.org/)
 `rustup component add llvm-tools-preview`
 
 `cargo install bootimage`
-
-## Roadmap
-- [ ] Continuous integration
-- [ ] File System implementation
-- [ ] SRI Based user land syscall system
-- [ ] AES Based encryption
-- [ ] Advanced, feature-full multiseat implementation
-- [ ] Make promise to provide full Unicode support
-- [ ] Able Graphics Library
-  - [ ] Rectangle
-  - [ ] Circle

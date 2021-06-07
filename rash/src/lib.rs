@@ -13,4 +13,5 @@ pub fn shell() {
 	// the Prompt
 	// TODO: allow this to be configured
 	let prompt = "~>";
+	// │ ┤ ┐ └ ┴ ┬ ├ ─ ┼ ┘ ┌
 }
