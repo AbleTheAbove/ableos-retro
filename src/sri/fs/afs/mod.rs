@@ -1,7 +1,51 @@
 //! The Able File System will be the system wide file system
 
-struct File {
-	owner_id: u8,
+
+
+
+
+#[repr(u64)]
+pub enum ModeFlag {
+	Normal = 0,   // '0' 	Normal file
+	HardLink = 1, // '1' 	Hard link
+	SymLink = 2,  // '2' 	Symbolic link
+	CharDev = 3,  // '3' 	Character device
+	BlockDev = 4, // '4' 	Block device
+	Dir = 5,      // '5' 	Directory
+	Pipe = 6,     // '6' 	Named pipe (FIFO)
+}
+
+#[repr(u8)]
+pub enum Type {
+	x, // TODO: Actually implement this
+}
+
+pub struct File {
+   /// The length for the file name.
+	name_len: u8,
+   /// The name of the file.
+	name: [u8; 256],
+   /// AAAAAAAAAAAAA
+	mode: ModeFlag,
+   /// The id of the user who owns this particular file.
+	uid: u64,
+   /// The id of the group that owns this file.
+	gid: u64,
+   /// The size in bytes of this file, not including
+   /// this header.
+	size: u128,
+	mtime: u128,
+	chksum: u64,
+	typeflag: Type,
+	linkname_len: u8,
+	linkname: [u8; 256],
+	magic: [u8; 6],
+	version: [u8; 2],
+	uname: [u8; 32],
+	gname: [u8; 32],
+	devmajor: u64,
+	devminor: u64,
+	unused: [u8; 354],
 }
 
 //    Create a file

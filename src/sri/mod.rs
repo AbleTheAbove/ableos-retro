@@ -3,7 +3,7 @@ use alloc::string::{String, ToString};
 
 use core::fmt;
 
-mod fs;
+pub mod fs;
 //pub mod ustar;
 struct SRI {
 	protocol: String,

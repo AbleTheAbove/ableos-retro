@@ -84,6 +84,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	unsafe {
 		outw(0x604, 0x2000);
 	}
+   
+   info!["Size of file headers: {}", core::mem::size_of::<sri::fs::File>()];
 
 	// reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
 	x86_64::instructions::interrupts::without_interrupts(|| {

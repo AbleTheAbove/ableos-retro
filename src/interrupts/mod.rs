@@ -8,11 +8,7 @@ pub use apic::*;
 /// Module for PIC
 pub mod pic;
 
-<<<<<<< HEAD
-// use gen_fn::*;
-=======
 //use gen_fn::*;
->>>>>>> 0cd78122c3a195145e3f746098188f0289bc1b97
 
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
