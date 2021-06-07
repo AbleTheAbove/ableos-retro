@@ -99,10 +99,10 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 		let mut stringy =
 			core::mem::transmute::<(u32, u32, u32, u32), u128>(cpuid(0, 0, 0, 0)).to_ne_bytes();
 		stringy.reverse();
-      let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
-      stringy
+		let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
+		stringy
 	};
-   println(&stringy, (0,0));
+	println(&stringy, (0, 0));
 
 	fn println(yes: &str, coordinates: (usize, usize)) {
 		let mut offset = 0;
