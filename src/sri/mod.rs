@@ -5,6 +5,9 @@ use core::fmt;
 
 pub mod fs;
 //pub mod ustar;
+
+/// System Resource Identifier: The URI of Filesystems
+
 struct SRI {
 	protocol: String,
 	path: String,

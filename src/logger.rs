@@ -19,18 +19,18 @@ macro_rules! error {
 }
 
 /// print a debug message to serial, this will append a newline to the end
-
 #[cfg(not(test))]
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)+) => (
     $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+)))
 }
+
 /// Does nothing.
 #[cfg(test)]
 #[macro_export]
 macro_rules! debug {
-	($($arg:tt)+) => {{}}
+	($($arg:tt)+) => {{}};
 }
 /// print a success message to serial, this will append a newline to the end
 

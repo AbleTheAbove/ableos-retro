@@ -12,21 +12,21 @@ pub enum OpenOptionsMask {
 	/// Create the file, or open if exists UNLESS
 	/// exclude
 	Create         = 0x00000008,
-   /// Try to minimize cache effects of the I/O to and from this
-   /// file.  In general this will degrade performance, but it is
-   /// useful in special situations, such as when applications do
-   /// their own caching.  File I/O is done directly to/from
-   /// user-space buffers.  The O_DIRECT flag on its own makes an
-   /// effort to transfer data synchronously, but does not give
-   /// the guarantees of the O_SYNC flag that data and necessary
-   /// metadata are transferred.  To guarantee synchronous I/O,
-   /// O_SYNC must be used in addition to O_DIRECT.  See NOTES
-   /// below for further discussion.
+	/// Try to minimize cache effects of the I/O to and from this
+	/// file.  In general this will degrade performance, but it is
+	/// useful in special situations, such as when applications do
+	/// their own caching.  File I/O is done directly to/from
+	/// user-space buffers.  The O_DIRECT flag on its own makes an
+	/// effort to transfer data synchronously, but does not give
+	/// the guarantees of the O_SYNC flag that data and necessary
+	/// metadata are transferred.  To guarantee synchronous I/O,
+	/// O_SYNC must be used in addition to O_DIRECT.  See NOTES
+	/// below for further discussion.
 	Direct         = 0x00000010,
-   /// If pathname is not a directory, cause the open to fail.
-   /// This flag was added in kernel version 2.1.126, to avoid
-   /// denial-of-service problems if opendir(3) is called on a
-   /// FIFO or tape device.
+	/// If pathname is not a directory, cause the open to fail.
+	/// This flag was added in kernel version 2.1.126, to avoid
+	/// denial-of-service problems if opendir(3) is called on a
+	/// FIFO or tape device.
 	Directory      = 0x00000020,
 	/// Ensure that file is created, else return
 	/// with an error
