@@ -79,7 +79,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	info!("{:#?}", boot_info);
 
 	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
-	println(&v_str, (0, 0));
+	//println(&v_str, (0, 0));
 
 	#[cfg(test)]
 	test_main();
