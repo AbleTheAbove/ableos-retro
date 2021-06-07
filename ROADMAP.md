@@ -10,8 +10,12 @@
   - [ ] Rectangle
   - [ ] Circle
   - [ ] Unicode support
+- [ ] Multi User Single Computer
+  - [ ] The concept of a user
 - [ ] Github Things
   - [ ] Continuous integration
-  - [ ] Github Updates
+  - [X] Github Updates
 - [ ] Network
   - [ ] IP interface
+- [ ]USB Protocol
+  - [ ] User USB devices
