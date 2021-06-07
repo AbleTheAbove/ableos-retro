@@ -12,6 +12,7 @@ pub struct DeviceDescriptorTable {
 }
 
 lazy_static! {
+	/// TODO: DOCUMENT
 	pub static ref DEVICE_DESCRIPTOR_TABLE: DeviceDescriptorTable = DeviceDescriptorTable {
 		table: array_init(|_i| { Device { data: Vec::new() } }),
 	};

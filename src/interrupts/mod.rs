@@ -1,14 +1,14 @@
-use crate::gdt;
+use crate::{debug, error, gdt};
 use lazy_static::lazy_static;
-use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
-
+use x86_64::{
+	registers::control::Cr2,
+	structures::idt::{InterruptDescriptorTable, InterruptStackFrame},
+};
 /// Module for APIC
 pub mod apic;
 pub use apic::*;
 /// Module for PIC
 pub mod pic;
-
-//use gen_fn::*;
 
 /// Note what all the interrupts are
 #[derive(Debug, Clone, Copy)]
@@ -64,36 +64,26 @@ use crate::hlt_loop;
 use x86_64::structures::idt::PageFaultErrorCode;
 
 extern "x86-interrupt" fn page_fault_handler(
-	_stack_frame: InterruptStackFrame,
-	_error_code: PageFaultErrorCode,
+	stack_frame: InterruptStackFrame,
+	error_code: PageFaultErrorCode,
 ) {
 	// use x86_64::registers::control::Cr2;
-	exception();
-	// println!(": PAGE FAULT");
-	// println!("Accessed Address: {:?}", Cr2::read());
-	// println!("Error Code: {:?}", error_code);
-	// println!("{:#?}", stack_frame);
+	error!("PAGE FAULT");
+	error!("Accessed Address: {:?}", Cr2::read());
+	error!("Error Code: {:?}", error_code);
+	debug!("{:#?}", stack_frame);
 	hlt_loop();
 }
 
-extern "x86-interrupt" fn breakpoint_handler(_stack_frame: InterruptStackFrame) {
-	exception();
-	// println!(": BREAKPOINT\n{:#?}", stack_frame);
+extern "x86-interrupt" fn breakpoint_handler(stack_frame: InterruptStackFrame) {
+	debug!("BREAKPOINT\n{:#?}", stack_frame);
 }
 
 extern "x86-interrupt" fn double_fault_handler(
 	stack_frame: InterruptStackFrame,
 	_error_code: u64,
 ) -> ! {
-	exception();
 	panic!("DOUBLE FAULT\n{:#?}", stack_frame);
-}
-
-// DEPRECATE: unused, likely to not be used
-fn exception() {
-	// util::term_set(Red);
-	// print!("EXCEPTION ");
-	// util::term_reset();
 }
 
 #[test_case]
@@ -102,7 +92,6 @@ fn test_breakpoint_exception() {
 	x86_64::instructions::interrupts::int3();
 }
 
-// TODO: Move to pic
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
 	// info!(".");
 
@@ -113,7 +102,6 @@ extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFr
 	}
 }
 
-/// TODO: Move to a keyboard module
 extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStackFrame) {
 	use x86_64::instructions::port::Port;
 

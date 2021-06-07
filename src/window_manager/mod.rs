@@ -10,11 +10,22 @@ use vga::{
 //     vga_buff: Graphics640x480x16,
 // }
 // impl WindowManager {}
-mod terminal;
+//mod terminal;
 pub mod window_draw;
 
 type Size = (usize, usize);
 type Offset = (isize, isize);
+
+pub fn _init_graphics() {
+	let mut seven = 0;
+	let mut nine = 0;
+	for x in 0..10 {
+		window_draw::_windows(x, (seven, nine));
+		seven += 40;
+		nine += 40;
+	}
+	window_draw::logo((440, 420));
+}
 
 lazy_static! {
 

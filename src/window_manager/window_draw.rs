@@ -15,11 +15,12 @@ use vga::{colors::Color16, writers::GraphicsWriter};
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 /// todo: pwees write docs
-pub fn windows(id: u8, offset: (isize, isize)) {
+pub fn _windows(id: u8, offset: (isize, isize)) {
 	use alloc::format;
 	use alloc::string::String;
-	let win_title: String;
-	let size: (usize, usize);
+	let win_title = "hi";
+	let size: (usize, usize) = (0, 0);
+	/*
 	match id {
 		0 => {
 			win_title = "AbleOS Terminal".to_string();
@@ -31,6 +32,7 @@ pub fn windows(id: u8, offset: (isize, isize)) {
 			size = (200, 100);
 		}
 	}
+	*/
 	let window = Window {
 		title: &win_title,
 		offset: (offset.0, offset.1),
@@ -50,12 +52,6 @@ pub fn windows(id: u8, offset: (isize, isize)) {
 		);
 	}
 
-	match id {
-		0 => {
-			//terminal::draw_terminal(offset);
-		}
-		_ => {}
-	}
 	// Left line
 	GRAPHICS.draw_line(
 		(0 + window.offset.0, 0 + window.offset.1),
@@ -114,21 +110,21 @@ pub fn windows(id: u8, offset: (isize, isize)) {
 
 /// todo: pwees write docs
 pub fn logo(offset: (isize, isize)) {
-    {
-        let a_color = Color16::Pink;
-        // Left side of the A
-        GRAPHICS.draw_line(
-            (offset.0 + 20, offset.1),
-            (offset.0 + 10, offset.1 + 20),
-            a_color,
-        );
+	{
+		let a_color = Color16::Pink;
+		// Left side of the A
+		GRAPHICS.draw_line(
+			(offset.0 + 20, offset.1),
+			(offset.0 + 10, offset.1 + 20),
+			a_color,
+		);
 
-        // Right side of the A
-        GRAPHICS.draw_line(
-            (offset.0 + 20, offset.1),
-            (offset.0 + 30, offset.1 + 20),
-            a_color,
-        );
+		// Right side of the A
+		GRAPHICS.draw_line(
+			(offset.0 + 20, offset.1),
+			(offset.0 + 30, offset.1 + 20),
+			a_color,
+		);
 
 		// Center connector for the A
 		GRAPHICS.draw_line(
@@ -138,42 +134,42 @@ pub fn logo(offset: (isize, isize)) {
 		);
 	}
 
-    let offset_c = (offset.0 + 5, offset.1 - 15);
-    let crown_color = Color16::Yellow;
-    GRAPHICS.draw_line(
-        (offset_c.0, offset_c.1),
-        (offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
-        crown_color,
-    );
+	let offset_c = (offset.0 + 5, offset.1 - 15);
+	let crown_color = Color16::Yellow;
+	GRAPHICS.draw_line(
+		(offset_c.0, offset_c.1),
+		(offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
+		crown_color,
+	);
 
-    GRAPHICS.draw_line(
-        (offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
-        (offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
-        crown_color,
-    );
-    GRAPHICS.draw_line(
-        (offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
-        (offset_c.0 + 60 / 2, offset_c.1),
-        crown_color,
-    );
-    GRAPHICS.draw_line(
-        (offset_c.0 + 60 / 2, offset_c.1),
-        (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
-        crown_color,
-    );
-    GRAPHICS.draw_line(
-        (offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
-        (offset_c.0 + 30 / 2, offset_c.1),
-        crown_color,
-    );
-    GRAPHICS.draw_line(
-        (offset_c.0 + 30 / 2, offset_c.1),
-        (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
-        crown_color,
-    );
-    GRAPHICS.draw_line(
-        (offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
-        (offset_c.0 + 0 / 2, offset_c.1),
-        crown_color,
-    );
+	GRAPHICS.draw_line(
+		(offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
+		(offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
+		crown_color,
+	);
+	GRAPHICS.draw_line(
+		(offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
+		(offset_c.0 + 60 / 2, offset_c.1),
+		crown_color,
+	);
+	GRAPHICS.draw_line(
+		(offset_c.0 + 60 / 2, offset_c.1),
+		(offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
+		crown_color,
+	);
+	GRAPHICS.draw_line(
+		(offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
+		(offset_c.0 + 30 / 2, offset_c.1),
+		crown_color,
+	);
+	GRAPHICS.draw_line(
+		(offset_c.0 + 30 / 2, offset_c.1),
+		(offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
+		crown_color,
+	);
+	GRAPHICS.draw_line(
+		(offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
+		(offset_c.0 + 0 / 2, offset_c.1),
+		crown_color,
+	);
 }

@@ -24,6 +24,9 @@ use cpuio::outw;
 pub use kernel_state::{KernelState, KernelVersion};
 //use window_manager::GRAPHICS;
 
+/// The AbleOS Shell
+use rash;
+
 use crate::kernel_state::cpuid::cpu_vendor_signature;
 
 /// The global allocator impl
@@ -75,12 +78,14 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	init_alloc(boot_info);
 	init();
-	init_graphics();
+	// init_graphics();
+	// info!("{:#?}", boot_info);
 
-	info!("{:#?}", boot_info);
+	rash::shell();
 
 	#[cfg(test)]
 	test_main();
+
 	unsafe {
 		outw(0x604, 0x2000);
 	}
@@ -177,15 +182,4 @@ async fn test_1() {
 	for i in 0..500 {
 		vec.push(i);
 	}
-}
-
-fn init_graphics() {
-	let mut seven = 0;
-	let mut nine = 0;
-	for x in 0..10 {
-		window_manager::window_draw::windows(x, (seven, nine));
-		seven += 40;
-		nine += 40;
-	}
-	window_manager::window_draw::logo((440, 420));
 }

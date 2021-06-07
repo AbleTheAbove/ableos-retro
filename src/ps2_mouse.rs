@@ -240,9 +240,11 @@ impl Mouse {
 	}
 
 	fn read_data_port(&mut self) -> Result<u8, &'static str> {
-		debug!("owo");
+		// INFO: What the fuck
+		//debug!("owo");
 		self.wait_for_read()?;
-		debug!("what's this");
+		// HERESY: Stop
+		// debug!("what's this");
 		Ok(unsafe { self.data_port.read() })
 	}
 

@@ -1,10 +1,7 @@
 /// All the allocators available to ableOS
 pub mod fixed_size_block;
 
-// DEPRECATE: this isn't used and should be fazed out of the kernel
-// pub mod linked_list;
-
-/// The startting location of the heap
+/// The starting location of the heap
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 /// TODO: owo what is this?
 pub const HEAP_SIZE: usize = 200 * 1024; // 100 KiB
@@ -84,14 +81,4 @@ fn allocate_test() {
 		vec.push(i);
 	}
 	// println!("vec at {:p}", vec.as_slice());
-}
-
-// DEPRECATE: Not used
-fn _align_up(addr: usize, align: usize) -> usize {
-	let remainder = addr % align;
-	if remainder == 0 {
-		addr // addr already aligned
-	} else {
-		addr - remainder + align
-	}
 }
