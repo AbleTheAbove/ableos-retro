@@ -5,6 +5,6 @@ use crate::kernel_state::cpuid::{cpuid, EDXFeatureMasks};
 pub fn has_apic() -> bool {
 	// Note: this is not where it sets eax to 1.
 	// This is.
-	let (_, _, _, edx) = cpuid(1, 0, 0, 0);
+	let [_, _, _, edx] = cpuid(0,0,0, 0);
 	(edx & EDXFeatureMasks::APIC as u32) > 0
 }

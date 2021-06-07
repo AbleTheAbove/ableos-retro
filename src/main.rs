@@ -25,7 +25,7 @@ use alloc::format;
 pub use kernel_state::{KernelState, KernelVersion};
 use window_manager::GRAPHICS;
 
-use crate::kernel_state::cpuid::cpuid;
+use crate::kernel_state::cpuid::{cpu_vendor_signature, cpuid};
 
 /// The global allocator impl
 pub mod allocator;
@@ -95,14 +95,11 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	if interrupts::has_apic() {
 		success!["We have APIC!"];
 	}
-	let stringy = unsafe {
-		let mut stringy =
-			core::mem::transmute::<(u32, u32, u32, u32), u128>(cpuid(0, 0, 0, 0)).to_ne_bytes();
-		stringy.reverse();
-      let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
-      stringy
+	unsafe {
+		let mut stringy = cpu_vendor_signature();
+		let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
+		println(&stringy, (0, 30));
 	};
-   println(&stringy, (0,0));
 
 	fn println(yes: &str, coordinates: (usize, usize)) {
 		let mut offset = 0;

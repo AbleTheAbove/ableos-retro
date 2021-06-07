@@ -1,7 +1,7 @@
 /// Responses identification request with eax 0
 #[allow(dead_code)]
 #[repr(u128)]
-pub enum VendorSignatures {
+pub enum CpuVendorSignatures {
 	/* AMD:     "AuthenticAMD" */
 	AMD = 0x6874754169746e65444d4163,
 	/* CENTAUR: "CentaurHauls" */
@@ -216,13 +216,13 @@ pub enum EBXSuperFeatureMasks {
 /// Returns what eax, ebx, ecx, and edx get set to when sending
 /// cpuid instruction to processor. Sets these initially to given
 /// input parameters, then resets to previous values.
-pub fn cpuid(mut eax_: u32, mut ebx_: u32, mut ecx_: u32, mut edx_: u32) -> (u32, u32, u32, u32) {
+pub fn cpuid(mut eax_: u32, mut ebx_: u32, mut ecx_: u32, mut edx_: u32) -> [u32; 4] {
 	unsafe {
 		asm![
-			"xchg eax, {:e}",
-			"xchg ebx, {:e}",
-			"xchg ecx, {:e}",
-			"xchg edx, {:e}",
+			"xchg {:e}, eax",
+			"xchg {:e}, ebx",
+			"xchg {:e}, ecx",
+			"xchg {:e}, edx",
 			"cpuid",
 			"xchg {:e}, eax",
 			"xchg {:e}, ebx",
@@ -236,7 +236,12 @@ pub fn cpuid(mut eax_: u32, mut ebx_: u32, mut ecx_: u32, mut edx_: u32) -> (u32
 			out(reg) ebx_,
 			out(reg) ecx_,
 			out(reg) edx_
-		]
+		];
 	}
-	(eax_, ebx_, ecx_, edx_)
+	[eax_, ebx_, ecx_, edx_]
+}
+
+pub fn cpu_vendor_signature() -> [u8; 12] {
+	let [a, b, c, d] = cpuid(0, 1, 1, 1);
+	unsafe { core::mem::transmute::<[u32; 3], [u8; 12]>([b, c, d]) }
 }
