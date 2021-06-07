@@ -1,7 +1,5 @@
 # ableOS
-![Discord](https://img.shields.io/discord/849794982566559754)
-
-![Code Size](https://img.shields.io/github/languages/code-size/abletheabove/ableos)
+![Discord](https://img.shields.io/discord/849794982566559754) ![Code Size](https://img.shields.io/github/languages/code-size/abletheabove/ableos)
 ## Set up
 Install [Qemu](https://www.qemu.org/)
 
