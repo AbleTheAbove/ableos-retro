@@ -16,7 +16,8 @@ pub mod window_draw;
 type Size = (usize, usize);
 type Offset = (isize, isize);
 
-pub fn _init_graphics() {
+/// Initialize the window manager
+pub fn init() {
 	let mut seven = 0;
 	let mut nine = 0;
 	for x in 0..10 {
@@ -28,7 +29,6 @@ pub fn _init_graphics() {
 }
 
 lazy_static! {
-
 	/// Static reference to the frame buffer
 	pub static ref GRAPHICS: Graphics640x480x16 = {
 		let mode = Graphics640x480x16::new();
