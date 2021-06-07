@@ -41,6 +41,8 @@ volatile = "0.2.6"
 # Initialize hardware device descriptor table
 array-init = "2.0.0"
 # gen_fn = { path = "./gen_fn" }
+rash = {path = "./rash"}
+
 ps2-mouse = "0.1.4"
 raw-cpuid = "9.0.0"
 x86 = "0.39.0"
@@ -48,6 +50,8 @@ x86 = "0.39.0"
 # Used as a temporary kernel configuration crate
 bitflags = "1.2.1"
 serde-json-core = "0.4.0"
+
+
 
 [dependencies.lazy_static]
 features = ["spin_no_std"]

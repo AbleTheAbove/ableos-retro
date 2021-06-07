@@ -1,4 +1,6 @@
+#![no_std]
+
 //
 pub fn shell() {
-	prompt = "~>"
+	let prompt = "~>";
 }

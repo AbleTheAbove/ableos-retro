@@ -18,7 +18,7 @@ use vga::{colors::Color16, writers::GraphicsWriter};
 pub fn _windows(id: u8, offset: (isize, isize)) {
 	use alloc::format;
 	use alloc::string::String;
-	let win_title: String;
+	let win_title = "hi";
 	let size: (usize, usize) = (0, 0);
 	/*
 	match id {

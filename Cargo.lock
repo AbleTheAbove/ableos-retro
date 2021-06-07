@@ -20,6 +20,7 @@ dependencies = [
  "pc-keyboard",
  "pic8259",
  "ps2-mouse",
+ "rash",
  "raw-cpuid",
  "serde-json-core",
  "spin",
@@ -336,6 +337,10 @@ dependencies = [
  "bitflags",
  "x86_64",
 ]
+
+[[package]]
+name = "rash"
+version = "0.1.0"
 
 [[package]]
 name = "raw-cpuid"
