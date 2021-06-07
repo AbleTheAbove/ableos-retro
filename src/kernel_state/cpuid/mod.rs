@@ -216,32 +216,20 @@ pub enum EBXSuperFeatureMasks {
 /// Returns what eax, ebx, ecx, and edx get set to when sending
 /// cpuid instruction to processor. Sets these initially to given
 /// input parameters, then resets to previous values.
-pub fn cpuid(mut eax_: u32, mut ebx_: u32, mut ecx_: u32, mut edx_: u32) -> [u32; 4] {
+pub fn cpuid(mut eax: u32, mut ebx: u32, mut ecx: u32, mut edx: u32) -> [u32; 4] {
 	unsafe {
 		asm![
-			"xchg {:e}, eax",
-			"xchg {:e}, ebx",
-			"xchg {:e}, ecx",
-			"xchg {:e}, edx",
 			"cpuid",
-			"xchg {:e}, eax",
-			"xchg {:e}, ebx",
-			"xchg {:e}, ecx",
-			"xchg {:e}, edx",
-			in(reg) eax_,
-			in(reg) ebx_,
-			in(reg) ecx_,
-			in(reg) edx_,
-			out(reg) eax_,
-			out(reg) ebx_,
-			out(reg) ecx_,
-			out(reg) edx_
+			inlateout("eax") eax => eax,
+			// inlateout("ebx") ebx => ebx,
+			inlateout("ecx") ecx => ecx,
+			inlateout("edx") edx => edx,
 		];
 	}
-	[eax_, ebx_, ecx_, edx_]
+	[eax, ebx, ecx, edx]
 }
 
 pub fn cpu_vendor_signature() -> [u8; 12] {
 	let [a, b, c, d] = cpuid(0, 1, 1, 1);
-	unsafe { core::mem::transmute::<[u32; 3], [u8; 12]>([b, c, d]) }
+	unsafe { core::mem::transmute::<[u32; 3], [u8; 12]>([b, d, c]) }
 }

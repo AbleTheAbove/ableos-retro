@@ -96,9 +96,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 		success!["We have APIC!"];
 	}
 	unsafe {
-		let mut stringy = cpu_vendor_signature();
+		let stringy = cpu_vendor_signature();
 		let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
-		println(&stringy, (0, 30));
+		info!["{:?}", stringy];
 	};
 
 	fn println(yes: &str, coordinates: (usize, usize)) {
