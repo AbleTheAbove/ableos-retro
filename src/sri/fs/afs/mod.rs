@@ -8,6 +8,7 @@ pub struct FileMount {
 	process_lock_id: Option<ProcessId>,
 }
 
+/// IDK
 #[repr(u8)]
 pub enum ModeFlag {
 	Normal   = 0, // Normal file
