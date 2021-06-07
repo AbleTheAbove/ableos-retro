@@ -74,11 +74,9 @@ impl<A> Locked<A> {
 
 #[test_case]
 fn allocate_test() {
-	// use crate::println;
 	use alloc::vec::Vec;
 	let mut vec = Vec::new();
 	for i in 0..500 {
 		vec.push(i);
 	}
-	// println!("vec at {:p}", vec.as_slice());
 }

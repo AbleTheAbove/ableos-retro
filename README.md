@@ -10,3 +10,11 @@ Install [Qemu](https://www.qemu.org/)
 `rustup component add llvm-tools-preview`
 
 `cargo install bootimage`
+
+
+## Testing on real hardware
+I recommend using an old x86_64 computer
+* `cargo run --release` to generate a binary image that is bootable
+* flash it to a USB device via `dd` or belenaEtcher
+* Remove said USB device and plug into test machine
+* assure test machine boots from USB devices
