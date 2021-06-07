@@ -1,4 +1,4 @@
-use raw_cpuid::{cpuid, CpuIdResult};
+use raw_cpuid::cpuid;
 
 /// Responses identification request with eax 0
 #[allow(dead_code)]
@@ -74,7 +74,7 @@ pub enum ECXFeatureMasks {
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum EDXFeatureMasks {
-	FPU = 0x00000001,
+	Fpu = 0x00000001,
 	VirtualModeExtensions = 0x00000002,
 	DebuggingExtensions = 0x00000004,
 	PageSizeExtensions = 0x0000008,
@@ -82,8 +82,8 @@ pub enum EDXFeatureMasks {
 	ModelSpecificRegisters = 0x00000020,
 	PhysicalAddressExtension = 0x00000040,
 	MachineCheckException = 0x0000080,
-	CMPXCHG8 = 0x00000100,
-	APIC = 0x00000200,
+	CmpXchg8 = 0x00000100,
+	Apic = 0x00000200,
 	Reserved10 = 0x00000400,
 	SysenterSysexit = 0x0000800,
 	MemoryTypeRangeRegisters = 0x00001000,
@@ -96,7 +96,7 @@ pub enum EDXFeatureMasks {
 	CLFLUSHInstruction = 0x00080000,
 	Reserved20 = 0x00100000,
 	DebugStore = 0x00200000,
-	ACPI = 0x00400000,
+	Acpi = 0x00400000,
 	Mmx = 0x00800000,
 	FXSaveFXRestore = 0x01000000,
 	Sse = 0x02000000,
@@ -141,7 +141,7 @@ pub enum EBXExtendedFeatureMasks {
 	Avx512Prefetch = 0x04000000,
 	Avx512ExponentialReciprocalInstructions = 0x08000000,
 	Avx512ConflictDetection = 0x10000000,
-	SHA = 0x20000000,
+	Sha = 0x20000000,
 	Avx512BW = 0x40000000,
 	Avx512VL = 0x80000000,
 }
@@ -150,60 +150,60 @@ pub enum EBXExtendedFeatureMasks {
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum ECXExtendedFeatureMasks {
-	PREFTCHWT1 = 0x00000001,
-	AVX512VBMI = 0x00000002,
-	PKU = 0x00000004,
-	OSPKE = 0x00000010,
-	AVX512VBMI2 = 0x00000040,
-	SHSTK = 0x00000080,
-	GFNI = 0x00000100,
-	VAES = 0x00000200,
-	VPCLMULQDQ = 0x00000400,
-	AVX512VNNI = 0x00000800,
-	AVX512BITALG = 0x00001000,
-	AVX512VPOPCNTDQ = 0x00004000,
-	RDPID = 0x00400000,
+	Preftchwt1 = 0x00000001,
+	Avx512vbmi = 0x00000002,
+	Pku = 0x00000004,
+	Ospke = 0x00000010,
+	Avx512vbmi2 = 0x00000040,
+	Shstk = 0x00000080,
+	Gfni = 0x00000100,
+	Vaes = 0x00000200,
+	Vpclmulqdq = 0x00000400,
+	Avx512vnni = 0x00000800,
+	Avx512bitalg = 0x00001000,
+	Avx512vpopcntdq = 0x00004000,
+	Rdpid = 0x00400000,
 }
 
 /// Features in edx for eax=7 ecx=0
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum EDXExtendedFeatureMasks {
-	AVX5124VNNIW = 0x00000004,
-	AVX5124FMAPS = 0x00000008,
-	IBT = 0x00100000,
+	Avx5124vnniw = 0x00000004,
+	Avx5124fmaps = 0x00000008,
+	Ibt = 0x00100000,
 }
 
 /// Features in %eax for eax=13 ecx=1
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum EAXExtendedFeatureMasks {
-	XSAVEOPT = 0x00000001,
-	XSAVEC = 0x00000002,
-	XSAVES = 0x00000008,
+	Xsaveopt = 0x00000001,
+	Xsavec = 0x00000002,
+	Xsaves = 0x00000008,
 }
 
 /// Features in ecx for eax=0x80000001
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum ECXSuperFeautureMasks {
-	LAHF_LM = 0x00000001,
-	ABM = 0x00000020,
-	SSE4a = 0x00000040,
-	PRFCHW = 0x00000100,
-	XOP = 0x00000800,
-	LWP = 0x00008000,
-	FMA4 = 0x00010000,
-	TBM = 0x00200000,
-	MWAITX = 0x20000000,
+	Lahflm = 0x00000001,
+	Abm = 0x00000020,
+	Sse4a = 0x00000040,
+	Prfchw = 0x00000100,
+	Xop = 0x00000800,
+	Lwp = 0x00008000,
+	Fma4 = 0x00010000,
+	Tbm = 0x00200000,
+	Mwaitx = 0x20000000,
 }
 
 /// Features in edx for leaf 0x80000001
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum EDXSuperFeatureMasks {
-	MMXEXT = 0x00400000,
-	LM = 0x20000000,
+	Mmxext = 0x00400000,
+	Lm = 0x20000000,
 	_3DNOWP = 0x40000000,
 	_3DNOW = 0x80000000,
 }
@@ -212,7 +212,7 @@ pub enum EDXSuperFeatureMasks {
 #[allow(dead_code)]
 #[repr(u32)]
 pub enum EBXSuperFeatureMasks {
-	CLZERO = 0x00000001,
+	Clzero = 0x00000001,
 }
 
 /// Returns the cpu vendor signature

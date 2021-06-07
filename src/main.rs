@@ -12,20 +12,19 @@
 #![feature(const_fn_fn_ptr_basics)]
 #![warn(missing_docs)]
 #![feature(repr128)]
-// const BANNER: &str = include_str!("../root/banner.txt");
-// const ROOT: &[u8] = include_bytes!("../root");
+#![allow(incomplete_features)]
 
 extern crate alloc;
 
 use bootloader::BootInfo;
 use cpuio::outw;
-use vga::{colors::Color16, writers::GraphicsWriter};
+//use vga::{colors::Color16, writers::GraphicsWriter};
 
-use alloc::format;
+//use alloc::format;
 pub use kernel_state::{KernelState, KernelVersion};
-use window_manager::GRAPHICS;
+//use window_manager::GRAPHICS;
 
-use crate::kernel_state::cpuid::{cpu_vendor_signature};
+use crate::kernel_state::cpuid::cpu_vendor_signature;
 
 /// The global allocator impl
 pub mod allocator;
@@ -56,6 +55,8 @@ mod kernel_state;
 mod ps2_mouse;
 mod sri;
 mod time;
+
+/// The window manager module
 pub mod window_manager;
 
 /// Defines the entry point function.
@@ -78,9 +79,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
 	info!("{:#?}", boot_info);
 
-	let v_str = format!("{}", kernel_state::KERNEL_STATE.lock().version);
-	//println(&v_str, (0, 0));
-
 	#[cfg(test)]
 	test_main();
 	unsafe {
@@ -91,39 +89,30 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	x86_64::instructions::interrupts::without_interrupts(|| {
 		drivers::mouse::init_mouse();
 	});
+	/*
+		fn println(yes: &str, coordinates: (usize, usize)) {
+			let mut offset = 0;
+			let mut offset_y = 0;
 
-	if interrupts::has_apic() {
-		success!["We have APIC!"];
-	}
-	unsafe {
-		let stringy = cpu_vendor_signature();
-		let stringy = alloc::string::String::from_utf8_unchecked(stringy.to_vec());
-		info!["{:?}", stringy];
-	};
-
-	fn println(yes: &str, coordinates: (usize, usize)) {
-		let mut offset = 0;
-		let mut offset_y = 0;
-
-		for x in yes.chars() {
-			match x {
-				'\n' => {
-					offset = 0;
-					offset_y += 1;
-				}
-				_ => {
-					GRAPHICS.draw_character(
-						offset * 8 + coordinates.0,
-						offset_y * 8,
-						x,
-						Color16::White,
-					);
-					offset += 1;
+			for x in yes.chars() {
+				match x {
+					'\n' => {
+						offset = 0;
+						offset_y += 1;
+					}
+					_ => {
+						GRAPHICS.draw_character(
+							offset * 8 + coordinates.0,
+							offset_y * 8,
+							x,
+							Color16::White,
+						);
+						offset += 1;
+					}
 				}
 			}
 		}
-	}
-
+	*/
 	use task::{executor::Executor, keyboard, Task};
 	let mut executor = Executor::new();
 	executor.spawn(Task::new(example_task()));
