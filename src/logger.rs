@@ -27,7 +27,10 @@ macro_rules! debug {
     $crate::logger::slog($crate::logger::LogLevel::Debug, format_args!($($arg)+)))
 }
 #[cfg(test)]
-macro_rules! debug {}
+#[macro_export]
+macro_rules! debug {
+	($($arg:tt)+) => {}
+}
 /// print a success message to serial, this will append a newline to the end
 
 #[macro_export]
