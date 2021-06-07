@@ -1,9 +1,5 @@
 //! The Able File System will be the system wide file system
 
-
-
-
-
 #[repr(u64)]
 pub enum ModeFlag {
 	Normal = 0,   // '0' 	Normal file
@@ -21,19 +17,21 @@ pub enum Type {
 }
 
 pub struct File {
-   /// The length for the file name.
+	/// The length for the file name.
 	name_len: u8,
-   /// The name of the file.
+	/// The name of the file.
 	name: [u8; 256],
-   /// AAAAAAAAAAAAA
+	/// The File's mode
 	mode: ModeFlag,
-   /// The id of the user who owns this particular file.
+	/// The id of the user who owns this particular file.
 	uid: u64,
-   /// The id of the group that owns this file.
+	/// The id of the group that owns this file.
 	gid: u64,
-   /// The size in bytes of this file, not including
-   /// this header.
+	/// The size in bytes of this file, not including
+	/// this header.
 	size: u128,
+	// IDEA: seeing as we will not run out of time in a u64 move to that to save bytes
+	/// Last modified time
 	mtime: u128,
 	chksum: u64,
 	typeflag: Type,
@@ -48,14 +46,16 @@ pub struct File {
 	unused: [u8; 354],
 }
 
-//    Create a file
-//    Delete a file
-//    Open a file
-//    Close a file
-//    Read data from a file
-//    Write data to a file
-//    Reposition the current file pointer in a file
-//    Append data to the end of a file
-//    Truncate a file (delete its contents)
-//    Rename a file
-//    Copy a file
+impl File {
+	//    Create a file
+	//    Delete a file
+	//    Open a file
+	//    Close a file
+	//    Read data from a file
+	//    Write data to a file
+	//    Reposition the current file pointer in a file
+	//    Append data to the end of a file
+	//    Truncate a file (delete its contents)
+	//    Rename a file
+	//    Copy a file
+}
