@@ -24,6 +24,9 @@ use cpuio::outw;
 pub use kernel_state::{KernelState, KernelVersion};
 //use window_manager::GRAPHICS;
 
+/// The AbleOS Shell
+use rash;
+
 use crate::kernel_state::cpuid::cpu_vendor_signature;
 
 /// The global allocator impl
@@ -76,11 +79,13 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	init_alloc(boot_info);
 	init();
 	// init_graphics();
+	// info!("{:#?}", boot_info);
 
-	info!("{:#?}", boot_info);
+	rash::shell();
 
 	#[cfg(test)]
 	test_main();
+
 	unsafe {
 		outw(0x604, 0x2000);
 	}
