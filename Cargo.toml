@@ -8,16 +8,16 @@ lto = true
 
 [package.metadata.bootimage]
 run-args = [
-  # Add a network for the future
-  # "-net", "nic,model=pcnet"
-  #QEMU drive options:  https://www.heiko-sieger.info/qemu-system-x86_64-drive-options/
+  
+  
+  
   "-drive",
   "file=raw_images/first.img,format=raw,id=main",
-  "-serial", # this allows log messages to be printed outside qemu
-  "stdio", #
+  "-serial", 
+  "stdio", 
   "-vga",
   "vmware",
-]
+] #
 test-args = [
   "-device",
   "isa-debug-exit,iobase=0xf4,iosize=0x04",
@@ -29,12 +29,34 @@ test-args = [
 test-success-exit-code = 33
 test-timeout = 300 # (in seconds)
 
+
+[dependencies]
+bootloader = { version = "0.9.8", features = ["map_physical_memory"] }
+core_detect = "*"
+cpuio = { git = "https://github.com/anyusernameworks/cpuio.git" }
+lliw = "0"
+pc-keyboard = "0.5.0"
+pic8259 = "0.10.1"
+spin = "0.5.2"
+uart_16550 = "0.2.0"
+vga = { git = "https://github.com/abletheabove/vga" }
+volatile = "0.2.6"
+# Initialize hardware device descriptor table
+array-init = "2.0.0"
+gen_fn = { path = "./gen_fn" }
+ps2-mouse = "0.1.4"
+spinning_top = "0.2.4"
+
+# Used as a temporary kernel configuration crate
+bitflags = "1.2.1"
+serde-json-core = "0.4.0"
+
 [dependencies.lazy_static]
 features = ["spin_no_std"]
 version = "1.0"
 
-[dependencies.linked_list_allocator]
 # Used as a fallback allocator
+[dependencies.linked_list_allocator]
 version = "0.9.0"
 
 [dependencies.conquer-once]
@@ -54,25 +76,3 @@ version = "0.2.1"
 [dependencies.x86_64]
 features = ["inline_asm"]
 version = "0.14.2"
-
-
-[dependencies]
-bootloader = {version = "0.9.8", features = ["map_physical_memory"]}
-core_detect = "*"
-cpuio = {git = "https://github.com/anyusernameworks/cpuio.git"}
-lliw = "0"
-pc-keyboard = "0.5.0"
-pic8259 = "0.10.1"
-spin = "0.5.2"
-uart_16550 = "0.2.0"
-vga = {git = "https://github.com/abletheabove/vga"}
-volatile = "0.2.6"
-# Initialize hardware device descriptor table
-array-init = "2.0.0"
-gen_fn = {path = "./gen_fn"}
-ps2-mouse = "0.1.4"
-spinning_top = "0.2.4"
-
-# Used as a temporary kernel configuration crate
-serde-json-core = "0.4.0"
-bitflags = "1.2.1"
