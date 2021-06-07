@@ -1,3 +1,5 @@
+use raw_cpuid::{cpuid, CpuIdResult};
+
 /// Responses identification request with eax 0
 #[allow(dead_code)]
 #[repr(u128)]
@@ -213,23 +215,8 @@ pub enum EBXSuperFeatureMasks {
 	CLZERO = 0x00000001,
 }
 
-/// Returns what eax, ebx, ecx, and edx get set to when sending
-/// cpuid instruction to processor. Sets these initially to given
-/// input parameters, then resets to previous values.
-pub fn cpuid(mut eax: u32, mut ebx: u32, mut ecx: u32, mut edx: u32) -> [u32; 4] {
-	unsafe {
-		asm![
-			"cpuid",
-			inlateout("eax") eax => eax,
-			// inlateout("ebx") ebx => ebx,
-			inlateout("ecx") ecx => ecx,
-			inlateout("edx") edx => edx,
-		];
-	}
-	[eax, ebx, ecx, edx]
-}
-
+/// Returns the cpu vendor signature
 pub fn cpu_vendor_signature() -> [u8; 12] {
-	let [a, b, c, d] = cpuid(0, 1, 1, 1);
-	unsafe { core::mem::transmute::<[u32; 3], [u8; 12]>([b, d, c]) }
+	let result = cpuid![0, 0];
+	unsafe { core::mem::transmute::<[u32; 3], [u8; 12]>([result.ebx, result.edx, result.ecx]) }
 }

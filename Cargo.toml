@@ -46,6 +46,7 @@ array-init = "2.0.0"
 gen_fn = { path = "./gen_fn" }
 ps2-mouse = "0.1.4"
 spinning_top = "0.2.4"
+raw-cpuid = "9.0.0"
 
 # Used as a temporary kernel configuration crate
 bitflags = "1.2.1"

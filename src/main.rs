@@ -25,7 +25,7 @@ use alloc::format;
 pub use kernel_state::{KernelState, KernelVersion};
 use window_manager::GRAPHICS;
 
-use crate::kernel_state::cpuid::{cpu_vendor_signature, cpuid};
+use crate::kernel_state::cpuid::{cpu_vendor_signature};
 
 /// The global allocator impl
 pub mod allocator;
