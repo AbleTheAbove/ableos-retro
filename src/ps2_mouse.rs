@@ -47,7 +47,7 @@ bitflags! {
 #[repr(u8)]
 enum Command {
 	EnablePacketStreaming = 0xF4,
-	SetDefaults = 0xF6,
+	SetDefaults           = 0xF6,
 }
 
 /// A basic interface to interact with a PS2 mouse.
