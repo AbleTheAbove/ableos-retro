@@ -89,6 +89,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	test_main();
 
 	unsafe {
+		// Broken QEMU shutdown
 		outw(0x604, 0x2000);
 	}
 
