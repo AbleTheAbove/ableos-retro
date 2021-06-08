@@ -54,7 +54,7 @@ jobs:
     - uses: actions-rs/toolchain@v1
       with:
         toolchain: nightly
-        components: llvm-tools-preview, rust-src
+        components: llvm-tools-preview, rust-src, rustfmt
         override: true
     - uses: actions-rs/cargo@v1
       with:
