@@ -1,7 +1,7 @@
 use alloc::vec::Vec;
 use lazy_static::lazy_static;
 use spin::Mutex;
-use vga::{
+pub use vga::{
 	colors::Color16,
 	writers::{Graphics640x480x16, GraphicsWriter},
 };
