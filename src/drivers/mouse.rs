@@ -52,7 +52,7 @@ impl OnScreenMouse {
 }
 
 // Initialize the mouse and set the on complete event.
-pub(crate) fn init_mouse() {
+pub fn init_mouse() {
 	let mut mouse = _MOUSE.lock();
 	info!("Trying to initialize mouse");
 	mouse.init().unwrap();

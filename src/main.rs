@@ -2,10 +2,10 @@
 
 #![no_std] // Makes sure the STD library is not included as we can not use it
 #![no_main] // disable all Rust-level entry points
-#![feature(abi_x86_interrupt)]
 #![feature(custom_test_frameworks)]
-#![test_runner(crate::test::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+#![test_runner(ableos::test::test_runner)]
+#![feature(abi_x86_interrupt)]
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]
 #![feature(asm)]
@@ -14,53 +14,7 @@
 #![feature(repr128)]
 #![allow(incomplete_features)]
 
-extern crate alloc;
-
-use bootloader::BootInfo;
-use cpuio::outw;
-//use vga::{colors::Color16, writers::GraphicsWriter};
-
-//use alloc::format;
-pub use kernel_state::{KernelState, KernelVersion};
-//use window_manager::GRAPHICS;
-
-/// The AbleOS Shell
-use rash;
-
-use crate::kernel_state::cpuid::cpu_vendor_signature;
-
-/// The global allocator impl
-pub mod allocator;
-mod encrypt;
-/// Global Descriptor Table
-pub mod gdt;
-/// Interrupt module
-pub mod interrupts;
-
-/// A logging assistance crate
-pub mod logger;
-/// Memory management
-pub mod memory;
-mod panic;
-mod serial;
-mod vga_buffer;
-
-/// Asyncronous module
-pub mod task;
-
-/// The holder of tests
-#[cfg(test)]
-pub mod test;
-
-mod devices;
-pub mod drivers;
-mod kernel_state;
-mod ps2_mouse;
-mod sri;
-mod time;
-
-/// The window manager module
-pub mod window_manager;
+use ableos::*;
 
 /// Defines the entry point function.
 ///
@@ -89,6 +43,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	test_main();
 
 	unsafe {
+		// Get rid of text mode cursor.
 		outw(0x604, 0x2000);
 	}
 
@@ -101,30 +56,30 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	x86_64::instructions::interrupts::without_interrupts(|| {
 		drivers::mouse::init_mouse();
 	});
-	/*
-		fn println(yes: &str, coordinates: (usize, usize)) {
-			let mut offset = 0;
-			let mut offset_y = 0;
 
-			for x in yes.chars() {
-				match x {
-					'\n' => {
-						offset = 0;
-						offset_y += 1;
-					}
-					_ => {
-						GRAPHICS.draw_character(
-							offset * 8 + coordinates.0,
-							offset_y * 8,
-							x,
-							Color16::White,
-						);
-						offset += 1;
-					}
-				}
-			}
-		}
-	*/
+	// fn println(yes: &str, coordinates: (usize, usize)) {
+	// 	let mut offset = 0;
+	// 	let mut offset_y = 0;
+
+	// 	for x in yes.chars() {
+	// 		match x {
+	// 			'\n' => {
+	// 				offset = 0;
+	// 				offset_y += 1;
+	// 			}
+	// 			_ => {
+	// 				GRAPHICS.draw_character(
+	// 					offset * 8 + coordinates.0,
+	// 					offset_y * 8,
+	// 					x,
+	// 					Color16::White,
+	// 				);
+	// 				offset += 1;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 	use task::{executor::Executor, keyboard, Task};
 	let mut executor = Executor::new();
 	executor.spawn(Task::new(example_task()));
@@ -144,13 +99,6 @@ pub fn init() {
 	}
 
 	sri::init();
-}
-
-/// Loop forever
-pub fn hlt_loop() -> ! {
-	loop {
-		x86_64::instructions::hlt();
-	}
 }
 
 #[test_case]

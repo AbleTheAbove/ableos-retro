@@ -11,7 +11,7 @@ use super::{
 };
 use alloc::string::ToString;
 
-use vga::{colors::Color16, writers::GraphicsWriter};
+pub use vga::{colors::Color16, writers::GraphicsWriter};
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 /// todo: pwees write docs
