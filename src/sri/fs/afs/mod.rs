@@ -138,8 +138,6 @@ pub struct File {
 	/// The size in bytes of this file, not including
 	/// this header.
 	size: u128,
-	/// Time file was last modified.
-	// IDEA: seeing as we will not run out of time in a u64 move to that to save bytes
 	/// Last modified time
 	mtime: u64,
 	/// Time file was last accessed

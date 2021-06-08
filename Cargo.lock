@@ -444,7 +444,7 @@ checksum = "77439c1b53d2303b20d9459b1ade71a83c716e3f9c34f3228c00e6f185d6c002"
 [[package]]
 name = "vga"
 version = "0.2.6"
-source = "git+https://github.com/abletheabove/vga#e3e68ac6f37c8d98998ec28128e432d532d2b502"
+source = "git+https://github.com/ableos/vga#e3e68ac6f37c8d98998ec28128e432d532d2b502"
 dependencies = [
  "bitflags",
  "conquer-once 0.3.2",
