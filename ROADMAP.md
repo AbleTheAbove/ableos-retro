@@ -11,9 +11,11 @@
   - [ ] Circle
   - [ ] Unicode support
 - [ ] Multi User Single Computer
-  - [ ] The concept of a user
+  - [X] The concept of a user
 - [ ] Github Things
   - [ ] Continuous integration
+    - [ ] Cargo Testing
+    - [X] Cargo Build
   - [X] Github Updates
 - [ ] Network
   - [ ] IP interface

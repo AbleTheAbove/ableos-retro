@@ -47,9 +47,9 @@ pub struct KernelState {
 	/// The representation of the hardware connected to the kernel
 	pub hardware: hardware::Hardware,
 }
-/// ahhhhh
+/// Kernel Versioning used to assist in debugging
 pub struct KernelVersion {
-	/// Ahhh
+	/// A semantic versioning
 	pub version_str: String,
 	/// The release type of the kernel "release" or "debug"
 	pub release_type: String,

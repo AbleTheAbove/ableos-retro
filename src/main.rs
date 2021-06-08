@@ -43,7 +43,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	test_main();
 
 	unsafe {
-		// Get rid of text mode cursor.
+		// Broken QEMU shutdown
 		outw(0x604, 0x2000);
 	}
 
