@@ -26,25 +26,6 @@ jobs:
         command: build
         args: --release
 
-  test:
-    
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-        components: llvm-tools-preview, rust-src
-        override: true
-    - uses: actions-rs/cargo@v1
-      with:
-        command: install
-        args: bootimage
-    - uses: actions-rs/cargo@v1
-      with:
-        command: test
-        args: --release
   fmt-check:
   
     runs-on: ubuntu-latest
