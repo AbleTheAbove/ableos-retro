@@ -56,4 +56,7 @@ jobs:
         toolchain: nightly
         components: llvm-tools-preview, rust-src
         override: true
-    - uses: mbrobbel/rustfmt-check@0.3.0
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: --check
