@@ -10,8 +10,8 @@ pub enum Ext2FeatureMasks {
 	InodeExtensions    = 0x0008,
 	/// File system can resize itself for larger partitions
 	ResizableFilSystem = 0x0010,
-   /// Directories use hash index
-	HashIndexing       = 0x0020, 
+	/// Directories use hash index
+	HashIndexing       = 0x0020,
 }
 
 impl core::ops::BitOr for Ext2FeatureMasks {
@@ -30,14 +30,14 @@ impl core::ops::BitOr<u32> for Ext2FeatureMasks {
 
 #[repr(u32)]
 pub enum FeatureRequiredMasks {
-   /// Compression is used
+	/// Compression is used
 	Compression     = 0x0001,
 	/// Directory entries contain a type field
 	DictionaryTypes = 0x0002,
 	/// File system needs to replay its journal
 	JournalReplay   = 0x0004,
-   /// File system uses a journal device
-	Journal         = 0x0008, 
+	/// File system uses a journal device
+	Journal         = 0x0008,
 }
 
 impl core::ops::BitOr for FeatureRequiredMasks {
@@ -59,8 +59,8 @@ pub enum WriteFeatures {
 	Sparse                = 0x0001,
 	/// File system uses a 64-bit file size
 	FileSizeU64           = 0x0002,
-   /// Directory contents are stored in the form of a Binary Tree
-	DirectoryIsBinaryTree = 0x0004, 
+	/// Directory contents are stored in the form of a Binary Tree
+	DirectoryIsBinaryTree = 0x0004,
 }
 
 #[repr(u16)]
@@ -161,8 +161,8 @@ pub struct SuperBlock {
 	pub journal_device: u32,
 	/// Head of orphan inode list
 	pub head_orphan_inode_list: u32,
-   /// (Unused)
-	__unused: [u8; 788], 
+	/// (Unused)
+	__unused: [u8; 788],
 }
 
 impl SuperBlock {

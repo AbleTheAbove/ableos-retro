@@ -67,8 +67,8 @@ pub mod time;
 
 /// The window manager module
 pub mod window_manager;
-pub use window_manager::*;
 pub use vga::writers::GraphicsWriter;
+pub use window_manager::*;
 
 /// Loop forever
 pub fn hlt_loop() -> ! {

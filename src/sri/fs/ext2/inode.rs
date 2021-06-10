@@ -140,6 +140,6 @@ pub struct Inode {
 	higher_userid: u16,
 	/// High 16 bits of 32-bit Group ID
 	higher_groupid: u16,
-   /// (reserved)
-	reserved_2: u32, 
+	/// (reserved)
+	reserved_2: u32,
 }
