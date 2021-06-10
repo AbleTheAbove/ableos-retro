@@ -21,3 +21,4 @@
   - [ ] IP interface
 - [ ]USB Protocol
   - [ ] User USB devices
+- [ ] Predictive Text Dictionary Systemwide
