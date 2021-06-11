@@ -17,8 +17,6 @@
     - [ ] Cargo Testing
     - [X] Cargo Build
   - [X] Github Updates
-- [ ] Network
-  - [ ] IP interface
 - [ ]USB Protocol
   - [ ] User USB devices
 - [ ] Predictive Text Dictionary Systemwide
