@@ -64,6 +64,7 @@ pub mod drivers;
 pub mod kernel_state;
 pub mod ps2_mouse;
 pub mod sri;
+/// A work in progress time module for real time clock and computer time + user time offset
 pub mod time;
 
 /// The window manager module
