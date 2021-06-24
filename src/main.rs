@@ -4,7 +4,7 @@
 #![no_main] // disable all Rust-level entry points
 #![feature(custom_test_frameworks)]
 #![reexport_test_harness_main = "test_main"]
-#![test_runner(ableos::test::test_runner)]
+//#![test_runner(ableos::test::test_runner)]
 #![feature(abi_x86_interrupt)]
 #![feature(alloc_error_handler)] // at the top of the file
 #![feature(const_mut_refs)]

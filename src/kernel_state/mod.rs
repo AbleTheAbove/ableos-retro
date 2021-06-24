@@ -38,7 +38,7 @@ lazy_static! {
 	};
 }
 
-/// todo: owo
+/// TODO: owo
 pub struct KernelState {
 	/// The first value is the release state and the second is the version string
 	pub version: KernelVersion,

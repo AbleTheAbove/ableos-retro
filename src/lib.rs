@@ -53,6 +53,7 @@ pub mod vga_buffer;
 
 /// Asyncronous module
 pub mod task;
+pub mod user;
 
 /// The holder of tests
 #[cfg(test)]
