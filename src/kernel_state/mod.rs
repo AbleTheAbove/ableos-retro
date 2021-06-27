@@ -1,14 +1,13 @@
 use alloc::string::{String, ToString};
 
-pub mod cpuid;
-
 use core::fmt;
 use lazy_static::lazy_static;
 
-/// Hardware representation
-mod hardware;
-use crate::interrupts::has_apic;
-use hardware::{Cpu, Hardware};
+use crate::{
+	// Hardware representation
+	hardware::{cpu::Cpu, encrypt::aes_detect, Hardware},
+	interrupts::has_apic,
+};
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -30,6 +29,7 @@ lazy_static! {
 			hardware: Hardware {
 				cpu: Cpu {
 					apic: has_apic(),
+					aes: aes_detect(),
 					cpu_vendor_signature: crate::cpu_vendor_signature(),
 				},
 			},
@@ -45,7 +45,7 @@ pub struct KernelState {
 	/// This declares whether debug should be logged
 	pub serial_log: bool,
 	/// The representation of the hardware connected to the kernel
-	pub hardware: hardware::Hardware,
+	pub hardware: Hardware,
 }
 /// Kernel Versioning used to assist in debugging
 pub struct KernelVersion {

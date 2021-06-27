@@ -1,4 +1,4 @@
-use crate::kernel_state::cpuid::EDXFeatureMasks;
+use crate::hardware::cpu::EDXFeatureMasks;
 use raw_cpuid::cpuid;
 //use x86::msr::rdmsr;
 

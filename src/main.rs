@@ -46,15 +46,15 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 		// Broken QEMU shutdown
 		outw(0x604, 0x2000);
 	}
-
-	info![
-		"Size of file headers: {}",
-		core::mem::size_of::<sri::fs::File>()
-	];
-
+	/*
+		info![
+			"Size of file headers: {}",
+			core::mem::size_of::<sri::fs::File>()
+		];
+	*/
 	// reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
 	x86_64::instructions::interrupts::without_interrupts(|| {
-		drivers::mouse::init_mouse();
+		hardware::mouse::init_mouse();
 	});
 
 	// fn println(yes: &str, coordinates: (usize, usize)) {
@@ -94,7 +94,7 @@ pub fn init() {
 	interrupts::init_idt();
 	unsafe { interrupts::pic::PICS.lock().initialize() }; // new
 	x86_64::instructions::interrupts::enable(); // new
-	if encrypt::aes_detect() {
+	if hardware::encrypt::aes_detect() {
 		success!("Encryption driver loaded")
 	}
 

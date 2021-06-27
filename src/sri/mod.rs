@@ -3,7 +3,7 @@ use alloc::string::{String, ToString};
 
 use core::fmt;
 
-pub mod fs;
+//pub mod fs;
 //pub mod ustar;
 
 /// System Resource Identifier: The URI of Filesystems
@@ -23,7 +23,7 @@ impl fmt::Display for SRI {
 		)
 	}
 }
-
+/// Initialize the system reference indicator
 pub fn init() {
 	info!("SRI interface loading");
 

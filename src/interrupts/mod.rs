@@ -45,7 +45,7 @@ lazy_static! {
 		}
 		idt[InterruptIndex::Timer.into()].set_handler_fn(timer_interrupt_handler);
 		idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
-		idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
+		idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::hardware::mouse::mouse_interrupt_handler);
 		idt.page_fault.set_handler_fn(page_fault_handler);
 		// todo: dear elf: can you ples exclude 44? cuz mouse has to be 44
 		// gen_name!{34, 44, handler}
