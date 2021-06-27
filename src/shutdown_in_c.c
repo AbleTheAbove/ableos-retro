@@ -1,4 +1,3 @@
-
 // //
 // // here is the slighlty complicated ACPI poweroff code
 // //
