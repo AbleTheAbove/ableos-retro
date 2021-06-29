@@ -1,4 +1,4 @@
-use crate::debug;
+use crate::{debug, kernel_state::KERNEL_STATE, GRAPHICS};
 use conquer_once::spin::OnceCell;
 use core::{
 	pin::Pin,
@@ -9,7 +9,7 @@ use futures_util::{
 	stream::{Stream, StreamExt},
 	task::AtomicWaker,
 };
-use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
+use pc_keyboard::{layouts, DecodedKey, HandleControl, KeyCode, Keyboard, ScancodeSet1};
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -76,9 +76,34 @@ pub async fn print_keypresses() {
 			if let Some(key) = keyboard.process_keyevent(key_event) {
 				match key {
 					DecodedKey::Unicode(character) => debug!("{:?} is pressed", character),
-					DecodedKey::RawKey(key) => debug!("{:?} is pressed", key),
+					DecodedKey::RawKey(key) => {
+						match_raw_key(key);
+					}
 				}
 			}
 		}
+	}
+}
+
+fn match_raw_key(key: KeyCode) {
+	match key {
+		KeyCode::AltLeft => {
+			toggle_task_menu();
+		}
+		KeyCode::AltRight => {
+			toggle_task_menu();
+		}
+		key => {
+			debug!("{:?}", key)
+		}
+	}
+}
+
+fn toggle_task_menu() {
+	let task_menu_visible = KERNEL_STATE.lock().task_menu;
+	KERNEL_STATE.lock().task_menu ^= true;
+	debug!("{:?}", !task_menu_visible);
+	if task_menu_visible {
+		//GRAPHICS.draw_line((80, 60), (540, 60), Color16::White);
 	}
 }

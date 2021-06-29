@@ -1,5 +1,6 @@
 use raw_cpuid::cpuid;
 
+#[derive(Debug)]
 pub struct Cpu {
 	pub aes: bool,
 	pub apic: bool,

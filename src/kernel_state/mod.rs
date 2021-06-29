@@ -33,12 +33,14 @@ lazy_static! {
 					cpu_vendor_signature: crate::cpu_vendor_signature(),
 				},
 			},
+			task_menu: false,
 		};
 		spin::Mutex::new(state)
 	};
 }
 
 /// TODO: owo
+#[derive(Debug)]
 pub struct KernelState {
 	/// The first value is the release state and the second is the version string
 	pub version: KernelVersion,
@@ -46,8 +48,10 @@ pub struct KernelState {
 	pub serial_log: bool,
 	/// The representation of the hardware connected to the kernel
 	pub hardware: Hardware,
+	pub task_menu: bool,
 }
 /// Kernel Versioning used to assist in debugging
+#[derive(Debug)]
 pub struct KernelVersion {
 	/// A semantic versioning
 	pub version_str: String,
