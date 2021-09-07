@@ -52,6 +52,20 @@ impl OnScreenMouse {
 			self.y = self.y.saturating_sub(delta_y as u16)
 		}
 	}
+	pub fn set_x(&mut self, x: u16) {
+		if x >= MOUSE_MAX_X {
+			self.x = MOUSE_MAX_X - 1;
+		} else {
+			self.x = x;
+		}
+	}
+	pub fn set_y(&mut self, y: u16) {
+		if y >= MOUSE_MAX_Y {
+			self.y = MOUSE_MAX_Y - 1;
+		} else {
+			self.y = y;
+		}
+	}
 }
 
 // Initialize the mouse and set the on complete event.
@@ -71,13 +85,13 @@ fn on_complete(mouse_state: MouseState) {
 
 	let mut mouse = MOUSE.lock();
 	if mouse.get_x() >= MOUSE_MAX_X {
-		mouse.change_x(-1);
+		mouse.set_x(MOUSE_MAX_X - 1);
 	} else {
 		mouse.change_x(delta_x);
 	}
 
 	if mouse.get_y() >= MOUSE_MAX_Y {
-		mouse.change_y(10);
+		mouse.set_y(MOUSE_MAX_Y - 1);
 	} else {
 		mouse.change_y(delta_y);
 	}
@@ -85,19 +99,7 @@ fn on_complete(mouse_state: MouseState) {
 	// i.e. if the cursor moves too fast, ignore it.
 	// if the mouse moves too fast the delta will overflow
 	mouse.change_y(delta_y);
-	/*
-		{
-			match delta_x {
-				-10..=10 => mouse.change_x(delta_x),
-				_ => {}
-			}
 
-			match delta_y {
-				-10..=10 => mouse.change_y(delta_y),
-				_ => {}
-			}
-		}
-	*/
 	draw_mouse((mouse.get_x() as usize, mouse.get_y() as usize));
 }
 
@@ -117,5 +119,21 @@ pub extern "x86-interrupt" fn mouse_interrupt_handler(_stack_frame: InterruptSta
 
 fn draw_mouse(mouse_coord: (usize, usize)) {
 	GRAPHICS.clear_screen(Color16::Black);
-	GRAPHICS.draw_character(mouse_coord.0, mouse_coord.1, '.', CURSOR_COLOR);
+	//	GRAPHICS.draw_character(mouse_coord.0, mouse_coord.1, '.', CURSOR_COLOR);
+
+	GRAPHICS.draw_line(
+		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
+		(mouse_coord.0 as isize + 10, mouse_coord.1 as isize + 10),
+		CURSOR_COLOR,
+	);
+	GRAPHICS.draw_line(
+		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
+		(mouse_coord.0 as isize + 5, mouse_coord.1 as isize + 0),
+		CURSOR_COLOR,
+	);
+	GRAPHICS.draw_line(
+		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
+		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 5),
+		CURSOR_COLOR,
+	);
 }
