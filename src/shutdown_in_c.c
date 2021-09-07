@@ -8,8 +8,6 @@
 // #include <io.h>
 // #include <time.h>
 
-
-
 // dword *SMI_CMD;
 // byte ACPI_ENABLE;
 // byte ACPI_DISABLE;
@@ -21,8 +19,6 @@
 // word SCI_EN;
 // byte PM1_CNT_LEN;
 
-
-
 // struct RSDPtr
 // {
 //    byte Signature[8];
@@ -31,8 +27,6 @@
 //    byte Revision;
 //    dword *RsdtAddress;
 // };
-
-
 
 // struct FACP
 // {
@@ -50,8 +44,6 @@
 //    byte unneded4[89 - 72];
 //    byte PM1_CNT_LEN;
 // };
-
-
 
 // // check if the given address has a valid header
 // unsigned int *acpiCheckRSDPtr(unsigned int *ptr)
@@ -72,7 +64,7 @@
 //          bptr++;
 //       }
 
-//       // found valid rsdpd   
+//       // found valid rsdpd
 //       if (check == 0) {
 //          /*
 //           if (desc->Revision == 0)
@@ -86,8 +78,6 @@
 
 //    return NULL;
 // }
-
-
 
 // // finds the acpi header and returns the address of the rsdt
 // unsigned int *acpiGetRSDPtr(void)
@@ -103,7 +93,6 @@
 //          return rsdp;
 //    }
 
-
 //    // at address 0x40:0x0E is the RM segment of the ebda
 //    int ebda = *((short *) 0x40E);   // get pointer
 //    ebda = ebda*0x10 &0x000FFFFF;   // transform segment into linear address
@@ -118,8 +107,6 @@
 
 //    return NULL;
 // }
-
-
 
 // // checks for a given header and validates checksum
 // int acpiCheckHeader(unsigned int *ptr, char *sig)
@@ -139,8 +126,6 @@
 //    }
 //    return -1;
 // }
-
-
 
 // int acpiEnable(void)
 // {
@@ -183,12 +168,10 @@
 //    }
 // }
 
-
-
 // //
 // // bytecode of the \_S5 object
 // // -----------------------------------------
-// //        | (optional) |    |    |    |   
+// //        | (optional) |    |    |    |
 // // NameOP | \          | _  | S  | 5  | _
 // // 08     | 5A         | 5F | 53 | 35 | 5F
 // //
@@ -258,7 +241,7 @@
 
 //                      PM1a_CNT = facp->PM1a_CNT_BLK;
 //                      PM1b_CNT = facp->PM1b_CNT_BLK;
-                     
+
 //                      PM1_CNT_LEN = facp->PM1_CNT_LEN;
 
 //                      SLP_EN = 1<<13;
@@ -284,8 +267,6 @@
 
 //    return -1;
 // }
-
-
 
 // void acpiPowerOff(void)
 // {

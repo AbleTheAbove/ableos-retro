@@ -1,14 +1,13 @@
 use alloc::string::{String, ToString};
 
-pub mod cpuid;
-
 use core::fmt;
 use lazy_static::lazy_static;
 
-/// Hardware representation
-mod hardware;
-use crate::interrupts::has_apic;
-use hardware::{Cpu, Hardware};
+use crate::{
+	// Hardware representation
+	hardware::{cpu::Cpu, encrypt::aes_detect, Hardware},
+	interrupts::has_apic,
+};
 
 /// TODO: owo what is this?
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -26,28 +25,45 @@ lazy_static! {
 				version_str: KERNEL_VERSION.to_string(),
 				release_type: RELEASE_TYPE.to_string(),
 			},
-			serial_log: true,
+			serial_log: false,
 			hardware: Hardware {
 				cpu: Cpu {
 					apic: has_apic(),
+					aes: aes_detect(),
 					cpu_vendor_signature: crate::cpu_vendor_signature(),
 				},
 			},
+			task_menu: false,
 		};
 		spin::Mutex::new(state)
 	};
 }
 
-/// todo: owo
+/// TODO: owo
+#[derive(Debug)]
 pub struct KernelState {
 	/// The first value is the release state and the second is the version string
 	pub version: KernelVersion,
 	/// This declares whether debug should be logged
 	pub serial_log: bool,
 	/// The representation of the hardware connected to the kernel
-	pub hardware: hardware::Hardware,
+	pub hardware: Hardware,
+	pub task_menu: bool,
 }
+
+impl fmt::Display for KernelState {
+	// This trait requires `fmt` with this exact signature.
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		// Write strictly the first element into the supplied output
+		// stream: `f`. Returns `fmt::Result` which indicates whether the
+		// operation succeeded or failed. Note that `write!` uses syntax which
+		// is very similar to `println!`.
+		write!(f, "{}\n{}", self.version, self.serial_log)
+	}
+}
+
 /// Kernel Versioning used to assist in debugging
+#[derive(Debug)]
 pub struct KernelVersion {
 	/// A semantic versioning
 	pub version_str: String,

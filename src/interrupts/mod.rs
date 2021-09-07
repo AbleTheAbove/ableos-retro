@@ -45,7 +45,7 @@ lazy_static! {
 		}
 		idt[InterruptIndex::Timer.into()].set_handler_fn(timer_interrupt_handler);
 		idt[InterruptIndex::Keyboard.into()].set_handler_fn(keyboard_interrupt_handler);
-		idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::drivers::mouse::mouse_interrupt_handler);
+		idt[InterruptIndex::Mouse.into()].set_handler_fn(crate::hardware::mouse::mouse_interrupt_handler);
 		idt.page_fault.set_handler_fn(page_fault_handler);
 		// todo: dear elf: can you ples exclude 44? cuz mouse has to be 44
 		// gen_name!{34, 44, handler}
@@ -72,6 +72,18 @@ extern "x86-interrupt" fn page_fault_handler(
 	error!("Accessed Address: {:?}", Cr2::read());
 	error!("Error Code: {:?}", error_code);
 	debug!("{:#?}", stack_frame);
+	let mut iter = 0;
+
+	use crate::GRAPHICS;
+	use vga::writers::GraphicsWriter;
+
+	pub use vga::colors::Color16;
+
+	for character in "Page Fault".chars() {
+		GRAPHICS.draw_character(iter * 8, 0, character, Color16::Red);
+		iter += 1;
+	}
+
 	hlt_loop();
 }
 

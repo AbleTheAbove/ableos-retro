@@ -1,5 +1,12 @@
 use raw_cpuid::cpuid;
 
+#[derive(Debug)]
+pub struct Cpu {
+	pub aes: bool,
+	pub apic: bool,
+	pub cpu_vendor_signature: [u8; 12],
+}
+
 /// Responses identification request with eax 0
 #[allow(dead_code)]
 #[repr(u128)]
