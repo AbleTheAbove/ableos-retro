@@ -72,6 +72,18 @@ extern "x86-interrupt" fn page_fault_handler(
 	error!("Accessed Address: {:?}", Cr2::read());
 	error!("Error Code: {:?}", error_code);
 	debug!("{:#?}", stack_frame);
+	let mut iter = 0;
+
+	use crate::GRAPHICS;
+	use vga::writers::GraphicsWriter;
+
+	pub use vga::colors::Color16;
+
+	for character in "Page Fault".chars() {
+		GRAPHICS.draw_character(iter * 8, 0, character, Color16::Red);
+		iter += 1;
+	}
+
 	hlt_loop();
 }
 

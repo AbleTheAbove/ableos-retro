@@ -50,6 +50,18 @@ pub struct KernelState {
 	pub hardware: Hardware,
 	pub task_menu: bool,
 }
+
+impl fmt::Display for KernelState {
+	// This trait requires `fmt` with this exact signature.
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		// Write strictly the first element into the supplied output
+		// stream: `f`. Returns `fmt::Result` which indicates whether the
+		// operation succeeded or failed. Note that `write!` uses syntax which
+		// is very similar to `println!`.
+		write!(f, "{}\n{}", self.version, self.serial_log)
+	}
+}
+
 /// Kernel Versioning used to assist in debugging
 #[derive(Debug)]
 pub struct KernelVersion {

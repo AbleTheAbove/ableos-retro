@@ -12,6 +12,9 @@ use x86_64::structures::idt::InterruptStackFrame;
 
 const CURSOR_COLOR: Color16 = Color16::Cyan;
 
+const MOUSE_MAX_X: u16 = 638;
+const MOUSE_MAX_Y: u16 = 478;
+
 lazy_static! {
 	pub static ref _MOUSE: Mutex<Mouse> = Mutex::new(Mouse::new());
 	pub static ref MOUSE: Mutex<OnScreenMouse> = Mutex::new(OnScreenMouse::default());
@@ -67,19 +70,34 @@ fn on_complete(mouse_state: MouseState) {
 	let delta_y = mouse_state.get_y();
 
 	let mut mouse = MOUSE.lock();
+	if mouse.get_x() >= MOUSE_MAX_X {
+		mouse.change_x(-1);
+	} else {
+		mouse.change_x(delta_x);
+	}
 
+	if mouse.get_y() >= MOUSE_MAX_Y {
+		mouse.change_y(10);
+	} else {
+		mouse.change_y(delta_y);
+	}
 	// only move the cursor when delta_x is in some range
 	// i.e. if the cursor moves too fast, ignore it.
 	// if the mouse moves too fast the delta will overflow
-	match delta_x {
-		-10..=10 => mouse.change_x(delta_x),
-		_ => {}
-	}
+	mouse.change_y(delta_y);
+	/*
+		{
+			match delta_x {
+				-10..=10 => mouse.change_x(delta_x),
+				_ => {}
+			}
 
-	match delta_y {
-		-10..=10 => mouse.change_y(delta_y),
-		_ => {}
-	}
+			match delta_y {
+				-10..=10 => mouse.change_y(delta_y),
+				_ => {}
+			}
+		}
+	*/
 	draw_mouse((mouse.get_x() as usize, mouse.get_y() as usize));
 }
 
@@ -98,5 +116,6 @@ pub extern "x86-interrupt" fn mouse_interrupt_handler(_stack_frame: InterruptSta
 }
 
 fn draw_mouse(mouse_coord: (usize, usize)) {
-	GRAPHICS.draw_character(mouse_coord.0, mouse_coord.1, 'A', CURSOR_COLOR);
+	GRAPHICS.clear_screen(Color16::Black);
+	GRAPHICS.draw_character(mouse_coord.0, mouse_coord.1, '.', CURSOR_COLOR);
 }
