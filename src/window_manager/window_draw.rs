@@ -10,14 +10,11 @@ use super::{
 	WINDOW_DECORATOR_TEXT_COLOR,
 };
 
-
 pub use vga::{colors::Color16, writers::GraphicsWriter};
 
 // BUG: drawing bigger than the screen size causes the buffer to wrap around
 /// todo: pwees write docs
 pub fn _windows(_id: u8, offset: (isize, isize)) {
-	
-	
 	let win_title = "hi";
 	let size: (usize, usize) = (0, 0);
 	/*
