@@ -30,7 +30,7 @@ pub fn init() {
 
 lazy_static! {
 	/// Static reference to the frame buffer
-	pub static ref GRAPHICS: Graphics640x480x16 = {
+	pub static ref GRAPHICS_RAW: Graphics640x480x16 = {
 		let mode = Graphics640x480x16::new();
 		mode.set_mode();
 		mode.clear_screen(Color16::Black);

@@ -68,7 +68,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	// 				offset_y += 1;
 	// 			}
 	// 			_ => {
-	// 				GRAPHICS.draw_character(
+	// 				GRAPHICS_RAW.draw_character(
 	// 					offset * 8 + coordinates.0,
 	// 					offset_y * 8,
 	// 					x,

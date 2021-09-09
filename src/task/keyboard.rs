@@ -1,4 +1,4 @@
-use crate::{debug, kernel_state::KERNEL_STATE, GRAPHICS};
+use crate::{debug, kernel_state::KERNEL_STATE, GRAPHICS_RAW};
 use conquer_once::spin::OnceCell;
 use core::{
 	pin::Pin,
@@ -10,6 +10,7 @@ use futures_util::{
 	task::AtomicWaker,
 };
 use pc_keyboard::{layouts, DecodedKey, HandleControl, KeyCode, Keyboard, ScancodeSet1};
+use vga::{colors::Color16, writers::GraphicsWriter};
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -89,7 +90,7 @@ pub async fn print_keypresses() {
 
 fn match_raw_key(key: KeyCode) {
 	match key {
-		key => {
+		_key => {
 			debug!("{:?}", key)
 		}
 	}
@@ -101,7 +102,7 @@ fn match_key(character: char) {
 		'\n' => debug!("Enter Pressed"),
 		'\u{1b}' => debug!("Escape Pressed"),
 		// Pop the last element added to the text buffer and force redraw
-		'\u{5B}' => debug!("Backspace \u{8} Pressed"),
+		'\u{5B}' => debug!("Backspace Pressed"),
 		_ => {
 			debug!("{:?}", character);
 		}
@@ -114,15 +115,12 @@ fn debug_kernel_state() {
 }
 
 fn toggle_task_menu() {
-	pub use vga::colors::Color16;
-	use vga::writers::GraphicsWriter;
-
-	GRAPHICS.clear_screen(Color16::Black);
+	GRAPHICS_RAW.clear_screen(Color16::Black);
 
 	let task_menu_visible = KERNEL_STATE.lock().task_menu;
 	KERNEL_STATE.lock().task_menu ^= true;
 	debug!("Task Menu Visible: {:?}", !task_menu_visible);
 	if !task_menu_visible {
-		GRAPHICS.draw_line((80, 60), (540, 60), Color16::White);
+		GRAPHICS_RAW.draw_line((80, 60), (540, 60), Color16::White);
 	}
 }

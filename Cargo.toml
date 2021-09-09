@@ -47,7 +47,7 @@ uefi-services = "0.8.0"
 ps2-mouse = "0.1.4"
 raw-cpuid = "9.0.0"
 x86 = "0.39.0"
-acpi = "2.3.1"
+#acpi = "2.3.1"
 
 # Used as a temporary kernel configuration crate
 bitflags = "1.2.1"

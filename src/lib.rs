@@ -16,7 +16,7 @@
 
 pub extern crate alloc;
 
-pub use acpi::AcpiTables;
+//pub use acpi::AcpiTables;
 
 pub use alloc::string::String;
 pub use bootloader::BootInfo;
@@ -28,7 +28,7 @@ pub use kernel_state::{KernelState, KernelVersion};
 //use vga::{colors::Color16, writers::GraphicsWriter};
 
 //use alloc::format;
-//use window_manager::GRAPHICS;
+//use window_manager::GRAPHICS_RAW;
 
 /// The AbleOS Shell
 pub use rash;

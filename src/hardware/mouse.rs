@@ -1,7 +1,7 @@
 use crate::interrupts::pic::PICS;
 use crate::interrupts::InterruptIndex;
 use crate::ps2_mouse::{Mouse, MouseState};
-use crate::window_manager::GRAPHICS;
+use crate::window_manager::GRAPHICS_RAW;
 use crate::{info, success};
 use lazy_static::lazy_static;
 use spin::Mutex;
@@ -118,20 +118,20 @@ pub extern "x86-interrupt" fn mouse_interrupt_handler(_stack_frame: InterruptSta
 }
 
 fn draw_mouse(mouse_coord: (usize, usize)) {
-	GRAPHICS.clear_screen(Color16::Black);
-	//	GRAPHICS.draw_character(mouse_coord.0, mouse_coord.1, '.', CURSOR_COLOR);
+	GRAPHICS_RAW.clear_screen(Color16::Black);
+	//	GRAPHICS_RAW.draw_character(mouse_coord.0, mouse_coord.1, '.', CURSOR_COLOR);
 
-	GRAPHICS.draw_line(
+	GRAPHICS_RAW.draw_line(
 		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
 		(mouse_coord.0 as isize + 10, mouse_coord.1 as isize + 10),
 		CURSOR_COLOR,
 	);
-	GRAPHICS.draw_line(
+	GRAPHICS_RAW.draw_line(
 		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
 		(mouse_coord.0 as isize + 5, mouse_coord.1 as isize + 0),
 		CURSOR_COLOR,
 	);
-	GRAPHICS.draw_line(
+	GRAPHICS_RAW.draw_line(
 		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 0),
 		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 5),
 		CURSOR_COLOR,

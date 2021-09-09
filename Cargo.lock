@@ -6,7 +6,6 @@ version = 3
 name = "ableos"
 version = "0.1.0"
 dependencies = [
- "acpi",
  "array-init",
  "bitflags",
  "bootloader",
@@ -31,17 +30,6 @@ dependencies = [
  "volatile 0.2.7",
  "x86",
  "x86_64",
-]
-
-[[package]]
-name = "acpi"
-version = "2.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13cc8b2a874c1af0b8cece57f9c5f3034d84de325c487b58aa9112ab1a21c09f"
-dependencies = [
- "bit_field 0.10.1",
- "log",
- "rsdp",
 ]
 
 [[package]]
@@ -401,15 +389,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c27cb5785b85bd05d4eb171556c9a1a514552e26123aeae6bb7d811353148026"
 dependencies = [
  "bitflags",
-]
-
-[[package]]
-name = "rsdp"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f4f3deb5b80701c91a04117876f7d44996b2da123a822054166180e970f5226"
-dependencies = [
- "log",
 ]
 
 [[package]]
