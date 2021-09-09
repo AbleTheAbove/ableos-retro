@@ -1,4 +1,4 @@
-use crate::{debug, kernel_state::KERNEL_STATE, GRAPHICS_RAW};
+use crate::{debug, kernel_state::KERNEL_STATE, CLIPBOARD, GRAPHICS_RAW};
 use conquer_once::spin::OnceCell;
 use core::{
 	pin::Pin,
@@ -99,8 +99,14 @@ fn match_raw_key(key: KeyCode) {
 fn match_key(character: char) {
 	match character {
 		'\t' => toggle_task_menu(),
-		'\n' => debug!("Enter Pressed"),
-		'\u{1b}' => debug!("Escape Pressed"),
+		'\n' => {
+			debug!("Enter Pressed");
+			CLIPBOARD.lock().clip_home();
+		}
+		'\u{1b}' => {
+			debug!("Escape Pressed");
+			// debug!("{:?}", CLIPBOARD.lock().paste());
+		}
 		// Pop the last element added to the text buffer and force redraw
 		'\u{5B}' => debug!("Backspace Pressed"),
 		_ => {
@@ -109,7 +115,7 @@ fn match_key(character: char) {
 	}
 }
 
-fn debug_kernel_state() {
+fn _debug_kernel_state() {
 	let kstate = KERNEL_STATE.lock();
 	debug!("{:?}", kstate.hardware);
 }

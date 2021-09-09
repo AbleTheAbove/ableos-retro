@@ -10,7 +10,7 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![feature(const_fn_fn_ptr_basics)]
-#![warn(missing_docs)]
+// #![warn(missing_docs)]
 #![feature(repr128)]
 #![allow(incomplete_features)]
 
@@ -22,20 +22,21 @@ use ableos::*;
 ///
 /// This creates a function named `_start`, which the linker will use as the entry
 /// point.
+
+/// Start function
 #[export_name = "_start"]
 pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootInfo) -> ! {
-	let f: fn(&'static ::bootloader::bootinfo::BootInfo) -> ! = kernel_main;
-	f(boot_info)
+	init_alloc(boot_info);
+	kernel_main();
 }
 
 /// The "Start" point of ableOS
-fn kernel_main(boot_info: &'static BootInfo) -> ! {
-	init_alloc(boot_info);
+fn kernel_main() -> ! {
 	init();
+
 	// init_graphics();
 	// info!("{:#?}", boot_info);
-
-	rash::shell();
+	// rash::shell();
 
 	// │ ┤ ┐ └ ┴ ┬ ├ ─ ┼ ┘ ┌
 
@@ -85,6 +86,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 	executor.spawn(Task::new(example_task()));
 	executor.spawn(Task::new(keyboard::print_keypresses()));
 	executor.spawn(Task::new(test_1()));
+	// executor.spawn(Task::new(test_clipboard()));
 	executor.run();
 }
 
@@ -99,6 +101,11 @@ pub fn init() {
 	}
 
 	sri::init();
+}
+
+async fn test_clipboard() {
+	// pauses eexecution of key board task
+	info!("{:?}", CLIPBOARD.lock().paste());
 }
 
 #[test_case]
@@ -127,8 +134,6 @@ async fn example_task() {
 }
 
 async fn test_1() {
-	use alloc::vec::Vec;
-
 	info!("performing async task: vec allocation");
 
 	let mut vec = Vec::new();

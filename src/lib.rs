@@ -8,7 +8,7 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![feature(const_fn_fn_ptr_basics)]
-#![warn(missing_docs)]
+// #![warn(missing_docs)]
 #![feature(repr128)]
 #![allow(incomplete_features)]
 
@@ -34,6 +34,8 @@ pub use kernel_state::{KernelState, KernelVersion};
 pub use rash;
 
 pub use hardware::cpu::cpu_vendor_signature;
+
+pub mod clip;
 
 /// The global allocator impl
 pub mod allocator;
@@ -66,6 +68,7 @@ pub mod devices;
 pub mod drivers;
 pub mod kernel_state;
 pub mod ps2_mouse;
+/// System Resource Indicator
 pub mod sri;
 /// A work in progress time module for real time clock and computer time + user time offset
 pub mod time;
@@ -74,6 +77,10 @@ pub mod time;
 pub mod window_manager;
 pub use vga::writers::GraphicsWriter;
 pub use window_manager::*;
+
+// Test
+pub use alloc::{string::ToString, vec::Vec};
+pub use clip::CLIPBOARD;
 
 /// Loop forever
 pub fn hlt_loop() -> ! {

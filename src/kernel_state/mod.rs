@@ -33,6 +33,7 @@ lazy_static! {
 					cpu_vendor_signature: crate::cpu_vendor_signature(),
 				},
 			},
+			/// Temporary view
 			task_menu: false,
 		};
 		spin::Mutex::new(state)

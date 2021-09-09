@@ -1,15 +1,15 @@
-use alloc::{string::String, vec::Vec};
+use crate::{String, Vec};
 
 pub struct UserPermissions {
-	admin: bool,
-	own_devices: bool,
+	_admin: bool,
+	_own_devices: bool,
 }
 
 pub struct User {
-	id: u8,
-	name: String,
-	permissions: UserPermissions,
+	_id: u8,
+	_name: String,
+	_permissions: UserPermissions,
 	// Kept as references to owned devices
-	owned_devices: Vec<u8>,
+	_owned_devices: Vec<u8>,
 }
 impl User {}
