@@ -108,65 +108,65 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 /// todo: pwees write docs
 pub fn logo(offset: (isize, isize)) {
 	{
-		let a_color = Color16::Pink;
+		const A_COLOR: Color16 = Color16::Pink;
 		// Left side of the A
 		GRAPHICS_RAW.draw_line(
 			(offset.0 + 20, offset.1),
 			(offset.0 + 10, offset.1 + 20),
-			a_color,
+			A_COLOR,
 		);
 
 		// Right side of the A
 		GRAPHICS_RAW.draw_line(
 			(offset.0 + 20, offset.1),
 			(offset.0 + 30, offset.1 + 20),
-			a_color,
+			A_COLOR,
 		);
 
 		// Center connector for the A
 		GRAPHICS_RAW.draw_line(
 			(offset.0 + 10, offset.1 + 10),
 			(offset.0 + 30, offset.1 + 10),
-			a_color,
+			A_COLOR,
 		);
 	}
 
 	let offset_c = (offset.0 + 5, offset.1 - 15);
-	let crown_color = Color16::Yellow;
+	const CROWN_COLOR: Color16 = Color16::Yellow;
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0, offset_c.1),
 		(offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
-		crown_color,
+		CROWN_COLOR,
 	);
 
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 10 / 2, offset_c.1 + 20 / 2),
 		(offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
-		crown_color,
+		CROWN_COLOR,
 	);
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 50 / 2, offset_c.1 + 20 / 2),
 		(offset_c.0 + 60 / 2, offset_c.1),
-		crown_color,
+		CROWN_COLOR,
 	);
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 60 / 2, offset_c.1),
 		(offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
-		crown_color,
+		CROWN_COLOR,
 	);
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 40 / 2, offset_c.1 + 10 / 2),
 		(offset_c.0 + 30 / 2, offset_c.1),
-		crown_color,
+		CROWN_COLOR,
 	);
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 30 / 2, offset_c.1),
 		(offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
-		crown_color,
+		CROWN_COLOR,
 	);
 	GRAPHICS_RAW.draw_line(
 		(offset_c.0 + 20 / 2, offset_c.1 + 10 / 2),
 		(offset_c.0 + 0 / 2, offset_c.1),
-		crown_color,
+		CROWN_COLOR,
 	);
 }

@@ -43,21 +43,96 @@ lazy_static! {
 	pub static ref WINDOWS: WindowHolder<'static> = WindowHolder(Mutex::new(Vec::new()));
 }
 /// The color of window border colors
-pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
+pub const WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
 /// The window decorator color
-pub static WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
+pub const WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
 /// Window decorator Text color
-pub static WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
+pub const WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
 
 /// A struct for holding windows
 pub struct WindowHolder<'a>(pub Mutex<Vec<&'a Window<'a>>>);
 /// Window struct
-pub struct Window<'a> {
+pub struct Window<'holder> {
 	/// IDEA: Convert to String
 	/// The title of a window
-	pub title: &'a str,
+	pub title: &'holder str,
 	/// Window offset
 	pub offset: Offset,
 	/// Size of a window
 	pub size: Size,
+}
+
+impl<'w> Window<'w> {
+
+	fn draw(&self) {
+		for y in 0..self.size.1 {
+			GRAPHICS_RAW.draw_line(
+				(
+					0 + self.offset.0,
+					self.size.1 as isize + self.offset.1 - y as isize,
+				),
+				(
+					self.size.0 as isize + self.offset.0,
+					self.size.1 as isize + self.offset.1 - y as isize,
+				),
+				Color16::Black,
+			);
+		}
+
+		// Left line
+		GRAPHICS_RAW.draw_line(
+			(0 + self.offset.0, 0 + self.offset.1),
+			(
+				0 + self.offset.0,
+				self.size.1 as isize + self.offset.1,
+			),
+			WINDOW_BORDER_COLOR,
+		);
+
+		// Lowest line
+		GRAPHICS_RAW.draw_line(
+			(
+				0 + self.offset.0,
+				self.size.1 as isize + self.offset.1,
+			),
+			(
+				self.size.0 as isize + self.offset.0,
+				self.size.1 as isize + self.offset.1,
+			),
+			WINDOW_BORDER_COLOR,
+		);
+
+		//right most line
+		GRAPHICS_RAW.draw_line(
+			(
+				self.size.0 as isize + self.offset.0,
+				self.size.1 as isize + self.offset.1,
+			),
+			(self.size.0 as isize + self.offset.0, self.offset.1),
+			WINDOW_BORDER_COLOR,
+		);
+
+		// A simple window decorator that I think should be fully implemented
+		for y in 0..20 {
+			for x in 1..self.size.0 {
+				GRAPHICS_RAW.set_pixel(
+					x + self.offset.0 as usize,
+					y + self.offset.1 as usize,
+					WINDOW_DECORATOR_COLOR,
+				);
+			}
+		}
+
+		let title_width = self.title.len() * 8;
+		for (offset, character) in self.title.chars().enumerate() {
+			GRAPHICS_RAW.draw_character(
+				// TODO: Get length of character size and then do math
+				(self.offset.0 as usize + ((self.size.0 - title_width) / 2)) as usize + offset * 8,
+				(6 + self.offset.1) as usize,
+				character,
+				WINDOW_DECORATOR_TEXT_COLOR,
+			)
+		}
+	}
+
 }
