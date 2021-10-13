@@ -30,11 +30,12 @@ pub extern "C" fn __impl_start(boot_info: &'static ::bootloader::bootinfo::BootI
 	kernel_main();
 }
 
+mod window_manager;
+
 /// The "Start" point of ableOS
 fn kernel_main() -> ! {
 	init();
 
-	// init_graphics();
 	// info!("{:#?}", boot_info);
 	// rash::shell();
 
@@ -47,47 +48,20 @@ fn kernel_main() -> ! {
 		// Broken QEMU shutdown
 		outw(0x604, 0x2000);
 	}
-	/*
-		info![
-			"Size of file headers: {}",
-			core::mem::size_of::<sri::fs::File>()
-		];
-	*/
+
 	// reason for without_interrupts: mouse interrupt handler and init_mouse acquires the same mutex
 	x86_64::instructions::interrupts::without_interrupts(|| {
 		hardware::mouse::init_mouse();
 	});
-
-	// fn println(yes: &str, coordinates: (usize, usize)) {
-	// 	let mut offset = 0;
-	// 	let mut offset_y = 0;
-
-	// 	for x in yes.chars() {
-	// 		match x {
-	// 			'\n' => {
-	// 				offset = 0;
-	// 				offset_y += 1;
-	// 			}
-	// 			_ => {
-	// 				GRAPHICS_RAW.draw_character(
-	// 					offset * 8 + coordinates.0,
-	// 					offset_y * 8,
-	// 					x,
-	// 					Color16::White,
-	// 				);
-	// 				offset += 1;
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	use task::{executor::Executor, keyboard, Task};
 	let mut executor = Executor::new();
 	executor.spawn(Task::new(example_task()));
 	executor.spawn(Task::new(keyboard::print_keypresses()));
 	executor.spawn(Task::new(test_1()));
+
 	// FIXME: Freezes the kernel
-	// executor.spawn(Task::new(test_clipboard()));
+	// executor.spawn(Task::new(_test_clipboard()));
 	executor.run();
 }
 

@@ -67,11 +67,13 @@ extern "x86-interrupt" fn page_fault_handler(
 	stack_frame: InterruptStackFrame,
 	error_code: PageFaultErrorCode,
 ) {
-	// use x86_64::registers::control::Cr2;
-	error!("PAGE FAULT");
-	error!("Accessed Address: {:?}", Cr2::read());
-	error!("Error Code: {:?}", error_code);
-	debug!("{:#?}", stack_frame);
+	error!(
+		"PAGE FAULT\nAccessed Address: {:?}\nError Code: {:?}\nStack Frame{:#?}",
+		Cr2::read(),
+		error_code,
+		stack_frame
+	);
+
 	let mut iter = 0;
 
 	use crate::GRAPHICS_RAW;
