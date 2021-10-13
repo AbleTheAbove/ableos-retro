@@ -4,17 +4,12 @@ pub mod fixed_size_block;
 /// The starting location of the heap
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 /// TODO: owo what is this?
-pub const HEAP_SIZE: usize = 200 * 1024; // 100 KiB
+pub const HEAP_SIZE: usize = 2000 * 1024; // 100 KiB
 
 use fixed_size_block::FixedSizeBlockAllocator;
+
 #[global_allocator]
 static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
-
-/*
-use linked_list_allocator::LockedHeap;
-#[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
-*/
 
 use x86_64::{
 	structures::paging::{
@@ -54,7 +49,7 @@ fn alloc_error_handler(layout: alloc::alloc::Layout) -> ! {
 	panic!("allocation error: {:?}", layout)
 }
 
-/// (Able) No clue what this does
+/// Wrapper around Mutex
 pub struct Locked<A> {
 	inner: spin::Mutex<A>,
 }

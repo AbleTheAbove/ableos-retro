@@ -128,5 +128,3 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
 			.notify_end_of_interrupt(InterruptIndex::Keyboard.into());
 	}
 }
-
-// gen_fn! {32, 256, handler}

@@ -52,6 +52,7 @@ macro_rules! info {
 
 // use crate::util::{term_reset, term_set};
 /// Denote log levels
+#[derive(PartialEq)]
 pub enum LogLevel {
 	/// The Error log level to be used with errors
 	Error,
@@ -99,7 +100,7 @@ fn debug_log() {
 /// print a log message to the serial port, a newline will be appended.
 /// This should not be used, use the macros named by log levels instead.
 pub fn slog(level: LogLevel, message_args: Arguments) {
-	if crate::kernel_state::KERNEL_STATE.lock().serial_log {
+	if crate::kernel_state::KERNEL_STATE.lock().serial_log && level != LogLevel::Debug {
 		serial_print!("[");
 
 		match level {

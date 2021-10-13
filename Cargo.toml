@@ -40,10 +40,8 @@ vga = { git = "https://github.com/ableos/vga" }
 volatile = "0.2.6"
 # Initialize hardware device descriptor table
 array-init = "2.0.0"
-# gen_fn = { path = "./gen_fn" }
 rash = {path = "./rash"}
-# Find RSDP https://wiki.osdev.org/RSDP
-uefi-services = "0.8.0"
+
 ps2-mouse = "0.1.4"
 raw-cpuid = "9.0.0"
 x86 = "0.39.0"
@@ -79,7 +77,3 @@ version = "0.2.1"
 [dependencies.x86_64]
 features = ["inline_asm"]
 version = "0.14.3"
-
-# [dependencies.uefi]
-# version = "0.11.0"
-# default-features = false

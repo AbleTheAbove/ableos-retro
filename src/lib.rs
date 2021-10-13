@@ -54,7 +54,7 @@ pub use logger::*;
 pub mod memory;
 pub mod panic;
 pub mod serial;
-pub mod vga_buffer;
+// pub mod vga_buffer;
 
 /// Asyncronous module
 pub mod task;

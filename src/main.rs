@@ -86,6 +86,7 @@ fn kernel_main() -> ! {
 	executor.spawn(Task::new(example_task()));
 	executor.spawn(Task::new(keyboard::print_keypresses()));
 	executor.spawn(Task::new(test_1()));
+	// FIXME: Freezes the kernel
 	// executor.spawn(Task::new(test_clipboard()));
 	executor.run();
 }
@@ -94,8 +95,8 @@ fn kernel_main() -> ! {
 pub fn init() {
 	gdt::init();
 	interrupts::init_idt();
-	unsafe { interrupts::pic::PICS.lock().initialize() }; // new
-	x86_64::instructions::interrupts::enable(); // new
+	unsafe { interrupts::pic::PICS.lock().initialize() };
+	x86_64::instructions::interrupts::enable();
 	if hardware::encrypt::aes_detect() {
 		success!("Encryption driver loaded")
 	}
@@ -103,8 +104,8 @@ pub fn init() {
 	sri::init();
 }
 
-async fn test_clipboard() {
-	// pauses eexecution of key board task
+async fn _test_clipboard() {
+	// FIXME: pauses execution of key board task
 	info!("{:?}", CLIPBOARD.lock().paste());
 }
 

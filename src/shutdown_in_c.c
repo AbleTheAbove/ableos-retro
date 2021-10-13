@@ -2,14 +2,14 @@
 // // here is the slighlty complicated ACPI poweroff code
 // //
 
-// #include <stddef.h>
-// #include <print.h>
-// #include <string.h>
-// #include <io.h>
-// #include <time.h>
+#include <stddef.h>
+#include <print.h>
+#include <string.h>
+#include <io.h>
+#include <time.h>
 
 // dword *SMI_CMD;
-// byte ACPI_ENABLE;
+byte ACPI_ENABLE;
 // byte ACPI_DISABLE;
 // dword *PM1a_CNT;
 // dword *PM1b_CNT;

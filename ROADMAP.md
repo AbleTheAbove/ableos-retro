@@ -1,22 +1,13 @@
-- [ ] Able Tar File System
-  - [ ] Read from
-  - [ ] Write to
-  - [ ] Permissions
-- [ ] Program loading
-- [ ] Rust Able Shell
-  - [ ] intractability
-  - [ ] mock tty
-- [ ] Able Graphics Library
-  - [ ] Rectangle
-  - [ ] Circle
-  - [ ] Unicode support
-- [ ] Multi User Single Computer
-  - [X] The concept of a user
-- [ ] Github Things
-  - [ ] Continuous integration
-    - [ ] Cargo Testing
-    - [X] Cargo Build
-  - [X] Github Updates
-- [ ]USB Protocol
-  - [ ] User USB devices
-- [ ] Predictive Text Dictionary Systemwide
+currently we need
+- [ ] A rework of the graphics system
+- [ ] A general clean up
+- [ ] Extensive documentation
+- [ ] Scoping and general design improvements
+- [ ] Modularization and segmentalization of code for ease of use and better readability
+      - [ ] Move the allocator to a separate local crate
+
+# Future
+- [ ] Multiseating
+      - [ ] configurable
+- [ ] Preemptive multitasking
+- [ ] Driver Documentation
