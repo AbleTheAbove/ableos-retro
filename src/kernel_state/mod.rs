@@ -13,17 +13,17 @@ use crate::{
 pub const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
 #[cfg(debug_assertions)]
 /// A constant to check if the kernel is in debug mode
-pub const RELEASE_TYPE: &str = "debug";
+pub const RELEASE_TYPE: KernelReleaseType = KernelReleaseType::Debug;
 #[cfg(not(debug_assertions))]
 /// A constant to check if the kernel is in release mode
-pub const RELEASE_TYPE: &str = "release";
+pub const RELEASE_TYPE: KernelReleaseType = KernelReleaseType::Release;
 
 lazy_static! {
 	pub static ref KERNEL_STATE: spin::Mutex<KernelState> = {
 		let state = KernelState {
 			version: KernelVersion {
 				version_str: KERNEL_VERSION.to_string(),
-				release_type: RELEASE_TYPE.to_string(),
+				release_type: RELEASE_TYPE,
 			},
 			serial_log: true,
 			hardware: Hardware {
@@ -63,13 +63,28 @@ impl fmt::Display for KernelState {
 	}
 }
 
+#[derive(Debug, Clone, Eq, PartialEq,)]
+pub enum KernelReleaseType {
+	Debug,
+	Release,
+}
+
+impl fmt::Display for KernelReleaseType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match *self {
+            KernelReleaseType::Debug => write!(f, "{}", "debug"),
+            KernelReleaseType::Release => write!(f, "{}", "release"),
+        }
+    }
+}
+
 /// Kernel Versioning used to assist in debugging
 #[derive(Debug)]
 pub struct KernelVersion {
 	/// A semantic versioning
 	pub version_str: String,
 	/// The release type of the kernel "release" or "debug"
-	pub release_type: String,
+	pub release_type: KernelReleaseType,
 }
 impl fmt::Display for KernelVersion {
 	// This trait requires `fmt` with this exact signature.
