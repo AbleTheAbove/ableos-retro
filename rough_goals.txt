@@ -1,5 +1,3 @@
-stolen from osdev discord
-
 setup some bootloader (qloader2 is good)
 boot into long mode (which qloader2 will do)
 get some basic exception handlers

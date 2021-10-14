@@ -2,7 +2,6 @@
 
 use super::{
 	// Comented out because unused but will be used in the future
-	//terminal,
 	Window,
 	GRAPHICS_RAW,
 	WINDOW_BORDER_COLOR,
