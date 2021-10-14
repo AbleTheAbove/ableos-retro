@@ -74,8 +74,6 @@ extern "x86-interrupt" fn page_fault_handler(
 		stack_frame
 	);
 
-	let mut iter = 0;
-
 	use crate::GRAPHICS_RAW;
 	use vga::writers::GraphicsWriter;
 

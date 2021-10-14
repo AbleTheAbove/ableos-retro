@@ -67,15 +67,17 @@ pub struct Window<'holder> {
 impl<'w> Window<'w> {
 
 	fn draw(&self) {
-		for y in 0..self.size.1 {
+		let (window_width, window_height) = self.size;
+		let (offset_x, offset_y) = self.offset;
+		for y in 0..window_height {
 			GRAPHICS_RAW.draw_line(
 				(
-					0 + self.offset.0,
-					self.size.1 as isize + self.offset.1 - y as isize,
+					0 + offset_x,
+					window_height as isize + offset_y - y as isize,
 				),
 				(
-					self.size.0 as isize + self.offset.0,
-					self.size.1 as isize + self.offset.1 - y as isize,
+					window_width as isize + offset_x,
+					window_height as isize + offset_y - y as isize,
 				),
 				Color16::Black,
 			);
@@ -83,10 +85,10 @@ impl<'w> Window<'w> {
 
 		// Left line
 		GRAPHICS_RAW.draw_line(
-			(0 + self.offset.0, 0 + self.offset.1),
+			(0 + offset_x, 0 + offset_y),
 			(
-				0 + self.offset.0,
-				self.size.1 as isize + self.offset.1,
+				0 + offset_x,
+				window_height as isize + offset_y,
 			),
 			WINDOW_BORDER_COLOR,
 		);
@@ -94,12 +96,12 @@ impl<'w> Window<'w> {
 		// Lowest line
 		GRAPHICS_RAW.draw_line(
 			(
-				0 + self.offset.0,
-				self.size.1 as isize + self.offset.1,
+				0 + offset_x,
+				window_height as isize + offset_y,
 			),
 			(
-				self.size.0 as isize + self.offset.0,
-				self.size.1 as isize + self.offset.1,
+				window_width as isize + offset_x,
+				window_height as isize + offset_y,
 			),
 			WINDOW_BORDER_COLOR,
 		);
@@ -107,19 +109,19 @@ impl<'w> Window<'w> {
 		//right most line
 		GRAPHICS_RAW.draw_line(
 			(
-				self.size.0 as isize + self.offset.0,
-				self.size.1 as isize + self.offset.1,
+				window_width as isize + offset_x,
+				window_height as isize + offset_y,
 			),
-			(self.size.0 as isize + self.offset.0, self.offset.1),
+			(window_width as isize + offset_x, offset_y),
 			WINDOW_BORDER_COLOR,
 		);
 
 		// A simple window decorator that I think should be fully implemented
 		for y in 0..20 {
-			for x in 1..self.size.0 {
+			for x in 1..window_width {
 				GRAPHICS_RAW.set_pixel(
-					x + self.offset.0 as usize,
-					y + self.offset.1 as usize,
+					x + offset_x as usize,
+					y + offset_y as usize,
 					WINDOW_DECORATOR_COLOR,
 				);
 			}
@@ -129,8 +131,8 @@ impl<'w> Window<'w> {
 		for (offset, character) in self.title.chars().enumerate() {
 			GRAPHICS_RAW.draw_character(
 				// TODO: Get length of character size and then do math
-				(self.offset.0 as usize + ((self.size.0 - title_width) / 2)) as usize + offset * 8,
-				(6 + self.offset.1) as usize,
+				(offset_x as usize + ((window_width - title_width) / 2)) as usize + offset * 8,
+				(6 + offset_y) as usize,
 				character,
 				WINDOW_DECORATOR_TEXT_COLOR,
 			)
