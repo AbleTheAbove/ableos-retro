@@ -35,77 +35,7 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 		size,
 	};
 
-	let (window_width, window_height) = window.size;
-	let (offset_x, offset_y) = window.offset;
-
-	for y in 0..window_height {
-		GRAPHICS_RAW.draw_line(
-			(
-				0 + offset_x,
-				window_height as isize + offset_y - y as isize,
-			),
-			(
-				window_width as isize + offset_x,
-				window_height as isize + offset_y - y as isize,
-			),
-			Color16::Black,
-		);
-	}
-
-	// Left line
-	GRAPHICS_RAW.draw_line(
-		(0 + offset_x, 0 + offset_y),
-		(
-			0 + offset_x,
-			window_height as isize + offset_y,
-		),
-		WINDOW_BORDER_COLOR,
-	);
-
-	// Lowest line
-	GRAPHICS_RAW.draw_line(
-		(
-			0 + offset_x,
-			window_height as isize + offset_y,
-		),
-		(
-			window_width as isize + offset_x,
-			window_height as isize + offset_y,
-		),
-		WINDOW_BORDER_COLOR,
-	);
-
-	//right most line
-	GRAPHICS_RAW.draw_line(
-		(
-			window_width as isize + offset_x,
-			window_height as isize + offset_y,
-		),
-		(window_width as isize + offset_x, offset_y),
-		WINDOW_BORDER_COLOR,
-	);
-
-	// A simple window decorator that I think should be fully implemented
-	for y in 0..20 {
-		for x in 1..window_width {
-			GRAPHICS_RAW.set_pixel(
-				x + offset_x as usize,
-				y + offset_y as usize,
-				WINDOW_DECORATOR_COLOR,
-			);
-		}
-	}
-
-	let title_width = window.title.len() * 8;
-	for (offset, character) in window.title.chars().enumerate() {
-		GRAPHICS_RAW.draw_character(
-			// TODO: Get length of character size and then do math
-			(offset_x as usize + ((window_width - title_width) / 2)) as usize + offset * 8,
-			(6 + offset_y) as usize,
-			character,
-			WINDOW_DECORATOR_TEXT_COLOR,
-		)
-	}
+	window.draw()
 }
 
 /// todo: pwees write docs
