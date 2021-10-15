@@ -123,8 +123,12 @@ fn _debug_kernel_state() {
 fn toggle_task_menu() {
 	GRAPHICS_RAW.clear_screen(Color16::Black);
 
-	let task_menu_visible = KERNEL_STATE.lock().task_menu;
-	KERNEL_STATE.lock().task_menu ^= true;
+	let task_menu_visible = {
+		let mut lock_guard = KERNEL_STATE.lock();
+		let existing_task_menu_state = lock_guard.task_menu;
+		lock_guard.task_menu ^= true;
+		existing_task_menu_state
+	};
 	debug!("Task Menu Visible: {:?}", !task_menu_visible);
 	if !task_menu_visible {
 		GRAPHICS_RAW.draw_line((80, 60), (540, 60), Color16::White);

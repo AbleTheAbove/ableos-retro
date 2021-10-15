@@ -74,16 +74,13 @@ extern "x86-interrupt" fn page_fault_handler(
 		stack_frame
 	);
 
-	let mut iter = 0;
-
 	use crate::GRAPHICS_RAW;
 	use vga::writers::GraphicsWriter;
 
 	pub use vga::colors::Color16;
 
-	for character in "Page Fault".chars() {
+	for (iter, character) in "Page Fault".chars().enumerate() {
 		GRAPHICS_RAW.draw_character(iter * 8, 0, character, Color16::Red);
-		iter += 1;
 	}
 
 	hlt_loop();
