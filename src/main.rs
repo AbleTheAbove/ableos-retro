@@ -10,7 +10,8 @@
 #![feature(const_mut_refs)]
 #![feature(asm)]
 #![feature(const_fn_fn_ptr_basics)]
-// #![warn(missing_docs)]
+#![deny(missing_docs)]
+#![deny(warnings)]
 #![feature(repr128)]
 #![allow(incomplete_features)]
 
