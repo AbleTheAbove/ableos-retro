@@ -19,7 +19,7 @@ type Size = (usize, usize);
 type Offset = (isize, isize);
 
 /// Initialize the window manager
-pub fn init() {
+pub fn _init() {
 	let mut seven = 0;
 	let mut nine = 0;
 	for x in 0..10 {
@@ -27,7 +27,7 @@ pub fn init() {
 		seven += 40;
 		nine += 40;
 	}
-	window_draw::logo((440, 420));
+	window_draw::_logo((440, 420));
 }
 
 lazy_static! {
@@ -45,11 +45,11 @@ lazy_static! {
 	pub static ref WINDOWS: WindowHolder<'static> = WindowHolder(Mutex::new(Vec::new()));
 }
 /// The color of window border colors
-pub static WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
+pub static _WINDOW_BORDER_COLOR: Color16 = Color16::LightBlue;
 /// The window decorator color
-pub static WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
+pub static _WINDOW_DECORATOR_COLOR: Color16 = Color16::LightBlue;
 /// Window decorator Text color
-pub static WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
+pub static _WINDOW_DECORATOR_TEXT_COLOR: Color16 = Color16::Black;
 
 /// A struct for holding windows
 pub struct WindowHolder<'a>(pub Mutex<Vec<&'a Window<'a>>>);

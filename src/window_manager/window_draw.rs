@@ -4,9 +4,9 @@ use super::{
 	// Comented out because unused but will be used in the future
 	Window,
 	GRAPHICS_RAW,
-	WINDOW_BORDER_COLOR,
-	WINDOW_DECORATOR_COLOR,
-	WINDOW_DECORATOR_TEXT_COLOR,
+	_WINDOW_BORDER_COLOR,
+	_WINDOW_DECORATOR_COLOR,
+	_WINDOW_DECORATOR_TEXT_COLOR,
 };
 
 pub use vga::{colors::Color16, writers::GraphicsWriter};
@@ -55,7 +55,7 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 			0 + window.offset.0,
 			window.size.1 as isize + window.offset.1,
 		),
-		WINDOW_BORDER_COLOR,
+		_WINDOW_BORDER_COLOR,
 	);
 
 	// Lowest line
@@ -68,7 +68,7 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 			window.size.0 as isize + window.offset.0,
 			window.size.1 as isize + window.offset.1,
 		),
-		WINDOW_BORDER_COLOR,
+		_WINDOW_BORDER_COLOR,
 	);
 
 	//right most line
@@ -78,7 +78,7 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 			window.size.1 as isize + window.offset.1,
 		),
 		(window.size.0 as isize + window.offset.0, window.offset.1),
-		WINDOW_BORDER_COLOR,
+		_WINDOW_BORDER_COLOR,
 	);
 
 	// A simple window decorator that I think should be fully implemented
@@ -87,7 +87,7 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 			GRAPHICS_RAW.set_pixel(
 				x + window.offset.0 as usize,
 				y + window.offset.1 as usize,
-				WINDOW_DECORATOR_COLOR,
+				_WINDOW_DECORATOR_COLOR,
 			);
 		}
 	}
@@ -99,13 +99,13 @@ pub fn _windows(_id: u8, offset: (isize, isize)) {
 			(window.offset.0 as usize + ((window.size.0 - title_width) / 2)) as usize + offset * 8,
 			(6 + window.offset.1) as usize,
 			character,
-			WINDOW_DECORATOR_TEXT_COLOR,
+			_WINDOW_DECORATOR_TEXT_COLOR,
 		)
 	}
 }
 
 /// todo: pwees write docs
-pub fn logo(offset: (isize, isize)) {
+pub fn _logo(offset: (isize, isize)) {
 	{
 		let a_color = Color16::Pink;
 		// Left side of the A
