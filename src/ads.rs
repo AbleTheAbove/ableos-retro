@@ -1,14 +1,22 @@
-pub enum Ad {
-	AbleScript,
+use crate::GRAPHICS_RAW;
+use vga::colors::Color16;
+use vga::writers::GraphicsWriter;
+
+pub enum AbleAd {}
+
+pub struct Ad {
+	ad_type: AbleAd,
 }
 impl Ad {
-	fn display() {
-		GRAPHICS_RAW.draw_character(
-			// TODO: Get length of character size and then do math
-			0,
-			1,
-			'b',
-			Color16::LightBlue,
-		)
+	pub fn display() {
+		for (index, char) in "https://ablecorp.us".chars().enumerate() {
+			GRAPHICS_RAW.draw_character(
+				// TODO: Get length of character size and then do math
+				index * 8,
+				0,
+				char,
+				Color16::LightBlue,
+			)
+		}
 	}
 }

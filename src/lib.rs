@@ -37,6 +37,7 @@ pub use hardware::cpu::cpu_vendor_signature;
 
 pub mod clip;
 
+pub mod ads;
 /// The global allocator impl
 pub mod allocator;
 //pub mod encrypt;

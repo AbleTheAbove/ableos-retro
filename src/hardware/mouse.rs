@@ -10,6 +10,8 @@ use vga::writers::GraphicsWriter;
 use x86_64::instructions::port::PortReadOnly;
 use x86_64::structures::idt::InterruptStackFrame;
 
+use crate::ads::Ad;
+
 const CURSOR_COLOR: Color16 = Color16::Cyan;
 
 const MOUSE_MAX_X: u16 = 638;
@@ -136,4 +138,6 @@ fn draw_mouse(mouse_coord: (usize, usize)) {
 		(mouse_coord.0 as isize + 0, mouse_coord.1 as isize + 5),
 		CURSOR_COLOR,
 	);
+
+	Ad::display();
 }
