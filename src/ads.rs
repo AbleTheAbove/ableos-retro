@@ -5,7 +5,7 @@ use vga::writers::GraphicsWriter;
 pub enum AbleAd {}
 
 pub struct Ad {
-	ad_type: AbleAd,
+	_ad_type: AbleAd,
 }
 impl Ad {
 	pub fn display() {
